@@ -120,7 +120,7 @@ public class controles {
 
     }
 
-    public static void listar_areas(Activity activity, Context context) {
+    public static void listar_areas(Activity activity, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -134,7 +134,7 @@ public class controles {
                 arr_area.add(rs.getString("area_desc"));
             }
             stkw001.sp_area = new SpinnerDialog(activity,arr_area,"Listado de areas");
-            Stkw001AreaOnclick(activity,context);
+            Stkw001AreaOnclick(activity,context,tipo_toma);
         }
         catch (Exception e){
 
@@ -142,7 +142,7 @@ public class controles {
 
     }
 
-    public static void listar_departamentos(Activity activity, String id_area, Context context) {
+    public static void listar_departamentos(Activity activity, String id_area, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -158,7 +158,7 @@ public class controles {
                 arr_departamento.add(rs.getString("dpto_desc"));
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
-            Stkw001DepartamentoOnclick(activity,context);
+            Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
         }
         catch (Exception e){
 
@@ -166,7 +166,7 @@ public class controles {
 
     }
 
-    public static void listar_seccion(Activity activity, String id_departamento, Context context) {
+    public static void listar_seccion(Activity activity, String id_departamento, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -183,7 +183,7 @@ public class controles {
                 arr_seccion.add(rs.getString("secc_desc"));
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
-            Stkw001SeccionOnclick(activity,context);
+            Stkw001SeccionOnclick(activity,context,  tipo_toma);
         }
         catch (Exception e){
 
@@ -191,7 +191,7 @@ public class controles {
 
     }
 
-    public static void listar_familia(Activity activity, String id_seccion, Context context) {
+    public static void listar_familia(Activity activity, String id_seccion, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -209,7 +209,7 @@ public class controles {
                 arr_familia.add(rs.getString("flia_desc"));
             }
             stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
-            Stkw001FamiliaOnclick(activity, context);
+            Stkw001FamiliaOnclick(activity, context, tipo_toma);
         }
         catch (Exception e){
 
@@ -217,7 +217,7 @@ public class controles {
 
     }
 
-    public static void listar_grupo(Activity activity, String id_familia, Context context) {
+    public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -239,7 +239,7 @@ public class controles {
                 arr_grupo.add(rs.getString("grup_desc"));
             }
             stkw001.sp_grupo = new SpinnerDialog(activity,arr_grupo,"Listado de grupos");
-            Stkw001GrupoOnclick(activity,context);
+            Stkw001GrupoOnclick(activity,context,  tipo_toma);
         }
         catch (Exception e){
 
@@ -247,7 +247,7 @@ public class controles {
 
     }
 
-    public static void listar_SubGrupo(Activity activity, String id_grupo, Context context) {
+    public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -291,10 +291,6 @@ public class controles {
     }
 
 
-    public  static  void test_subgrupo(Context context){
-
-    }
-
 
 
 
@@ -337,7 +333,7 @@ public class controles {
         });
     }
 
-    public static void Stkw001AreaOnclick(Activity activity, Context context){
+    public static void Stkw001AreaOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_area.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v) {
             stkw001.sp_area.showSpinerDialog();
@@ -368,12 +364,12 @@ public class controles {
                 stkw001.txt_grupo.setText("");
 
 
-                listar_departamentos(activity,arr_id_area.get(i),context);
+                listar_departamentos(activity,arr_id_area.get(i),context,  tipo_toma);
              }
         });
     }
 
-    public static void Stkw001DepartamentoOnclick(Activity activity, Context context){
+    public static void Stkw001DepartamentoOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_departamento.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v) {
             stkw001.sp_departamento.showSpinerDialog();
@@ -400,12 +396,12 @@ public class controles {
                 stkw001.txt_departamento.setText(arr_departamento.get(i));
                 stkw001.txt_id_departamento.setText(arr_id_departamento.get(i));
 
-                listar_seccion(activity,arr_id_departamento.get(i),context);
+                listar_seccion(activity,arr_id_departamento.get(i),context, tipo_toma);
             }
         });
     }
 
-    public static void Stkw001SeccionOnclick(Activity activity, Context context){
+    public static void Stkw001SeccionOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_seccion.setOnClickListener(new View.OnClickListener() {
             @Override
         public void onClick(View v) {
@@ -428,12 +424,12 @@ public class controles {
 
                 stkw001.txt_seccion.setText(arr_seccion.get(i));
                 stkw001.txt_id_seccion.setText(arr_id_seccion.get(i));
-                listar_familia(activity,arr_id_seccion.get(i),context);
+                listar_familia(activity,arr_id_seccion.get(i),context, tipo_toma);
             }
         });
     }
 
-    public static void Stkw001FamiliaOnclick(Activity activity, Context context){
+    public static void Stkw001FamiliaOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_familia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -452,12 +448,12 @@ public class controles {
 
                 stkw001.txt_familia.setText(arr_familia.get(i));
                 stkw001.txt_id_familia.setText(arr_id_familia.get(i));
-                listar_grupo(activity,arr_id_familia.get(i),context);
+                listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
             }
         });
     }
 
-    public static void Stkw001GrupoOnclick(Activity activity, Context context){
+    public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_grupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -469,7 +465,7 @@ public class controles {
 
                stkw001.txt_grupo.setText(arr_grupo.get(i));
                 stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
-                listar_SubGrupo(activity,arr_id_grupo.get(i),context);
+                listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
             }
         });
     }

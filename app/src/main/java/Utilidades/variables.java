@@ -7,4 +7,6 @@ public class variables {
     public static String NOMBRE_LOGIN;
     public static String ID_SUCURSAL_LOGIN;
     public static String DESCRIPCION_SUCURSAL_LOGIN;
+    public static String titulo_stkw001;
+    public static int tipo_stkw001;
 }

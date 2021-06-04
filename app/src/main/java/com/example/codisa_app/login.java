@@ -228,7 +228,7 @@ public class login extends AppCompatActivity
                         variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
                         variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
 
-                        Intent is=new Intent(com.example.codisa_app.login.this,MainActivity.class);
+                        Intent is=new Intent(com.example.codisa_app.login.this,menu_principal.class);
                         startActivity(is);
                         finish();
                     }
