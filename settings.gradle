@@ -1,0 +1,3 @@
+include ':ojdbc5'
+include ':app'
+rootProject.name = "Codisa_APP"

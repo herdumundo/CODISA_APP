@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".stkw001">
+
+
+    <RadioButton
+        android:id="@+id/radioButton6"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:text="Si"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/radioButton3" />
+
+    <RadioButton
+        android:id="@+id/radioButton7"
+        android:layout_width="51dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:text="No"
+        app:layout_constraintStart_toEndOf="@+id/radioButton6"
+        app:layout_constraintTop_toBottomOf="@+id/radioButton2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="228dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Incluir articulos con existencia cero"
+        android:textColor="#4CAF50"
+        android:textStyle="normal|bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:text="Si"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="51dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:text="No"
+        app:layout_constraintStart_toEndOf="@+id/radioButton3"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="228dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Incluir articulos descontinuados"
+        android:textColor="#4CAF50"
+        android:textStyle="normal|bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <RadioButton
+        android:id="@+id/radioButton4"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Si"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/radioButton6" />
+
+    <RadioButton
+        android:id="@+id/radioButton5"
+        android:layout_width="51dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:text="No"
+        app:layout_constraintStart_toEndOf="@+id/radioButton4"
+        app:layout_constraintTop_toBottomOf="@+id/radioButton7" />
+
+    <TextView
+        android:id="@+id/lbl_subgrupo"
+        android:layout_width="79dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Sub-Grupo:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_grupo"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_grupo"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione grupo"
+
+        app:layout_constraintStart_toEndOf="@+id/txt_id_grupo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_familia"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_grupo"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_familia"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_grupo"
+        android:layout_width="58dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Grupo:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_familia"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_familia"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione familia"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_familia"
+        app:layout_constraintTop_toBottomOf="@+id/txt_seccion"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_familia"
+        android:layout_width="58dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Familia:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_seccion"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_seccion"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione seccion"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_seccion"
+        app:layout_constraintTop_toBottomOf="@+id/txt_departamento"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_seccion"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_departamento"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_familia"
+        android:layout_width="21dp"
+
+        android:layout_height="19dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_seccion"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_seccion"
+        android:layout_width="58dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Seccion:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_departamento"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_departamento"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione departamento"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_departamento"
+        app:layout_constraintTop_toBottomOf="@+id/txt_area"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_departamento"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_area"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_departamento"
+        android:layout_width="99dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Departamento:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_area"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_area"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="40dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione area"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_area"
+        app:layout_constraintTop_toBottomOf="@+id/txt_deposito"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_area"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="116dp"
+
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_deposito"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="Area:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_deposito"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_deposito"
+        android:layout_width="190dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione deposito"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_deposito"
+        app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_sucursal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:text="Sucursal:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_deposito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Deposito:"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_sucursal"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_sucursal"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toEndOf="@+id/lbl_sucursal"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_desc_sucursal"
+        android:layout_width="190dp"
+
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="28dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:hint="Seleccione sucursal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.006"
+        app:layout_constraintStart_toEndOf="@+id/txt_id_sucursal"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_id_deposito"
+        android:layout_width="21dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/lbl_deposito"
+        app:layout_constraintTop_toBottomOf="@+id/txt_id_sucursal" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Incluir lote"
+        android:textColor="#4CAF50"
+        android:textStyle="normal|bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
+
+    <com.example.codisa_app.MultiSpinnerSearch
+        android:id="@+id/multipleItemSelectionSpinner"
+        android:layout_width="215dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        app:hintText="Seleccione Sub-Grupo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.009"
+        app:layout_constraintStart_toEndOf="@+id/lbl_subgrupo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_grupo"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="221dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="44dp"
+        android:text="Generar Toma"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+</androidx.constraintlayout.widget.ConstraintLayout>
