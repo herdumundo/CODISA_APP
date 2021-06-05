@@ -3,15 +3,17 @@ package com.example.codisa_app;
 public class KeyPairBoolData {
 	private long id;
 	private String name;
+	private String lote;
 	private boolean isSelected;
 	private Object object;
 
 	public KeyPairBoolData() {
 	}
 
-	public KeyPairBoolData(String name, boolean isSelected) {
+	public KeyPairBoolData(String name, boolean isSelected,String lote) {
 		this.name = name;
 		this.isSelected = isSelected;
+		this.lote = lote;
 	}
 
 	public Object getObject() {
@@ -48,6 +50,14 @@ public class KeyPairBoolData {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLote() {
+		return lote;
+	}
+
+	public void setLote(String lote) {
+		this.lote = lote;
 	}
 
 	/**

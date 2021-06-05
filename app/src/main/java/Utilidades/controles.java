@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.Tag;
+import android.util.Log;
 import android.view.View;
 
 import com.example.codisa_app.KeyPairBoolData;
@@ -35,8 +37,10 @@ public class controles {
     public static ArrayList<String> arr_grupo = new ArrayList<>();
     public static ArrayList<String> arr_id_subgrupo = new ArrayList<>();
     public static ArrayList<String> arr_subgrupo = new ArrayList<>();
+    public static String ids_subgrupos="";
 
-   static List<KeyPairBoolData> listArray1 = new ArrayList<>();
+    static List<KeyPairBoolData> listArray1 = new ArrayList<>();
+    static List<KeyPairBoolData> listArrayArticulos = new ArrayList<>();
 
 
     public static Connection connection=null;
@@ -269,18 +273,71 @@ public class controles {
                 h.setName(rs.getString("sugr_desc"));
                 listArray1.add(h);
             }
-           /* stkw001.sp_subgrupo = new SpinnerDialog(activity, arr_subgrupo,"Listado de sub-grupos");
-            Stkw001SubGrupoOnclick(activity);*/
+
             stkw001.multiSelectSpinnerWithSearch.setItems(listArray1, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<KeyPairBoolData> items) {
                  //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
-                    /*   for (int i = 0; i < items.size(); i++) {
-                        if (items.get(i).isSelected()) {
+                    ids_subgrupos="";
 
-                            //Log.i(Tag, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).isSelected()) {
+                            if(i==0){
+                                ids_subgrupos=ids_subgrupos+items.get(i).getId();
+                            }
+                            else {
+                                ids_subgrupos=ids_subgrupos+","+items.get(i).getId();
+                            }
+                          //  Log.i(Tag, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
                         }
-                    }*/
+                    }
+                    new AlertDialog.Builder(context)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("ATENCION!!!.")
+                            .setMessage(ids_subgrupos)
+                            .show();
+                    if(tipo_toma==1){
+                        try {
+                            Statement stmt2 = connect.createStatement();
+                            ResultSet rs2 = stmt2.executeQuery("" +
+                                    "select " +
+                                    "   * " +
+                                    "from " +
+                                    "   v_web_articulos_clasificacion " +
+                                    "where " +
+                                    "   arde_suc=1      and " +
+                                    "   arde_dep=0      and " +
+                                    "   area_codigo=1   and " +
+                                    "   dpto_codigo=1   and " +
+                                    "   secc_codigo=1   and " +
+                                    "   flia_codigo=1   and " +
+                                    "   grup_codigo=17");
+                            listArrayArticulos.clear();
+
+                            while ( rs2.next())
+                            {
+                                KeyPairBoolData contenedor = new KeyPairBoolData();
+                                contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
+                                contenedor.setName(rs2.getString("art_desc")+" Lote:"+rs2.getString("arde_lote"));
+                                contenedor.setLote(rs2.getString("arde_lote"));
+                                listArrayArticulos.add(contenedor);
+                            }
+
+
+                            stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
+                                @Override
+                                public void onItemsSelected(List<KeyPairBoolData> items) {
+
+                                }
+
+
+                        });
+
+                        }
+                        catch (Exception e){
+
+                        }
+                    }
                 }
             });
         }
@@ -470,20 +527,6 @@ public class controles {
         });
     }
 
-    public static void Stkw001SubGrupoOnclick(Activity activity){
-        stkw001.txt_subgrupo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stkw001.sp_subgrupo.showSpinerDialog();
-            } } );
-        stkw001.sp_subgrupo.bindOnSpinerListener(new OnSpinerItemClick() {
-            @Override
-            public void onClick(String s, int i)
-            {
-                stkw001.txt_subgrupo.setText(arr_subgrupo.get(i));
-                stkw001.txt_id_subgrupo.setText(arr_id_subgrupo.get(i));
-            }
-        });
-    }
+
 
 }
