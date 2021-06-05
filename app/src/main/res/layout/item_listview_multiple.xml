@@ -8,11 +8,13 @@
         android:id="@+id/alertTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="@string/string_item_name"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="14dp"
         android:layout_toStartOf="@+id/alertCheckbox"
-        android:layout_alignParentStart="true" />
+        android:text="@string/string_item_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <CheckBox
         android:id="@+id/alertCheckbox"
@@ -21,5 +23,17 @@
         android:layout_centerVertical="true"
         android:clickable="false"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alertTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="13dp"
+        android:layout_toStartOf="@+id/alertCheckbox"
+        android:text="TextView" />
 
 </RelativeLayout>

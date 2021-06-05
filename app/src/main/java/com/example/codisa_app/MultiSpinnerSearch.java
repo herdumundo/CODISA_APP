@@ -39,24 +39,18 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 	public static AlertDialog.Builder builder;
 	public static AlertDialog ad;
-
-	private boolean highlightSelected = false;
-	private int highlightColor = ContextCompat.getColor(getContext(), com.example.codisa_app.R.color.list_selected);
+ 	private boolean highlightSelected = false;
+	private int highlightColor = ContextCompat.getColor(getContext(), R.color.list_selected);
 	private int textColor = Color.BLACK;
-//	private int limit = -1;
-	private int selected = 0;
+ 	private int selected = 0;
 	private String defaultText = "";
 	private String spinnerTitle = "";
 	private String emptyTitle = "Not Found!";
 	private String searchHint = "FILTRO";
 	private String clearText = "Clear All";
 	private boolean colorSeparation = false;
-
-	private boolean isShowSelectAllButton = true;
-
-	private com.example.codisa_app.MultiSpinnerListener listener;
-//	private LimitExceedListener limitListener;
-
+ 	private boolean isShowSelectAllButton = true;
+	private MultiSpinnerListener listener;
 	private MyAdapter adapter;
 	private List<KeyPairBoolData> items;
 	private boolean isSearchEnabled = true;
@@ -67,21 +61,21 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 	public MultiSpinnerSearch(Context arg0, AttributeSet arg1) {
 		super(arg0, arg1);
-		TypedArray a = arg0.obtainStyledAttributes(arg1, com.example.codisa_app.R.styleable.MultiSpinnerSearch);
+		TypedArray a = arg0.obtainStyledAttributes(arg1, R.styleable.MultiSpinnerSearch);
 		for (int i = 0; i < a.getIndexCount(); ++i) {
 			int attr = a.getIndex(i);
-			if (attr == com.example.codisa_app.R.styleable.MultiSpinnerSearch_hintText) {
+			if (attr == R.styleable.MultiSpinnerSearch_hintText) {
 				this.setHintText(a.getString(attr));
 				spinnerTitle = this.getHintText();
 				defaultText = spinnerTitle;
 				break;
-			} else if (attr == com.example.codisa_app.R.styleable.MultiSpinnerSearch_highlightSelected) {
+			} else if (attr == R.styleable.MultiSpinnerSearch_highlightSelected) {
 				highlightSelected = a.getBoolean(attr, false);
-			} else if (attr == com.example.codisa_app.R.styleable.MultiSpinnerSearch_highlightColor) {
-				highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), com.example.codisa_app.R.color.list_selected));
-			} else if (attr == com.example.codisa_app.R.styleable.MultiSpinnerSearch_textColor) {
+			} else if (attr == R.styleable.MultiSpinnerSearch_highlightColor) {
+				highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), R.color.list_selected));
+			} else if (attr == R.styleable.MultiSpinnerSearch_textColor) {
 				textColor = a.getColor(attr, Color.BLACK);
-			}else if (attr == com.example.codisa_app.R.styleable.MultiSpinnerSearch_clearText){
+			}else if (attr == R.styleable.MultiSpinnerSearch_clearText){
 				this.setClearText(a.getString(attr));
 			}
 		}
@@ -93,7 +87,6 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 	public MultiSpinnerSearch(Context arg0, AttributeSet arg1, int arg2) {
 		super(arg0, arg1, arg2);
 	}
-
 
 	public void setColorSeparation(boolean colorSeparation) {
 		this.colorSeparation = colorSeparation;
@@ -112,28 +105,6 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		this.clearText = clearText;
 	}
 
-
-
-	public List<KeyPairBoolData> getSelectedItems() {
-		List<KeyPairBoolData> selectedItems = new ArrayList<>();
-		for (com.example.codisa_app.KeyPairBoolData item : items) {
-			if (item.isSelected()) {
-				selectedItems.add(item);
-			}
-		}
-		return selectedItems;
-	}
-
-	public List<Long> getSelectedIds() {
-		List<Long> selectedItemsIds = new ArrayList<>();
-		for (com.example.codisa_app.KeyPairBoolData item : items) {
-			if (item.isSelected()) {
-				selectedItemsIds.add(item.getId());
-			}
-		}
-		return selectedItemsIds;
-	}
-
 	@Override
 	public void onCancel(DialogInterface dialog) {
 		// refresh text on spinner
@@ -142,7 +113,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		ArrayList<KeyPairBoolData> selectedData = new ArrayList<>();
 		for (int i = 0; i < items.size(); i++) {
-			com.example.codisa_app.KeyPairBoolData currentData = items.get(i);
+			 KeyPairBoolData currentData = items.get(i);
 			if (currentData.isSelected()) {
 				selectedData.add(currentData);
 				spinnerBuffer.append(currentData.getName());
@@ -156,7 +127,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		else
 			spinnerText = this.getHintText();
 
-		ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(getContext(), com.example.codisa_app.R.layout.textview_for_spinner, new String[]{spinnerText});
+		ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(getContext(), R.layout.textview_for_spinner, new String[]{spinnerText});
 		setAdapter(adapterSpinner);
 
 		if (adapter != null)
@@ -183,21 +154,24 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		final View view = inflater.inflate(com.example.codisa_app.R.layout.alert_dialog_listview_search, null);
+		final View view = inflater.inflate(R.layout.alert_dialog_listview_search, null);
 		builder.setView(view);
 
-		final ListView listView = view.findViewById(com.example.codisa_app.R.id.alertSearchListView);
+		final ListView listView = view.findViewById(R.id.alertSearchListView);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-		listView.setFastScrollEnabled(false);
-		adapter = new MyAdapter(getContext(), items);
-		listView.setAdapter(adapter);
 
-		final TextView emptyText = view.findViewById(com.example.codisa_app.R.id.empty);
+		listView.setFastScrollEnabled(true);
+
+ 		adapter = new MyAdapter(getContext(), items);
+
+ 		listView.setAdapter(adapter);
+
+		final TextView emptyText = view.findViewById(R.id.empty);
 		emptyText.setText(emptyTitle);
 		listView.setEmptyView(emptyText);
 
-		final EditText editText = view.findViewById(com.example.codisa_app.R.id.alertSearchEditText);
+		final EditText editText = view.findViewById(R.id.alertSearchEditText);
 		if (isSearchEnabled) {
 			editText.setVisibility(VISIBLE);
 			editText.setHint(searchHint);
@@ -265,7 +239,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		return true;
 	}
 
-	public void setItems(List<KeyPairBoolData> items, com.example.codisa_app.MultiSpinnerListener listener) {
+	public void setItems(List<KeyPairBoolData> items, MultiSpinnerListener listener) {
 
 		this.items = items;
 		this.listener = listener;
@@ -281,7 +255,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		if (spinnerBuffer.length() > 2)
 			defaultText = spinnerBuffer.toString().substring(0, spinnerBuffer.toString().length() - 2);
 
-		ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(getContext(), com.example.codisa_app.R.layout.textview_for_spinner, new String[]{defaultText});
+		ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(getContext(), R.layout.textview_for_spinner, new String[]{defaultText});
 		setAdapter(adapterSpinner);
 	}
 
@@ -290,14 +264,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 	}
 
 	public void setSearchHint(String searchHint) {
-		this.searchHint = "Busque articulo";
+		this.searchHint = "FILTRO";
 	}
 
-	public interface LimitExceedListener {
-		void onLimitListener(com.example.codisa_app.KeyPairBoolData data);
-	}
-
-	//Adapter Class
 	public class MyAdapter extends BaseAdapter implements Filterable {
 
 		final List<KeyPairBoolData> mOriginalValues; // Original Values
@@ -332,25 +301,36 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 			if (convertView == null) {
 				holder = new ViewHolder();
-				convertView = inflater.inflate(com.example.codisa_app.R.layout.item_listview_multiple, parent, false);
-				holder.textView = convertView.findViewById(com.example.codisa_app.R.id.alertTextView);
-				holder.checkBox = convertView.findViewById(com.example.codisa_app.R.id.alertCheckbox);
+				convertView = inflater.inflate(R.layout.item_listview_multiple, parent, false);
+				holder.textView = convertView.findViewById(R.id.alertTextView);
+				holder.textView2 = convertView.findViewById(R.id.textView5);
+				holder.checkBox = convertView.findViewById(R.id.alertCheckbox);
 
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			int background = com.example.codisa_app.R.color.white;
+			int background = R.color.white;
 			if (colorSeparation) {
-				final int backgroundColor = (position % 2 == 0) ? com.example.codisa_app.R.color.list_even : com.example.codisa_app.R.color.list_odd;
+				final int backgroundColor = (position % 2 == 0) ? R.color.list_even : R.color.list_odd;
 				background = backgroundColor;
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColor));
 			}
 
-			final com.example.codisa_app.KeyPairBoolData data = arrayList.get(position);
+			final KeyPairBoolData data = arrayList.get(position);
+			String lote="";
+			if(data.getLote().equals("")) {
+				lote="";
+			}
+
+			else {
+				lote="Lote: "+data.getLote();
+			}
+
 
 			holder.textView.setText(data.getName());
+			holder.textView2.setText(lote);
 			holder.checkBox.setChecked(data.isSelected());
 
 			convertView.setOnClickListener(v -> {
@@ -441,7 +421,29 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		private class ViewHolder {
 			TextView textView;
+			TextView textView2;
 			CheckBox checkBox;
 		}
 	}
+
+	public List<KeyPairBoolData> getSelectedItems() {
+		List<KeyPairBoolData> selectedItems = new ArrayList<>();
+		for (KeyPairBoolData item : items) {
+			if (item.isSelected()) {
+				selectedItems.add(item);
+			}
+		}
+		return selectedItems;
+	}
+
+	public List<Long> getSelectedIds() {
+		List<Long> selectedItemsIds = new ArrayList<>();
+		for (KeyPairBoolData item : items) {
+			if (item.isSelected()) {
+				selectedItemsIds.add(item.getId());
+			}
+		}
+		return selectedItemsIds;
+	}
+
 }

@@ -37,15 +37,12 @@ public class controles {
     public static ArrayList<String> arr_grupo = new ArrayList<>();
     public static ArrayList<String> arr_id_subgrupo = new ArrayList<>();
     public static ArrayList<String> arr_subgrupo = new ArrayList<>();
-    public static String ids_subgrupos="";
-
-    static List<KeyPairBoolData> listArray1 = new ArrayList<>();
-    static List<KeyPairBoolData> listArrayArticulos = new ArrayList<>();
-
-
-    public static Connection connection=null;
+    public static String            ids_subgrupos="";
+    static List<KeyPairBoolData>    listArray1 = new ArrayList<>();
+    static List<KeyPairBoolData>    listArrayArticulos = new ArrayList<>();
+    public static Connection        connection=null;
     public static Connection_Oracle conexion = new Connection_Oracle();
-    public static Connection connect ;
+    public static Connection        connect ;
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
         if(tipo==1){
@@ -95,7 +92,6 @@ public class controles {
         }
     }
 
-
     public static void listar_sucursales(Activity activity) {
 
         stkw001.sp_sucursal = new SpinnerDialog(activity,sucursales,"Listado de sucursales");
@@ -110,6 +106,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUC_DEP   where suc_codigo='"+id_sucursal+"'");
             arr_id_deposito.clear();
             arr_deposito.clear();
+            listArray1.clear();
             while ( rs.next())
             {
                 arr_id_deposito.add(rs.getString("dep_codigo"));
@@ -132,6 +129,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_AREA  ");
             arr_id_area.clear();
             arr_area.clear();
+            listArray1.clear();
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
@@ -154,7 +152,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_DPTO   where dpto_area='"+id_area+"'");
             arr_id_departamento.clear();
             arr_departamento.clear();
-
+            listArray1.clear();
 
             while ( rs.next())
             {
@@ -179,7 +177,7 @@ public class controles {
                     " and secc_area='"+stkw001.txt_id_area.getText().toString().trim()+"'");
             arr_id_seccion.clear();
             arr_seccion.clear();
-
+            listArray1.clear();
 
             while ( rs.next())
             {
@@ -205,7 +203,8 @@ public class controles {
                     " and flia_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_familia.clear();
             arr_familia.clear();
-
+            listArray1.clear();
+            stkw001.multiSelectSpinnerWithSearch.setSearchHint("Busqueda de Sub-Grupo");
 
             while ( rs.next())
             {
@@ -234,7 +233,8 @@ public class controles {
                     " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_grupo.clear();
             arr_grupo.clear();
-
+            listArray1.clear();
+            stkw001.multiSelectSpinnerWithSearch.setSearchHint("Busqueda de Sub-Grupo");
 
 
             while ( rs.next())
@@ -252,8 +252,8 @@ public class controles {
     }
 
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
-        try {
-
+        try
+        {
             connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUBGRUPO  " +
@@ -263,14 +263,13 @@ public class controles {
                     " and   sugr_seccion='" +stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
                     " and   sugr_flia='"    +stkw001.txt_id_familia.getText().toString().trim()+"'  " +
                     " and   sugr_dpto='"    +stkw001.txt_id_departamento.getText().toString().trim()+"'");
-
             listArray1.clear();
-
             while ( rs.next())
             {
                 KeyPairBoolData h = new KeyPairBoolData();
                 h.setId(Integer.parseInt(rs.getString("sugr_codigo")));
                 h.setName(rs.getString("sugr_desc"));
+                h.setLote("");
                 listArray1.add(h);
             }
 
@@ -305,20 +304,21 @@ public class controles {
                                     "from " +
                                     "   v_web_articulos_clasificacion " +
                                     "where " +
-                                    "   arde_suc=1      and " +
-                                    "   arde_dep=0      and " +
-                                    "   area_codigo=1   and " +
-                                    "   dpto_codigo=1   and " +
-                                    "   secc_codigo=1   and " +
-                                    "   flia_codigo=1   and " +
-                                    "   grup_codigo=17");
+                                    "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
+                                    "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
+                                    "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
+                                    "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
+                                    "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
+                                    "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
+                                    "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
+                                    "   sugr_codigo in ("+ids_subgrupos+")");
                             listArrayArticulos.clear();
 
                             while ( rs2.next())
                             {
                                 KeyPairBoolData contenedor = new KeyPairBoolData();
                                 contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
-                                contenedor.setName(rs2.getString("art_desc")+" Lote:"+rs2.getString("arde_lote"));
+                                contenedor.setName(rs2.getString("art_desc"));
                                 contenedor.setLote(rs2.getString("arde_lote"));
                                 listArrayArticulos.add(contenedor);
                             }
