@@ -2,24 +2,20 @@ package com.example.codisa_app;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import Utilidades.MultiSpinnerSearch;
 import Utilidades.controles;
 import Utilidades.variables;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.tapadoo.alerter.Alerter;
 
 public class stkw001 extends AppCompatActivity {
     public static   SpinnerDialog       sp_sucursal,sp_deposito,sp_area,sp_departamento,sp_seccion,sp_familia,sp_grupo;
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia, txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos;
-    public static   MultiSpinnerSearch  spinerSubGrupo,spinerArticulos;
+    public static MultiSpinnerSearch spinerSubGrupo,spinerArticulos;
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,radioExistenciaNo,radioArticuloSi,radioArticuloNo;
     RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo;
     public static   Boolean             BolLote=true,Bolexistencia=false,BolDescontinuados=false;
@@ -93,16 +89,16 @@ public class stkw001 extends AppCompatActivity {
                         BolLote=true;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
+                            controles.INVE_IND_LOTE="S";
                         }
-                        //Toast.makeText(getApplicationContext(),BolLote.toString(),Toast.LENGTH_LONG).show();
                         break;
                     case R.id.radioLoteNo:
                         BolLote=false;
+                        controles.INVE_IND_LOTE="N";
                     //    num=2;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
                         }
-                     //   Toast.makeText(getApplicationContext(),BolLote.toString(),Toast.LENGTH_LONG).show();
                         break;
                 }
             }
@@ -115,6 +111,7 @@ public class stkw001 extends AppCompatActivity {
                     case R.id.radioExistenciaSi:
 
                         Bolexistencia=true;
+                        controles.INVE_ART_EXIST="S";
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
                         }
@@ -122,6 +119,7 @@ public class stkw001 extends AppCompatActivity {
                         break;
                     case R.id.radioExistenciaNo:
                         Bolexistencia=false;
+                        controles.INVE_ART_EXIST="N";
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
                         }
@@ -138,6 +136,7 @@ public class stkw001 extends AppCompatActivity {
                 switch(i) {
                     case R.id.radioArticuloSi:
                         // num=1;
+                        controles.INVE_ART_EST="S";
                         BolDescontinuados=true;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
@@ -146,6 +145,8 @@ public class stkw001 extends AppCompatActivity {
                         break;
                     case R.id.radioArticuloNo:
                         BolDescontinuados=false;
+                        controles.INVE_ART_EST="N";
+
                         //    num=2;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
@@ -166,5 +167,6 @@ public class stkw001 extends AppCompatActivity {
     {
        controles.validacione_toma(this,this);
     }
+
 
 }

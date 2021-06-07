@@ -1,22 +1,24 @@
-package com.example.codisa_app;
+package Utilidades;
 
-public class KeyPairBoolData {
+public class ArrayListContenedor {
 	private long id;
 	private String name;
 	private String lote;
 	private String cantidad;
+ 	private String fecha_vencimiento;
 	private boolean isSelected;
 	private Object object;
 
-	public KeyPairBoolData() {
+	public ArrayListContenedor() {
 	}
 
-	public KeyPairBoolData(String name, boolean isSelected,String lote,String cantidad) {
+	public ArrayListContenedor(String name, boolean isSelected, String lote, String cantidad,String fecha_vencimiento) {
 		this.name = name;
 		this.isSelected = isSelected;
 		this.lote = lote;
 		this.cantidad = cantidad;
-	}
+		this.fecha_vencimiento = fecha_vencimiento;
+ 	}
 
 	public Object getObject() {
 		return object;
@@ -57,28 +59,31 @@ public class KeyPairBoolData {
 	public String getLote() {
 		return lote;
 	}
-
 	public void setLote(String lote) {
 		this.lote = lote;
 	}
+
 	public String getCantidad() {
 		return cantidad;
 	}
-
 	public void setCantidad(String cantidad) {
 		this.cantidad = cantidad;
 	}
-	/**
-	 * @return the isSelected
-	 */
+
+
+
+	public String getFechaVencimiento() {
+		return fecha_vencimiento;
+	}
+	public void setFechaVencimiento(String fecha_vencimiento) {
+		this.fecha_vencimiento = fecha_vencimiento;
+	}
+
+
 	public boolean isSelected() {
 		return isSelected;
 	}
-
-	/**
-	 * @param isSelected the isSelected to set
-	 */
-	public void setSelected(boolean isSelected) {
+ 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
 }

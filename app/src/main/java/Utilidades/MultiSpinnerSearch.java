@@ -1,4 +1,4 @@
-package com.example.codisa_app;
+package Utilidades;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -25,13 +25,14 @@ import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.codisa_app.KeyPairBoolData;
 import com.example.codisa_app.MultiSpinnerListener;
+import com.example.codisa_app.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import Utilidades.ArrayListContenedor;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.content.ContextCompat;
 
@@ -52,7 +53,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
  	private boolean isShowSelectAllButton = true;
 	private MultiSpinnerListener listener;
 	private MyAdapter adapter;
-	private List<KeyPairBoolData> items;
+	private List<ArrayListContenedor> items;
 	private boolean isSearchEnabled = true;
 
 	public MultiSpinnerSearch(Context context) {
@@ -111,9 +112,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		StringBuilder spinnerBuffer = new StringBuilder();
 
-		ArrayList<KeyPairBoolData> selectedData = new ArrayList<>();
+		ArrayList<ArrayListContenedor> selectedData = new ArrayList<>();
 		for (int i = 0; i < items.size(); i++) {
-			 KeyPairBoolData currentData = items.get(i);
+			 ArrayListContenedor currentData = items.get(i);
 			if (currentData.isSelected()) {
 				selectedData.add(currentData);
 				spinnerBuffer.append(currentData.getName());
@@ -239,7 +240,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		return true;
 	}
 
-	public void setItems(List<KeyPairBoolData> items, MultiSpinnerListener listener) {
+	public void setItems(List<ArrayListContenedor> items, MultiSpinnerListener listener) {
 
 		this.items = items;
 		this.listener = listener;
@@ -269,11 +270,11 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 	public class MyAdapter extends BaseAdapter implements Filterable {
 
-		final List<KeyPairBoolData> mOriginalValues; // Original Values
+		final List<ArrayListContenedor> mOriginalValues; // Original Values
 		final LayoutInflater inflater;
-		List<KeyPairBoolData> arrayList;
+		List<ArrayListContenedor> arrayList;
 
-		MyAdapter(Context context, List<KeyPairBoolData> arrayList) {
+		MyAdapter(Context context, List<ArrayListContenedor> arrayList) {
 			this.arrayList = arrayList;
 			this.mOriginalValues = arrayList;
 			inflater = LayoutInflater.from(context);
@@ -319,7 +320,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColor));
 			}
 
-			final KeyPairBoolData data = arrayList.get(position);
+			final ArrayListContenedor data = arrayList.get(position);
  			if(data.getLote().equals("")) {
  				holder.textView.setText(data.getName());
 				holder.textView2.setVisibility(View.GONE);
@@ -383,14 +384,14 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				@Override
 				protected void publishResults(CharSequence constraint, FilterResults results) {
 
-					arrayList = (List<KeyPairBoolData>) results.values; // has the filtered values
+					arrayList = (List<ArrayListContenedor>) results.values; // has the filtered values
 					notifyDataSetChanged();  // notifies the data with new filtered values
 				}
 
 				@Override
 				protected FilterResults performFiltering(CharSequence constraint) {
 					FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-					List<KeyPairBoolData> FilteredArrList = new ArrayList<>();
+					List<ArrayListContenedor> FilteredArrList = new ArrayList<>();
 
 
 					/*
@@ -430,9 +431,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		}
 	}
 
-	public List<KeyPairBoolData> getSelectedItems() {
-		List<KeyPairBoolData> selectedItems = new ArrayList<>();
-		for (KeyPairBoolData item : items) {
+	public List<ArrayListContenedor> getSelectedItems() {
+		List<ArrayListContenedor> selectedItems = new ArrayList<>();
+		for (ArrayListContenedor item : items) {
 			if (item.isSelected()) {
 				selectedItems.add(item);
 			}
@@ -442,7 +443,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 	public List<Long> getSelectedIds() {
 		List<Long> selectedItemsIds = new ArrayList<>();
-		for (KeyPairBoolData item : items) {
+		for (ArrayListContenedor item : items) {
 			if (item.isSelected()) {
 				selectedItemsIds.add(item.getId());
 			}

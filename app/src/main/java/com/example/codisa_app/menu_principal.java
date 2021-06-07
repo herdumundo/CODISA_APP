@@ -51,6 +51,8 @@ public class menu_principal extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         variables.titulo_stkw001="GENERACION DE TOMAS DE INVENTARIO MANUAL";
                         variables.tipo_stkw001=1;
+                        variables.tipo_stkw001_insert="M";
+
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
                         finish();
                          startActivity(intent);
@@ -62,6 +64,7 @@ public class menu_principal extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         variables.titulo_stkw001="GENERACION DE TOMAS DE INVENTARIO AUTOMATICA";
                         variables.tipo_stkw001=2;
+                        variables.tipo_stkw001_insert="C";
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
                         finish();
                         startActivity(intent);

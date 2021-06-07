@@ -4,6 +4,8 @@ package com.example.codisa_app;
 
 import java.util.List;
 
+import Utilidades.ArrayListContenedor;
+
 public interface MultiSpinnerListener {
-	void onItemsSelected(List<com.example.codisa_app.KeyPairBoolData> selectedItems);
+	void onItemsSelected(List<ArrayListContenedor> selectedItems);
 }

@@ -8,5 +8,6 @@ public class variables {
     public static String ID_SUCURSAL_LOGIN;
     public static String DESCRIPCION_SUCURSAL_LOGIN;
     public static String titulo_stkw001;
+    public static String tipo_stkw001_insert;
     public static int tipo_stkw001;
 }

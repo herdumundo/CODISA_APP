@@ -5,21 +5,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.nfc.Tag;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.codisa_app.KeyPairBoolData;
 import com.example.codisa_app.MultiSpinnerListener;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.stkw001;
 import com.tapadoo.alerter.Alerter;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +38,10 @@ public class controles {
     public static ArrayList<String> arr_familia         =   new ArrayList<>();
     public static ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static ArrayList<String> arr_grupo           =   new ArrayList<>();
-
-    public static String            ids_subgrupos="";
-    static List<KeyPairBoolData>    listArraySubgrupo = new ArrayList<>();
-    static List<KeyPairBoolData>    listArrayArticulos = new ArrayList<>();
-      static List<KeyPairBoolData>    listInsertArticulos = new ArrayList<>();
+    public static String            ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
+    static List<ArrayListContenedor>    listArraySubgrupo = new ArrayList<>();
+    static List<ArrayListContenedor>    listArrayArticulos = new ArrayList<>();
+    static List<ArrayListContenedor>    listInsertArticulos = new ArrayList<>();
     public static Connection        connection=null;
     public static Connection_Oracle conexion = new Connection_Oracle();
     public static Connection        connect ;
@@ -271,13 +269,13 @@ public class controles {
         stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
             {
             @Override
-            public void onItemsSelected(List<KeyPairBoolData> items) {
+            public void onItemsSelected(List<ArrayListContenedor> items) {
             }
             });
         stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
         {
             @Override
-            public void onItemsSelected(List<KeyPairBoolData> items) {
+            public void onItemsSelected(List<ArrayListContenedor> items) {
             }
         });
     }
@@ -298,7 +296,7 @@ public class controles {
             ids_subgrupos="";
             while ( rs.next())
             {
-                KeyPairBoolData h = new KeyPairBoolData();
+                ArrayListContenedor h = new ArrayListContenedor();
                 h.setId(Integer.parseInt(rs.getString("sugr_codigo")));
                 h.setName(rs.getString("sugr_desc"));
                 h.setLote("");
@@ -307,7 +305,7 @@ public class controles {
 
             stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener() {
                 @Override
-                public void onItemsSelected(List<KeyPairBoolData> items) {
+                public void onItemsSelected(List<ArrayListContenedor> items) {
                  //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     ids_subgrupos="";
 
@@ -377,27 +375,30 @@ public class controles {
 
             while ( rs2.next())
             {
-                KeyPairBoolData contenedor = new KeyPairBoolData();
+                ArrayListContenedor contenedor = new ArrayListContenedor();
                 contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
                 contenedor.setName(rs2.getString("art_desc"));
                 contenedor.setLote(rs2.getString("arde_lote"));
                 contenedor.setCantidad(rs2.getString("cantidad"));
+                contenedor.setFechaVencimiento(rs2.getString("arde_fec_vto_lote"));
                 listArrayArticulos.add(contenedor);
             }
 
 
             stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
                 @Override
-                public void onItemsSelected(List<KeyPairBoolData> items) {
+                public void onItemsSelected(List<ArrayListContenedor> items) {
 
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
-                            KeyPairBoolData insArt = new KeyPairBoolData();
+                            ArrayListContenedor insArt = new ArrayListContenedor();
 
                             insArt.setId(items.get(i).getId());
                             insArt.setName(items.get(i).getName());
                             insArt.setLote(items.get(i).getLote());
-                            listInsertArticulos.add(insArt);
+                            insArt.setCantidad(items.get(i).getCantidad());
+                            insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
+                             listInsertArticulos.add(insArt);
                         }
                     }
                 }
@@ -623,6 +624,7 @@ public class controles {
                         .show();
             }
             else {
+                insert_toma();
                 for (int i = 0; i < controles.listInsertArticulos.size(); i++) {
 
                     Toast.makeText(context,controles.listInsertArticulos.get(i).getName(),Toast.LENGTH_LONG).show();
@@ -662,7 +664,7 @@ public class controles {
             }
 
             else {
-
+                insert_toma();
                 Alerter.create(activity)
                         .setTitle("ATENCION!")
                         .setText("REGISTRADO.")
@@ -673,4 +675,85 @@ public class controles {
         }
     }
 
+    public static void insert_toma(){
+
+        try {
+            String id_cabecera="";
+            connect = conexion.Connections();
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+            while (rs.next()){
+                id_cabecera=rs.getString(1);
+            }
+
+            connect.setAutoCommit(false);
+            String insertar = "insert into WEB_INVENTARIO(" +
+                    "WINVE_SUC,                          " +
+                    "WINVE_DEP,                       " +
+                    "WINVE_GRUPO,                 " +
+                    "WINVE_FEC,       " +
+                    "WINVE_LOGIN," +
+                    "WINVE_TIPO_TOMA,                    " +
+                    "WINVE_SECC,                      " +
+                    "WINVE_AREA,                  " +
+                    "WINVE_DPTO,      " +
+                    "WINVE_FLIA," +
+                    "WINVE_IND_LOTE," +
+                    "WINVE_ESTADO," +
+                    "WINVE_ART_EST," +
+                    "WINVE_ART_EXIST," +
+                    "WINVE_CANT_TOMA," +
+                    "WINVE_EMPR,WINVE_NUMERO) values  " +
+                    "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                    "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                    "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
+                    "CURRENT_TIMESTAMP," +
+                    "UPPER('" +variables.userdb+"')," +
+                    "'"+variables.tipo_stkw001_insert+"'," +
+                    "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                    "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                    "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                    "'"+stkw001.txt_id_familia.getText().toString()+"'," +
+                    "'"+INVE_IND_LOTE+"'," +
+                    "'A'," +
+                    "'"+INVE_ART_EST+"'," +
+                    "'"+INVE_ART_EXIST+"'," +
+                    "'"+INVE_CANT_TOMA+"'," +
+                    "'1', "+id_cabecera+")";
+            PreparedStatement ps = connect.prepareStatement(insertar);
+            ps.executeUpdate();
+                    int secuencia=1;
+            for (int i = 0; i < listInsertArticulos.size(); i++) {
+                    int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                        "WINVD_NRO_INV," +
+                        "WINVD_ART," +
+                        "WINVD_SECU," +
+                        "WINVD_CANT_ACT," +
+                        "WINVD_CANT_INV," +
+                        "WINVD_UBIC," +
+                        "WINVD_CODIGO_BARRA," +
+                        "WINVD_CANT_PED_RECEP," +
+                        "WINVD_LOTE," +
+                        "WINVD_FEC_VTO," +
+                        "WINVD_LOTE_CLAVE," +
+                        "WINVD_UM)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
+                        "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'','')";
+                PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                ps2.executeUpdate();
+
+                secuencia++;
+            }
+            connect.commit();
+
+        }
+        catch (Exception error){
+            String e=error.toString();
+            try {
+                connect.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
 }

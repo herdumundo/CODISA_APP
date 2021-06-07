@@ -431,7 +431,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
 
-    <com.example.codisa_app.MultiSpinnerSearch
+    <Utilidades.MultiSpinnerSearch
         android:visibility="gone"
         android:id="@+id/spinerArticulos"
         android:layout_width="215dp"
@@ -443,7 +443,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
 
-    <com.example.codisa_app.MultiSpinnerSearch
+    <Utilidades.MultiSpinnerSearch
         android:id="@+id/spinerSubGrupo"
         android:layout_width="215dp"
         android:layout_height="29dp"
