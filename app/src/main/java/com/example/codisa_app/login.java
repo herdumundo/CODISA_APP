@@ -111,7 +111,7 @@ public class login extends AppCompatActivity
                 super.onPreExecute();
 
                 //this method will be running on UI thread
-                pdLoading = ProgressDialog.show(com.example.codisa_app.login.this, "VERIFICANDO",
+                pdLoading = ProgressDialog.show(login.this, "VERIFICANDO",
                         "ESPERE...", true);
 
             }
@@ -157,7 +157,7 @@ public class login extends AppCompatActivity
     */                      list_sucursal();
                         }
                         else {
-                            new AlertDialog.Builder(com.example.codisa_app.login.this)
+                            new AlertDialog.Builder(login.this)
                                     .setTitle("ATENCION!!!")
                                     .setMessage("EL USUARIO "+user+" NO POSEE PERMISOS PARA LA APLICACION MOVIL.")
                                     .setNegativeButton("CERRAR", null).show();
@@ -166,7 +166,7 @@ public class login extends AppCompatActivity
 
                     }catch (Exception e)
                     {
-                        new AlertDialog.Builder(com.example.codisa_app.login.this)
+                        new AlertDialog.Builder(login.this)
                                 .setTitle("ATENCION!!!")
                                 .setMessage(e.toString())
                                 .setNegativeButton("CERRAR", null).show();
@@ -174,7 +174,7 @@ public class login extends AppCompatActivity
 
                  }
                  else {
-                     new AlertDialog.Builder(com.example.codisa_app.login.this)
+                     new AlertDialog.Builder(login.this)
                              .setTitle("ATENCION!!!")
                              .setMessage(mensaje)
                              .setNegativeButton("CERRAR", null).show();
@@ -186,29 +186,29 @@ public class login extends AppCompatActivity
 
         private  void  list_sucursal()
         {
-            AlertDialog.Builder builderSingle = new AlertDialog.Builder(com.example.codisa_app.login.this);
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(login.this);
             builderSingle.setTitle("SUCURSALES DISPONIBLES");
-            ArrayAdapter<String> arrayDescSucursal = new ArrayAdapter<String>(com.example.codisa_app.login.this, android.R.layout.select_dialog_singlechoice);
+            ArrayAdapter<String> arrayDescSucursal = new ArrayAdapter<String>(login.this, android.R.layout.select_dialog_singlechoice);
             ArrayList<String> arrayIdSucursal = new ArrayList<>();
             try
             {
                 arrayDescSucursal.clear();
                 arrayIdSucursal.clear();
-                controles.sucursales.clear();
-                controles.id_sucursales.clear();
+                controles.arrSucursales.clear();
+                controles.arrIdSucursales.clear();
                 connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL from v_web_operador_rol_prog where login_o='"+user.toUpperCase()+"'");
                 while ( rs.next())
-                {   controles.sucursales.add(rs.getString("SUCURSAL_DESCRIPCION"));
-                    controles.id_sucursales.add(rs.getString("ROL_SUCURSAL"));
+                {   controles.arrSucursales.add(rs.getString("SUCURSAL_DESCRIPCION"));
+                    controles.arrIdSucursales.add(rs.getString("ROL_SUCURSAL"));
                     arrayIdSucursal.add(rs.getString("ROL_SUCURSAL"));
                     arrayDescSucursal.add(rs.getString("SUCURSAL_DESCRIPCION"));
                 }
             }
             catch (Exception e)
             {
-                new AlertDialog.Builder(com.example.codisa_app.login.this)
+                new AlertDialog.Builder(login.this)
                 .setTitle("ATENCION!!!")
                 .setMessage(e.toString())
                 .setNegativeButton("CERRAR", null).show();
@@ -228,7 +228,7 @@ public class login extends AppCompatActivity
                         variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
                         variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
 
-                        Intent is=new Intent(com.example.codisa_app.login.this,menu_principal.class);
+                        Intent is=new Intent(login.this,menu_principal.class);
                         startActivity(is);
                         finish();
                     }

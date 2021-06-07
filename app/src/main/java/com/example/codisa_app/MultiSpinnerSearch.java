@@ -303,7 +303,8 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.item_listview_multiple, parent, false);
 				holder.textView = convertView.findViewById(R.id.alertTextView);
-				holder.textView2 = convertView.findViewById(R.id.textView5);
+				holder.textView2 = convertView.findViewById(R.id.textView2);
+				holder.textView3 = convertView.findViewById(R.id.textView3);
 				holder.checkBox = convertView.findViewById(R.id.alertCheckbox);
 
 				convertView.setTag(holder);
@@ -319,18 +320,20 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			}
 
 			final KeyPairBoolData data = arrayList.get(position);
-			String lote="";
-			if(data.getLote().equals("")) {
-				lote="";
+ 			if(data.getLote().equals("")) {
+ 				holder.textView.setText(data.getName());
+				holder.textView2.setVisibility(View.GONE);
+				holder.textView3.setVisibility(View.GONE);
 			}
 
 			else {
-				lote="Lote: "+data.getLote();
-			}
+				holder.textView.setText(data.getName());
+				holder.textView2.setText("Lote: "+data.getLote());
+				holder.textView3.setText("Stock: "+data.getCantidad());
+ 			}
 
 
-			holder.textView.setText(data.getName());
-			holder.textView2.setText(lote);
+
 			holder.checkBox.setChecked(data.isSelected());
 
 			convertView.setOnClickListener(v -> {
@@ -422,6 +425,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		private class ViewHolder {
 			TextView textView;
 			TextView textView2;
+			TextView textView3;
 			CheckBox checkBox;
 		}
 	}

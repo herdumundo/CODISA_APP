@@ -5,14 +5,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.codisa_app.KeyPairBoolData;
 import com.example.codisa_app.MultiSpinnerListener;
+import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.stkw001;
+import com.tapadoo.alerter.Alerter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,25 +25,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class controles {
-    public static ArrayList<String> sucursales = new ArrayList<>();
-    public static ArrayList<String> id_sucursales = new ArrayList<>();
-    public static ArrayList<String> arr_id_deposito = new ArrayList<>();
-    public static ArrayList<String> arr_deposito = new ArrayList<>();
-    public static ArrayList<String> arr_area = new ArrayList<>();
-    public static ArrayList<String> arr_id_area = new ArrayList<>();
-    public static ArrayList<String> arr_id_departamento = new ArrayList<>();
-    public static ArrayList<String> arr_departamento = new ArrayList<>();
-    public static ArrayList<String> arr_seccion = new ArrayList<>();
-    public static ArrayList<String> arr_id_seccion = new ArrayList<>();
-    public static ArrayList<String> arr_id_familia = new ArrayList<>();
-    public static ArrayList<String> arr_familia = new ArrayList<>();
-    public static ArrayList<String> arr_id_grupo = new ArrayList<>();
-    public static ArrayList<String> arr_grupo = new ArrayList<>();
-    public static ArrayList<String> arr_id_subgrupo = new ArrayList<>();
-    public static ArrayList<String> arr_subgrupo = new ArrayList<>();
+    public static ArrayList<String> arrSucursales       =   new ArrayList<>();
+    public static ArrayList<String> arrIdSucursales     =   new ArrayList<>();
+    public static ArrayList<String> arr_id_deposito     =   new ArrayList<>();
+    public static ArrayList<String> arr_deposito        =   new ArrayList<>();
+    public static ArrayList<String> arr_area            =   new ArrayList<>();
+    public static ArrayList<String> arr_id_area         =   new ArrayList<>();
+    public static ArrayList<String> arr_id_departamento =   new ArrayList<>();
+    public static ArrayList<String> arr_departamento    =   new ArrayList<>();
+    public static ArrayList<String> arr_seccion         =   new ArrayList<>();
+    public static ArrayList<String> arr_id_seccion      =   new ArrayList<>();
+    public static ArrayList<String> arr_id_familia      =   new ArrayList<>();
+    public static ArrayList<String> arr_familia         =   new ArrayList<>();
+    public static ArrayList<String> arr_id_grupo        =   new ArrayList<>();
+    public static ArrayList<String> arr_grupo           =   new ArrayList<>();
+
     public static String            ids_subgrupos="";
-    static List<KeyPairBoolData>    listArray1 = new ArrayList<>();
+    static List<KeyPairBoolData>    listArraySubgrupo = new ArrayList<>();
     static List<KeyPairBoolData>    listArrayArticulos = new ArrayList<>();
+      static List<KeyPairBoolData>    listInsertArticulos = new ArrayList<>();
     public static Connection        connection=null;
     public static Connection_Oracle conexion = new Connection_Oracle();
     public static Connection        connect ;
@@ -94,8 +98,10 @@ public class controles {
 
     public static void listar_sucursales(Activity activity) {
 
-        stkw001.sp_sucursal = new SpinnerDialog(activity,sucursales,"Listado de sucursales");
+        stkw001.sp_sucursal = new SpinnerDialog(activity,arrSucursales,"Listado de arrSucursales");
         stkw001_txt_sucursalOnclick(activity);
+        controles.limpiarSubGrupo();
+
     }
 
     public static void listar_depositos(Activity activity, String id_sucursal) {
@@ -106,7 +112,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUC_DEP   where suc_codigo='"+id_sucursal+"'");
             arr_id_deposito.clear();
             arr_deposito.clear();
-            listArray1.clear();
+
             while ( rs.next())
             {
                 arr_id_deposito.add(rs.getString("dep_codigo"));
@@ -114,6 +120,7 @@ public class controles {
             }
             stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
             Stkw001DepositoOnclick();
+             limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -129,7 +136,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_AREA  ");
             arr_id_area.clear();
             arr_area.clear();
-            listArray1.clear();
+            listArraySubgrupo.clear();
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
@@ -152,7 +159,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_DPTO   where dpto_area='"+id_area+"'");
             arr_id_departamento.clear();
             arr_departamento.clear();
-            listArray1.clear();
+            listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -161,6 +168,7 @@ public class controles {
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
+            limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -177,7 +185,7 @@ public class controles {
                     " and secc_area='"+stkw001.txt_id_area.getText().toString().trim()+"'");
             arr_id_seccion.clear();
             arr_seccion.clear();
-            listArray1.clear();
+            listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -186,6 +194,7 @@ public class controles {
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
             Stkw001SeccionOnclick(activity,context,  tipo_toma);
+            limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -203,8 +212,8 @@ public class controles {
                     " and flia_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_familia.clear();
             arr_familia.clear();
-            listArray1.clear();
-            stkw001.multiSelectSpinnerWithSearch.setSearchHint("Busqueda de Sub-Grupo");
+           // listArraySubgrupo.clear();
+           // stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
 
             while ( rs.next())
             {
@@ -213,6 +222,7 @@ public class controles {
             }
             stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
             Stkw001FamiliaOnclick(activity, context, tipo_toma);
+            limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -233,8 +243,6 @@ public class controles {
                     " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_grupo.clear();
             arr_grupo.clear();
-            listArray1.clear();
-            stkw001.multiSelectSpinnerWithSearch.setSearchHint("Busqueda de Sub-Grupo");
 
 
             while ( rs.next())
@@ -244,11 +252,34 @@ public class controles {
             }
             stkw001.sp_grupo = new SpinnerDialog(activity,arr_grupo,"Listado de grupos");
             Stkw001GrupoOnclick(activity,context,  tipo_toma);
+
+
+
         }
         catch (Exception e){
 
         }
 
+    }
+
+    public static  void limpiarSubGrupo(){
+        listArraySubgrupo.clear();
+        listArrayArticulos.clear();
+        listInsertArticulos.clear();
+        stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
+        stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
+        stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
+            {
+            @Override
+            public void onItemsSelected(List<KeyPairBoolData> items) {
+            }
+            });
+        stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
+        {
+            @Override
+            public void onItemsSelected(List<KeyPairBoolData> items) {
+            }
+        });
     }
 
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
@@ -263,17 +294,18 @@ public class controles {
                     " and   sugr_seccion='" +stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
                     " and   sugr_flia='"    +stkw001.txt_id_familia.getText().toString().trim()+"'  " +
                     " and   sugr_dpto='"    +stkw001.txt_id_departamento.getText().toString().trim()+"'");
-            listArray1.clear();
+            listArraySubgrupo.clear();
+            ids_subgrupos="";
             while ( rs.next())
             {
                 KeyPairBoolData h = new KeyPairBoolData();
                 h.setId(Integer.parseInt(rs.getString("sugr_codigo")));
                 h.setName(rs.getString("sugr_desc"));
                 h.setLote("");
-                listArray1.add(h);
+                listArraySubgrupo.add(h);
             }
 
-            stkw001.multiSelectSpinnerWithSearch.setItems(listArray1, new MultiSpinnerListener() {
+            stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<KeyPairBoolData> items) {
                  //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
@@ -287,54 +319,16 @@ public class controles {
                             else {
                                 ids_subgrupos=ids_subgrupos+","+items.get(i).getId();
                             }
-                          //  Log.i(Tag, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
-                        }
+                         }
                     }
-                    new AlertDialog.Builder(context)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("ATENCION!!!.")
-                            .setMessage(ids_subgrupos)
-                            .show();
+
                     if(tipo_toma==1){
                         try {
-                            Statement stmt2 = connect.createStatement();
-                            ResultSet rs2 = stmt2.executeQuery("" +
-                                    "select " +
-                                    "   * " +
-                                    "from " +
-                                    "   v_web_articulos_clasificacion " +
-                                    "where " +
-                                    "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
-                                    "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
-                                    "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
-                                    "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
-                                    "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
-                                    "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
-                                    "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
-                                    "   sugr_codigo in ("+ids_subgrupos+")");
-                            listArrayArticulos.clear();
-
-                            while ( rs2.next())
-                            {
-                                KeyPairBoolData contenedor = new KeyPairBoolData();
-                                contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
-                                contenedor.setName(rs2.getString("art_desc"));
-                                contenedor.setLote(rs2.getString("arde_lote"));
-                                listArrayArticulos.add(contenedor);
-                            }
-
-
-                            stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
-                                @Override
-                                public void onItemsSelected(List<KeyPairBoolData> items) {
-
-                                }
-
-
-                        });
+                            listarArticulos();
 
                         }
                         catch (Exception e){
+                            String as=e.toString();
 
                         }
                     }
@@ -347,34 +341,95 @@ public class controles {
 
     }
 
+    public static void listarArticulos(){
+
+        try {
+            String inLote="";
+            String inEstado="";
+            String inExistenciaCero="";
+            String TotalJoin="";
+            if(!stkw001.BolLote){
+                inLote="and arde_lote='000000' AND ARDE_FEC_VTO_LOTE='31/12/3000'";
+            }
+            if(!stkw001.BolDescontinuados){
+                inEstado="and art_est='A'";
+            }
+            if(!stkw001.Bolexistencia){
+                inExistenciaCero="and ARDE_CANT_ACT > 0";
+            }
+            TotalJoin= inLote+inEstado+inExistenciaCero;
+            Statement stmt2 = connect.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("" +
+                    "select " +
+                    "   TO_NUMBER (arde_cant_act) as cantidad  ,v_web_articulos_clasificacion.* " +
+                    "from " +
+                    "   v_web_articulos_clasificacion " +
+                    "where " +
+                    "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
+                    "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
+                    "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
+                    "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
+                    "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
+                    "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
+                    "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
+                    "   sugr_codigo in ("+ids_subgrupos+") "+TotalJoin);
+            listArrayArticulos.clear();
+
+            while ( rs2.next())
+            {
+                KeyPairBoolData contenedor = new KeyPairBoolData();
+                contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
+                contenedor.setName(rs2.getString("art_desc"));
+                contenedor.setLote(rs2.getString("arde_lote"));
+                contenedor.setCantidad(rs2.getString("cantidad"));
+                listArrayArticulos.add(contenedor);
+            }
 
 
+            stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
+                @Override
+                public void onItemsSelected(List<KeyPairBoolData> items) {
+
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).isSelected()) {
+                            KeyPairBoolData insArt = new KeyPairBoolData();
+
+                            insArt.setId(items.get(i).getId());
+                            insArt.setName(items.get(i).getName());
+                            insArt.setLote(items.get(i).getLote());
+                            listInsertArticulos.add(insArt);
+                        }
+                    }
+                }
 
 
+            });
+        }
+        catch (Exception E){
 
-
-
+        }
+    }
 
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
         stkw001.txt_sucursal.setOnClickListener(new View.OnClickListener() {  @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             stkw001.sp_sucursal.showSpinerDialog();
-
-
         } } );
 
         stkw001.sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
-                stkw001.txt_sucursal.setText(sucursales.get(i));
-                stkw001.txt_id_sucursal.setText(id_sucursales.get(i));
+                stkw001.txt_sucursal.setText(arrSucursales.get(i));
+                stkw001.txt_id_sucursal.setText(arrIdSucursales.get(i));
                 stkw001.txt_deposito.setText("");
                 stkw001.txt_id_deposito.setText("");
-                listar_depositos(activity,id_sucursales.get(i));
+                listar_depositos(activity,arrIdSucursales.get(i));
             }
         });
     }
+
     public static void Stkw001DepositoOnclick(){
         stkw001.txt_deposito.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v) {
@@ -385,7 +440,7 @@ public class controles {
             public void onClick(String s, int i) {
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
-               // listar_depositos(activity,controles.id_sucursales.get(i));
+               // listar_depositos(activity,controles.arrIdSucursales.get(i));
             }
         });
     }
@@ -519,7 +574,7 @@ public class controles {
         stkw001.sp_grupo.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
-
+                limpiarSubGrupo();
                stkw001.txt_grupo.setText(arr_grupo.get(i));
                 stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
                 listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
@@ -527,6 +582,95 @@ public class controles {
         });
     }
 
+    public static void validacione_toma(Activity activity,Context context){
+        if (variables.tipo_stkw001==1){
+            if( stkw001.txt_id_sucursal.getText().toString().equals("")
+                    ||stkw001.txt_id_deposito.getText().toString().equals("")
+                    ||stkw001.txt_id_area.getText().toString().equals("")
+                    ||stkw001.txt_id_departamento.getText().toString().equals("")
+                    ||stkw001.txt_id_seccion.getText().toString().equals("")
+                    ||stkw001.txt_id_familia.getText().toString().equals("")
+                    ||stkw001.txt_id_grupo.getText().toString().equals("")) {
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("COMPLETE LOS DATOS REQUERIDOS.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else if (controles.ids_subgrupos.equals("")){
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("SELECCIONE SUB-GRUPO.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else if (controles.ids_subgrupos.equals("")){
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("SELECCIONE SUB-GRUPO.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else if (controles.listInsertArticulos.size()==0){
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("SELECCIONE ARTICULOS.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else {
+                for (int i = 0; i < controles.listInsertArticulos.size(); i++) {
 
+                    Toast.makeText(context,controles.listInsertArticulos.get(i).getName(),Toast.LENGTH_LONG).show();
+
+                }
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("REGISTRADO.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.colorAccent)
+                        .show();
+            }
+        }
+
+        else {
+            if( stkw001.txt_id_sucursal.getText().toString().equals("")
+                    ||stkw001.txt_id_deposito.getText().toString().equals("")
+                    ||stkw001.txt_id_area.getText().toString().equals("")
+                    ||stkw001.txt_id_departamento.getText().toString().equals("")
+                    ||stkw001.txt_id_seccion.getText().toString().equals("")
+                    ||stkw001.txt_id_familia.getText().toString().equals("")
+                    ||stkw001.txt_id_grupo.getText().toString().equals("")) {
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("COMPLETE LOS DATOS REQUERIDOS.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else if (controles.ids_subgrupos.equals("")){
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("SELECCIONE SUB-GRUPO.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+
+            else {
+
+                Alerter.create(activity)
+                        .setTitle("ATENCION!")
+                        .setText("REGISTRADO.")
+                        .setDuration(10000)
+                        .setBackgroundColor(R.color.colorAccent)
+                        .show();
+            }
+        }
+    }
 
 }
