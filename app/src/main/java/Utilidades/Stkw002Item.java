@@ -1,20 +1,17 @@
 package Utilidades;
 
-public class ExampleItem {
-    private int mImageResource;
-    private String producto;
+public class Stkw002Item {
+     private String producto;
     private String posicion;
     private String cantidad;
+    private String lote;
 
-    public ExampleItem(int imageResource, String producto, String posicion, String cantidad) {
-        this.mImageResource = imageResource;
+    public Stkw002Item(String producto, String posicion, String cantidad, String lote) {
+     //   this.mImageResource = imageResource;
         this.producto = producto;
         this.posicion = posicion;
         this.cantidad = cantidad;
-    }
-
-    public int getImageResource() {
-        return this.mImageResource;
+        this.lote = lote;
     }
 
     public String getProducto() {
@@ -27,6 +24,10 @@ public class ExampleItem {
 
     public String getCantidad() {
         return this.cantidad;
+    }
+
+    public String getLote() {
+        return this.lote;
     }
 
 }

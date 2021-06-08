@@ -2,19 +2,30 @@ package Utilidades;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.AsyncTask;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.codisa_app.MultiSpinnerListener;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
+import com.example.codisa_app.login;
+import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
 import com.tapadoo.alerter.Alerter;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,10 +53,16 @@ public class controles {
     static List<ArrayListContenedor>    listArraySubgrupo = new ArrayList<>();
     static List<ArrayListContenedor>    listArrayArticulos = new ArrayList<>();
     static List<ArrayListContenedor>    listInsertArticulos = new ArrayList<>();
+    public static  List<Stkw002Item> ListArrayInventarioArticulos;
+    public static ConexionSQLiteHelper  conSqlite,   conn_gm;
     public static Connection        connection=null;
     public static Connection_Oracle conexion = new Connection_Oracle();
     public static Connection        connect ;
 
+
+    public static void conexion_sqlite(Context context) {
+        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,1);
+     }
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
         if(tipo==1){
             new AlertDialog.Builder(context)
@@ -381,6 +398,7 @@ public class controles {
                 contenedor.setLote(rs2.getString("arde_lote"));
                 contenedor.setCantidad(rs2.getString("cantidad"));
                 contenedor.setFechaVencimiento(rs2.getString("arde_fec_vto_lote"));
+                contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                 listArrayArticulos.add(contenedor);
             }
 
@@ -398,6 +416,7 @@ public class controles {
                             insArt.setLote(items.get(i).getLote());
                             insArt.setCantidad(items.get(i).getCantidad());
                             insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
+                            insArt.setSubgrupo(items.get(i).getSubgrupo());
                              listInsertArticulos.add(insArt);
                         }
                     }
@@ -737,8 +756,18 @@ public class controles {
                         "WINVD_LOTE," +
                         "WINVD_FEC_VTO," +
                         "WINVD_LOTE_CLAVE," +
-                        "WINVD_UM)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
-                        "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'','')";
+                        "WINVD_UM," +
+                        "WINVD_area," +
+                        "WINVD_dpto," +
+                        "WINVD_secc," +
+                        "" +
+                        "WINVD_flia," +
+                        "WINVD_grupo," +
+                        "WINVD_subgr," +
+                        "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
+                        "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                        "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
                 PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
                 ps2.executeUpdate();
 
@@ -756,4 +785,33 @@ public class controles {
             }
         }
     }
+
+    public static void llenar_lista_stkw002(){
+
+        try {
+
+            SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+            Cursor cursor=db_consulta.rawQuery("select winvd_nro_inv,ART_DESC,winvd_lote,winvd_art ,winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act" +
+                    " from stkw002inv" +
+                    " WHERE winvd_dpto='"+variables.ID_SUCURSAL_LOGIN+"'" ,null);
+            int cont=0;
+            ListArrayInventarioArticulos = new ArrayList();
+            while (cursor.moveToNext())
+            {
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), String.valueOf(cont),"",cursor.getString(2)));
+                cont++;
+             }
+
+
+
+         }
+        catch (Exception e){
+            String err=e.toString();
+        }
+
+    }
+
+
+
+
 }
