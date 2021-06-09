@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
@@ -21,7 +22,9 @@ import android.widget.Button;
 import java.security.spec.ECField;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import Utilidades.Stkw002List;
 import Utilidades.controles;
 import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +56,7 @@ public class menu_principal extends AppCompatActivity {
     }
 
     public void ir_stkw002(View v){
-        Intent i=new Intent(this,stkw002.class);
+        Intent i=new Intent(this,lista_stkw002_inv.class);
         startActivity(i);
     }
 
@@ -74,7 +77,7 @@ public class menu_principal extends AppCompatActivity {
 
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
                         finish();
-                         startActivity(intent);
+                        startActivity(intent);
 
                     }
                 })
@@ -94,6 +97,9 @@ public class menu_principal extends AppCompatActivity {
 
     }
 
+
+
+
     public void ir_test(View v){
         importar_inventario();
     }
@@ -103,20 +109,20 @@ public class menu_principal extends AppCompatActivity {
         try {
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT  count(*) as contador " +
-                    "FROM  " +
-                    "   V_WEB_ARTICULOS_CLASIFICACION  a  " +
-                    "   inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote " +
-                    "   and a.ART_CODIGO=b.winvd_art      " +
-                    "   and a.SECC_CODIGO=b.winvd_secc    " +
-                    "   and a.arde_suc=b.winvd_dpto       " +
-                    "   and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto  " +
-                    "   inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero " +
-                    "   and c.winve_dep=a.ARDE_DEP " +
-                    "   and c.winve_area=a.AREA_CODIGO " +
-                    "   and c.winve_suc=a.ARDE_SUC  " +
-                    "   and c.winve_secc=a.SECC_CODIGO " +
-                    "   where c.winve_suc='"+variables.ID_SUCURSAL_LOGIN+"'");
+            ResultSet rs = stmt.executeQuery("SELECT count(*) as  contador " +
+                    "                               " +
+                    "                    FROM   " +
+                    "                       V_WEB_ARTICULOS_CLASIFICACION  a   " +
+                    "                       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
+                    "                       and a.ART_CODIGO=b.winvd_art       " +
+                    "                       and a.SECC_CODIGO=b.winvd_secc     " +
+                    "                       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
+                    "                       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
+                    "                       and c.winve_dep=a.ARDE_DEP  " +
+                    "                       and c.winve_area=a.AREA_CODIGO  " +
+                    "                       and c.winve_suc=a.ARDE_SUC   " +
+                    "                       and c.winve_secc=a.SECC_CODIGO  " +
+                    "                       where c.winve_empr=1 and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
 
             while (rs.next())
             {
@@ -174,53 +180,96 @@ public class menu_principal extends AppCompatActivity {
     private void test(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
-            db1.execSQL("delete from STKW002INV");
+            db1.execSQL("delete from STKW002INV  WHERE estado='A'");
             db1.close();
+            controles.connect = controles.conexion.Connections();
+            Statement stmt = controles.connect.createStatement();
 
-
-        controles.connect = controles.conexion.Connections();
-        Statement stmt = controles.connect.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT " +
-                "   b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act  " +
-                "FROM  " +
-                "   V_WEB_ARTICULOS_CLASIFICACION  a  " +
-                "   inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote " +
-                "   and a.ART_CODIGO=b.winvd_art      " +
-                "   and a.SECC_CODIGO=b.winvd_secc    " +
-                "   and a.arde_suc=b.winvd_dpto       " +
-                "   and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto  " +
-                "   inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero " +
-                "   and c.winve_dep=a.ARDE_DEP " +
-                "   and c.winve_area=a.AREA_CODIGO " +
-                "   and c.winve_suc=a.ARDE_SUC  " +
-                "   and c.winve_secc=a.SECC_CODIGO " +
-                "   where c.winve_suc='"+variables.ID_SUCURSAL_LOGIN+"'");
+            ResultSet rs = stmt.executeQuery("" +
+                    "   SELECT " +
+                    "       a.ARDE_SUC, b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
+                    "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec," +
+                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc " +
+                    "   FROM   " +
+                    "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
+                    "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
+                    "       and a.ART_CODIGO=b.winvd_art       " +
+                    "       and a.SECC_CODIGO=b.winvd_secc     " +
+                    "       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
+                    "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
+                    "       and c.winve_dep=a.ARDE_DEP  " +
+                    "       and c.winve_area=a.AREA_CODIGO  " +
+                    "       and c.winve_suc=a.ARDE_SUC   " +
+                    "       and c.winve_secc=a.SECC_CODIGO  " +
+                    "   where " +
+                    "       c.winve_empr=1 " +
+                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
             int i=1;
         while (rs.next())
         {
-            SQLiteDatabase db=controles.conSqlite.getReadableDatabase();
-            ContentValues values=new ContentValues();
-            values.put("winvd_nro_inv",rs.getInt("winvd_nro_inv"));
-            values.put("winvd_art",rs.getString("winvd_art"));
-            values.put("ART_DESC",rs.getString("ART_DESC"));
-            values.put("winvd_lote",rs.getString("winvd_lote"));
-            values.put("winvd_fec_vto",rs.getString("winvd_fec_vto"));
-            values.put("winvd_area",rs.getString("winvd_area"));
-            values.put("winvd_dpto",rs.getString("winvd_dpto"));
-            values.put("winvd_secc",rs.getString("winvd_secc"));
-            values.put("winvd_flia",rs.getString("winvd_flia"));
-            values.put("winvd_grupo",rs.getString("winvd_grupo"));
-            values.put("winvd_cant_act",rs.getString("winvd_cant_act"));
-            values.put("estado","P");
+            SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
+            Cursor cursor=db_consulta.rawQuery("select * from STKW002INV where  winvd_nro_inv ='"+rs.getInt("winvd_nro_inv")+"' and estado='P'" ,null);
+            if (cursor.moveToNext())
+            {
 
-            db.insert("STKW002INV", "winvd_nro_inv",values);
-            prodialog.setProgress(i);
+            }
+            else {
+                SQLiteDatabase db=controles.conSqlite.getReadableDatabase();
+
+
+                db.execSQL(" INSERT INTO  STKW002INV (" +
+                        "ARDE_SUC," +
+                        "winvd_nro_inv," +
+                        "winvd_art," +
+                        "ART_DESC," +
+                        "winvd_lote," +
+                        "winvd_fec_vto," +
+                        "winvd_area," +
+                        "winvd_dpto," +
+                        "winvd_secc," +
+                        "winvd_flia," +
+                        "winvd_grupo," +
+                        "winvd_cant_act," +
+                        "winve_fec," +
+                        "dpto_desc," +
+                        "secc_desc," +
+                        "flia_desc," +
+                        "grup_desc," +
+                        "area_desc," +
+                        "winvd_cant_inv," +
+                        "estado) VALUES ('"+
+                        rs.getInt("ARDE_SUC")               +"','"+
+                        rs.getInt("winvd_nro_inv")          +"','"+
+                        rs.getString("winvd_art")           +"','"+
+                        rs.getString("ART_DESC")            +"','"+
+                        rs.getString("winvd_lote")          +"','"+
+                        rs.getString("winvd_fec_vto")       +"','"+
+                        rs.getString("winvd_area")          +"','"+
+                        rs.getString("winvd_dpto")          +"','"+
+                        rs.getString("winvd_secc")          +"','"+
+                        rs.getString("winvd_flia")          +"','"+
+                        rs.getString("winvd_grupo")         +"','"+
+                        rs.getString("winvd_cant_act")      +"','"+
+                        rs.getString("winve_fec")           +"','"+
+                        rs.getString("dpto_desc")           +"','"+
+                        rs.getString("secc_desc")           +"','"+
+                        rs.getString("flia_desc")           +"','"+
+                        rs.getString("grup_desc")           +"','"+
+                        rs.getString("area_desc")           +"'," +
+                        "'0'," +
+                        "'A') ");
+                //ESTADO PENDIENTE A INVENTARIAR.
+            }
+
+
+              prodialog.setProgress(i);
             i++;
         }
         prodialog.dismiss();
         }
         catch (Exception e){
-
+        String error=e.toString();
+            prodialog.dismiss();
         }
 
 

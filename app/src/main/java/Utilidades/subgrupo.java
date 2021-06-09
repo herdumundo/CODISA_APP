@@ -28,6 +28,4 @@ public class subgrupo {
         this.valor = valor;
     }
 
-
-
 }

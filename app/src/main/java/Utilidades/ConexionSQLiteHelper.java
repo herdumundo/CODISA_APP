@@ -23,11 +23,26 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("CREATE TABLE STKW002INV (winvd_nro_inv INTEGER , winvd_art TEXT ,ART_DESC TEXT, winvd_lote TEXT,winvd_fec_vto TEXT," +
-                " winvd_area TEXT,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act,estado TEXT)");
+        db.execSQL("CREATE TABLE STKW002INV (winvd_nro_inv INTEGER ,winvd_cant_act INTEGER,winvd_cant_inv INTEGER,winvd_fec_vto TEXT,winve_fec TEXT," +
+                "   ARDE_SUC INTEGER,  winvd_art TEXT ,art_desc TEXT, winvd_lote TEXT," +
+                "   winvd_area INTEGER,area_desc, " +
+                "   winvd_dpto INTEGER,dpto_desc," +
+                "   winvd_secc INTEGER,secc_desc," +
+                "   winvd_flia INTEGER,flia_desc," +
+                "   winvd_grupo INTEGER,grup_desc," +
+                "   estado TEXT)");
 
 
     }
+
+    /*
+    NOTA: INFORMES DE ESTADO EN STAW002INV
+    A= PENDIENTE DE REALIZACION DEL INVENTARIO
+    P= INVENTARIO REALIZADO PENDIENTE DE EXPORTACION AL SERVER CENTURY.
+    C= INVENTARIO EXPORTADO CON EXITO.
+
+
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva)
     {

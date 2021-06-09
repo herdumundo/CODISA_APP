@@ -40,16 +40,14 @@
         <TextView
             android:id="@+id/txt_lote_inv"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="29dp"
             android:layout_below="@+id/txt_producto"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
-            android:layout_marginBottom="37dp"
             android:ems="10"
-            android:textColor="@color/black"
-            android:text="lote" />
+            android:text="lote"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_producto"
@@ -65,9 +63,10 @@
             android:id="@+id/txt_posicion"
             android:layout_width="208dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txt_producto"
-            android:layout_marginTop="4dp"
-            android:visibility="gone" />
+            android:layout_below="@+id/txt_lote_inv"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

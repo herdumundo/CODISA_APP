@@ -431,6 +431,26 @@ public class controles {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void stkw001_txt_sucursalOnclick( Activity activity){
         stkw001.txt_sucursal.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v)
@@ -460,7 +480,7 @@ public class controles {
             public void onClick(String s, int i) {
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
-               // listar_depositos(activity,controles.arrIdSucursales.get(i));
+                // listar_depositos(activity,controles.arrIdSucursales.get(i));
             }
         });
     }
@@ -497,7 +517,7 @@ public class controles {
 
 
                 listar_departamentos(activity,arr_id_area.get(i),context,  tipo_toma);
-             }
+            }
         });
     }
 
@@ -536,9 +556,9 @@ public class controles {
     public static void Stkw001SeccionOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.txt_seccion.setOnClickListener(new View.OnClickListener() {
             @Override
-        public void onClick(View v) {
-            stkw001.sp_seccion.showSpinerDialog();
-        } } );
+            public void onClick(View v) {
+                stkw001.sp_seccion.showSpinerDialog();
+            } } );
         stkw001.sp_seccion.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
@@ -595,12 +615,21 @@ public class controles {
             @Override
             public void onClick(String s, int i) {
                 limpiarSubGrupo();
-               stkw001.txt_grupo.setText(arr_grupo.get(i));
+                stkw001.txt_grupo.setText(arr_grupo.get(i));
                 stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
                 listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
             }
         });
     }
+
+
+
+
+
+
+
+
+
 
     public static void validacione_toma(Activity activity,Context context){
         if (variables.tipo_stkw001==1){
@@ -741,9 +770,9 @@ public class controles {
                     "'1', "+id_cabecera+")";
             PreparedStatement ps = connect.prepareStatement(insertar);
             ps.executeUpdate();
-                    int secuencia=1;
+            int secuencia=1;
             for (int i = 0; i < listInsertArticulos.size(); i++) {
-                    int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
                 String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
                         "WINVD_NRO_INV," +
                         "WINVD_ART," +
@@ -791,27 +820,25 @@ public class controles {
         try {
 
             SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
-            Cursor cursor=db_consulta.rawQuery("select winvd_nro_inv,ART_DESC,winvd_lote,winvd_art ,winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act" +
+            Cursor cursor=db_consulta.rawQuery("select winvd_nro_inv,ART_DESC,winvd_lote,winvd_art ," +
+                    "winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act,winvd_cant_inv" +
                     " from stkw002inv" +
-                    " WHERE winvd_dpto='"+variables.ID_SUCURSAL_LOGIN+"'" ,null);
+                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
             int cont=0;
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
             {
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), String.valueOf(cont),"",cursor.getString(2)));
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), String.valueOf(cont),cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4)));
                 cont++;
-             }
+            }
 
 
 
-         }
+        }
         catch (Exception e){
             String err=e.toString();
         }
 
     }
-
-
-
 
 }
