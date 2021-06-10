@@ -36,7 +36,8 @@ public class lista_stkw002_inv extends AppCompatActivity {
         listView =(ListView)findViewById(R.id.listViewInv);
         btn_buscar =(Button)findViewById(R.id.btn_pendientes_exportacion);
         consultar_tomas_generadas("A");
-
+        btn_buscar.setBackgroundColor(Color.GREEN);
+        getSupportActionBar().setTitle("LISTA DE INVENTARIOS PENDIENTES");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
@@ -117,11 +118,18 @@ public class lista_stkw002_inv extends AppCompatActivity {
             consultar_tomas_generadas("P");
             tipo=2;
             btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
+            btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
+            btn_buscar.setBackgroundColor(Color.RED);
+            getSupportActionBar().setTitle("LISTA DE INVENTARIOS REALIZADOS");
+
         }
         else if (tipo==2){
             consultar_tomas_generadas("A");
             tipo=1;
-            btn_buscar.setText("VER PENDIENTES A EXPORTAR");
+            btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
+            btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
+            btn_buscar.setBackgroundColor(Color.GREEN);
+            getSupportActionBar().setTitle("LISTA DE INVENTARIOS PENDIENTES");
 
         }
     }

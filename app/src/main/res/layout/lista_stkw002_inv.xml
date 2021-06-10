@@ -9,17 +9,17 @@
 
     <Button
         android:id="@+id/btn_pendientes_exportacion"
-        android:layout_width="226dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="102dp"
+        android:layout_marginStart="53dp"
         android:layout_marginTop="43dp"
-        android:layout_marginEnd="82dp"
+        android:layout_marginEnd="16dp"
+        android:drawableLeft="@drawable/ic_export"
         android:onClick="consultar"
-        android:text="VER PENDIENTES A EXPORTAR" />
+        android:text="VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR" />
 
     <ListView
         android:id="@+id/listViewInv"
