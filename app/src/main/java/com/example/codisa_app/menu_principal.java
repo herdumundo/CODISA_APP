@@ -100,7 +100,7 @@ public class menu_principal extends AppCompatActivity {
 
 
 
-    public void ir_test(View v){
+    public void sincronizarDatos(View v){
         importar_inventario();
     }
 
@@ -131,7 +131,7 @@ public class menu_principal extends AppCompatActivity {
             new AlertDialog.Builder(menu_principal.this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("SINCRONIZACION.")
-                    .setMessage("DESEA SINCRONIZAR ANIMALES EN INVENTARIO ACTUALIZADOS")
+                    .setMessage("¿DESEA ACTUALIZAR LOS DATOS DISPONIBLES?")
                     .setPositiveButton("SI", new DialogInterface.OnClickListener()
                     {
                         @Override

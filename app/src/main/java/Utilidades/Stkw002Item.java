@@ -2,16 +2,16 @@ package Utilidades;
 
 public class Stkw002Item {
      private String producto;
-    private String posicion;
+  //  private String posicion;
     private String cantidad;
     private String lote;
      private String cod_articulo;
     private String vencimiento;
 
-    public Stkw002Item(String producto, String posicion, String cantidad, String lote,String cod_articulo,String vencimiento ) {
+    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
-        this.posicion = posicion;
+     //   this.posicion = posicion;
         this.cantidad = cantidad;
         this.lote = lote;
         this.cod_articulo = cod_articulo;
@@ -22,10 +22,10 @@ public class Stkw002Item {
         return this.producto;
     }
 
-    public String getPosicion() {
+   /* public String getPosicion() {
         return this.posicion;
     }
-
+*/
     public String getCantidad() {
         return this.cantidad;
     }

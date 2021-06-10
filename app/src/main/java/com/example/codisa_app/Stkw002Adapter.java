@@ -24,14 +24,14 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     class ExampleViewHolder extends ViewHolder {
        // ImageView imageView;
         TextView textProducto;
-        TextView textPosicion;
+       // TextView textPosicion;
         TextView textCantidad;
         TextView textLote;
 
         ExampleViewHolder(View itemView) {
             super(itemView);
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
-            this.textPosicion = (TextView) itemView.findViewById(R.id.txt_posicion);
+           // this.textPosicion = (TextView) itemView.findViewById(R.id.txt_posicion);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
             this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
         }
@@ -49,11 +49,11 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
         Stkw002Item currentItem = (Stkw002Item) this.exampleList.get(position);
         holder.textProducto.setText(currentItem.getProducto());
-        holder.textPosicion.setText(currentItem.getPosicion());
+        // holder.textPosicion.setText(currentItem.getPosicion());
         holder.textCantidad.setText(currentItem.getCantidad());
         holder.textLote.setText(currentItem.getLote());
  //ESTA SENTENCIA SE UTILIZA PARA QUE AL CAMBIAR EL TEXT, YA EJECUTE LA ACTUALIZACION DEL ARRAYLIST
-        holder.textCantidad.addTextChangedListener(new TextWatcher()
+     /*   holder.textCantidad.addTextChangedListener(new TextWatcher()
         {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {
@@ -65,7 +65,16 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             public void afterTextChanged(Editable editable) {
              }
         } );
+*/ holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    exampleList.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
+
+                }
+            }
+        });
          }
 
     public int getItemCount() {

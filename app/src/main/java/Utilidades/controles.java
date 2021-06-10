@@ -828,7 +828,7 @@ public class controles {
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
             {
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), String.valueOf(cont),cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4)));
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4)));
                 cont++;
             }
 

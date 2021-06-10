@@ -1,8 +1,12 @@
 package com.example.codisa_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,9 +34,9 @@ public class stkw002 extends AppCompatActivity {
         listar_recicler();
         controles.conexion_sqlite(this);
 
-        this.Searchtext = (EditText) findViewById(R.id.search_input);
-        this.txt_cantidad = (EditText) findViewById(R.id.txt_cantidad);
-        this.Searchtext.addTextChangedListener(new TextWatcher()
+         Searchtext = (EditText) findViewById(R.id.search_input);
+        txt_cantidad = (EditText) findViewById(R.id.txt_cantidad);
+         Searchtext.addTextChangedListener(new TextWatcher()
         {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {
@@ -62,7 +66,7 @@ public class stkw002 extends AppCompatActivity {
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
             for (Stkw002Item item : controles.ListArrayInventarioArticulos )
             {
-                if(item.getProducto().toLowerCase().contains(text) || item.getPosicion().toLowerCase().contains(text) )
+                if(item.getProducto().toLowerCase().contains(text))
                 {
                     filteredList.add(item);
                 }
@@ -78,8 +82,43 @@ public class stkw002 extends AppCompatActivity {
         }
     }
 
-public void reg(View v){
-    Stkw002Adapter.registrar_inventario();
-}
+    public void reg(View v){
+        Searchtext.requestFocus();
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("ATENCION!!!.")
+                .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        try
+                        {
+                            Stkw002Adapter.registrar_inventario();
+                            new AlertDialog.Builder( stkw002.this)
+                                    .setTitle("INFORME!!!")
+                                    .setCancelable(false)
+                                    .setMessage("REGISTRADO CON EXITO")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Intent i=new Intent(stkw002.this,menu_principal.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    }).show();
+                        }
+                        catch (Exception e)
+                        {
+                            new AlertDialog.Builder(stkw002.this)
+                            .setTitle("ATENCION!!!")
+                            .setMessage(e.toString()).show();
+                        }
+                    }
+
+                })
+                .setNegativeButton("NO", null)
+                .show();
+    }
 
 }
