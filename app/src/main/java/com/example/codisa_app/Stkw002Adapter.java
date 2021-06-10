@@ -97,7 +97,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 String lote =exampleList.get(i).getLote();
                 String cod_articulo =exampleList.get(i).getCodArticulo();
                 String fecha_vto =exampleList.get(i).getVencimiento();
-               db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"' " +
+                db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"' " +
                         " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+cod_articulo+" and winvd_lote='"+lote+"'  and winvd_fec_vto='"+fecha_vto+"'");
 
             }

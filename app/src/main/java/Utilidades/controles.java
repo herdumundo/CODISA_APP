@@ -21,9 +21,11 @@ import android.widget.Toast;
 import com.example.codisa_app.MultiSpinnerListener;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
+import com.example.codisa_app.Stkw002Adapter;
 import com.example.codisa_app.login;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
+import com.example.codisa_app.stkw002;
 import com.tapadoo.alerter.Alerter;
 
 import java.sql.Connection;
@@ -115,7 +117,7 @@ public class controles {
 
         stkw001.sp_sucursal = new SpinnerDialog(activity,arrSucursales,"Listado de arrSucursales");
         stkw001_txt_sucursalOnclick(activity);
-        controles.limpiarSubGrupo();
+
 
     }
 
@@ -135,7 +137,7 @@ public class controles {
             }
             stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
             Stkw001DepositoOnclick();
-             limpiarSubGrupo();
+
         }
         catch (Exception e){
 
@@ -151,7 +153,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_AREA  ");
             arr_id_area.clear();
             arr_area.clear();
-            listArraySubgrupo.clear();
+           // listArraySubgrupo.clear();
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
@@ -174,7 +176,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_DPTO   where dpto_area='"+id_area+"'");
             arr_id_departamento.clear();
             arr_departamento.clear();
-            listArraySubgrupo.clear();
+        //    listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -183,7 +185,7 @@ public class controles {
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
-            limpiarSubGrupo();
+            //limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -200,7 +202,7 @@ public class controles {
                     " and secc_area='"+stkw001.txt_id_area.getText().toString().trim()+"'");
             arr_id_seccion.clear();
             arr_seccion.clear();
-            listArraySubgrupo.clear();
+         //   listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -209,7 +211,7 @@ public class controles {
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
             Stkw001SeccionOnclick(activity,context,  tipo_toma);
-            limpiarSubGrupo();
+          //  limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -227,8 +229,7 @@ public class controles {
                     " and flia_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_familia.clear();
             arr_familia.clear();
-           // listArraySubgrupo.clear();
-           // stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
+            //listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -237,7 +238,7 @@ public class controles {
             }
             stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
             Stkw001FamiliaOnclick(activity, context, tipo_toma);
-            limpiarSubGrupo();
+
         }
         catch (Exception e){
 
@@ -325,7 +326,7 @@ public class controles {
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                  //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     ids_subgrupos="";
-
+                    stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
                             if(i==0){
@@ -374,6 +375,9 @@ public class controles {
             }
             TotalJoin= inLote+inEstado+inExistenciaCero;
             Statement stmt2 = connect.createStatement();
+            if(ids_subgrupos.length()>0){
+
+
             ResultSet rs2 = stmt2.executeQuery("" +
                     "select " +
                     "   TO_NUMBER (arde_cant_act) as cantidad  ,v_web_articulos_clasificacion.* " +
@@ -389,7 +393,7 @@ public class controles {
                     "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
                     "   sugr_codigo in ("+ids_subgrupos+") "+TotalJoin);
             listArrayArticulos.clear();
-
+            listInsertArticulos.clear();
             while ( rs2.next())
             {
                 ArrayListContenedor contenedor = new ArrayListContenedor();
@@ -401,12 +405,17 @@ public class controles {
                 contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                 listArrayArticulos.add(contenedor);
             }
+            }
+            else {
+                listArrayArticulos.clear();
+                listInsertArticulos.clear();
 
+            }
 
             stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
-
+                    listInsertArticulos.clear(); //CADA VEZ QUE SELECCIONAMOS SUB-GRUPO, DEBE LIMPIAR EL ARRAY DE LOS ARTICULOS SELECCIONADOS EN EL SPINNER ARTICULOS.
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
                             ArrayListContenedor insArt = new ArrayListContenedor();
@@ -426,7 +435,7 @@ public class controles {
             });
         }
         catch (Exception E){
-
+            String error= E.toString();
         }
     }
 
@@ -461,6 +470,7 @@ public class controles {
         stkw001.sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+                controles.limpiarSubGrupo();
                 stkw001.txt_sucursal.setText(arrSucursales.get(i));
                 stkw001.txt_id_sucursal.setText(arrIdSucursales.get(i));
                 stkw001.txt_deposito.setText("");
@@ -478,6 +488,20 @@ public class controles {
         stkw001.sp_deposito.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+
+
+
+                stkw001.txt_id_area.setText("");
+                stkw001.txt_area.setText("");
+                stkw001.txt_id_departamento.setText("");
+                stkw001.txt_departamento.setText("");
+                stkw001.txt_id_seccion.setText("");
+                stkw001.txt_seccion.setText("");
+                stkw001.txt_id_familia.setText("");
+                stkw001.txt_familia.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
+                limpiarSubGrupo();
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
                 // listar_depositos(activity,controles.arrIdSucursales.get(i));
@@ -493,6 +517,7 @@ public class controles {
         stkw001.sp_area.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+                limpiarSubGrupo();
                 stkw001.txt_area.setText(arr_area.get(i));
                 stkw001.txt_id_area.setText(arr_id_area.get(i));
 
@@ -529,6 +554,8 @@ public class controles {
         stkw001.sp_departamento.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+                limpiarSubGrupo();
+
                 arr_id_seccion.clear();
                 arr_seccion.clear();
                 arr_id_familia.clear();
@@ -562,6 +589,7 @@ public class controles {
         stkw001.sp_seccion.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+                limpiarSubGrupo();
                 arr_id_familia.clear();
                 arr_familia.clear();
                 arr_id_grupo.clear();
@@ -590,10 +618,9 @@ public class controles {
         stkw001.sp_familia.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
+                limpiarSubGrupo();
                 arr_id_grupo.clear();
                 arr_grupo.clear();
-
-
                 stkw001.txt_id_grupo.setText("");
                 stkw001.txt_grupo.setText("");
 
@@ -672,18 +699,47 @@ public class controles {
                         .show();
             }
             else {
-                insert_toma();
-                for (int i = 0; i < controles.listInsertArticulos.size(); i++) {
+                new androidx.appcompat.app.AlertDialog.Builder(context)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("ATENCION!!!.")
+                        .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                try
+                                {
+                                    Stkw002Adapter.registrar_inventario();
+                                    new androidx.appcompat.app.AlertDialog.Builder( context)
+                                            .setTitle("INFORME!!!")
+                                            .setCancelable(false)
+                                            .setMessage("REGISTRADO CON EXITO")
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    insert_toma();
+                                                }
+                                            }).show();
+                                }
+                                catch (Exception e)
+                                {
+                                    new androidx.appcompat.app.AlertDialog.Builder(context)
+                                            .setTitle("ATENCION!!!")
+                                            .setMessage(e.toString()).show();
+                                }
+                            }
+
+                        })
+                        .setNegativeButton("NO", null)
+                        .show();
+
+
+            /*    for (int i = 0; i < controles.listInsertArticulos.size(); i++) {
 
                     Toast.makeText(context,controles.listInsertArticulos.get(i).getName(),Toast.LENGTH_LONG).show();
 
-                }
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("REGISTRADO.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.colorAccent)
-                        .show();
+                }*/
+
             }
         }
 

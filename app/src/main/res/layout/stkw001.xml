@@ -9,11 +9,14 @@
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="221dp"
-        android:layout_height="52dp"
+        android:layout_width="444dp"
+        android:layout_height="54dp"
         android:layout_marginBottom="100dp"
-        android:text="Generar Toma"
+        android:background="@drawable/boton2"
+
+        android:drawableLeft="@mipmap/ic_gen"
         android:onClick="registrarToma"
+        android:text="Generar Toma"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
