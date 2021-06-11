@@ -1,5 +1,6 @@
 package com.example.codisa_app;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ public class stkw001 extends AppCompatActivity {
     public static MultiSpinnerSearch spinerSubGrupo,spinerArticulos;
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,radioExistenciaNo,radioArticuloSi,radioArticuloNo;
     RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo;
+    public static ProgressDialog progress;
     public static   Boolean             BolLote=true,Bolexistencia=false,BolDescontinuados=false;
+
     @Override
     public void onBackPressed()
     {
@@ -34,7 +37,8 @@ public class stkw001 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stkw001);
         getSupportActionBar().setTitle(variables.titulo_stkw001);
-
+        controles.context_stkw001=this;
+        controles.activity_stkw001=this;
         txt_sucursal        = (TextView)findViewById(R.id.txt_desc_sucursal) ;
         txt_id_sucursal     = (TextView)findViewById(R.id.txt_id_sucursal) ;
         txt_deposito        = (TextView)findViewById(R.id.txt_deposito) ;
@@ -169,9 +173,7 @@ public class stkw001 extends AppCompatActivity {
     public void registrarToma( View view)
     {
 
-
-
-       controles.validacione_toma(this,this);
+       controles.ValidarStkw001(this,this);
     }
 
 

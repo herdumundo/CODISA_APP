@@ -60,11 +60,15 @@ public class controles {
     public static Connection        connection=null;
     public static Connection_Oracle conexion = new Connection_Oracle();
     public static Connection        connect ;
-
+    public static Context context_stkw001;
+    public static Activity activity_stkw001;
+    static int tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
+    static String mensajeRespuestaStkw001;
 
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,1);
      }
+
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
         if(tipo==1){
             new AlertDialog.Builder(context)
@@ -278,25 +282,6 @@ public class controles {
 
     }
 
-    public static  void limpiarSubGrupo(){
-        listArraySubgrupo.clear();
-        listArrayArticulos.clear();
-        listInsertArticulos.clear();
-        stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
-        stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
-        stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
-            {
-            @Override
-            public void onItemsSelected(List<ArrayListContenedor> items) {
-            }
-            });
-        stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
-        {
-            @Override
-            public void onItemsSelected(List<ArrayListContenedor> items) {
-            }
-        });
-    }
 
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
         try
@@ -348,6 +333,12 @@ public class controles {
 
                         }
                     }
+                    else   if(tipo_toma==2){
+
+                        listarArticulos();
+                    }
+
+
                 }
             });
         }
@@ -407,6 +398,8 @@ public class controles {
             }
             }
             else {
+                //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
+                //ARTICULOS SELECCIONADOS.
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
 
@@ -417,21 +410,19 @@ public class controles {
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                     listInsertArticulos.clear(); //CADA VEZ QUE SELECCIONAMOS SUB-GRUPO, DEBE LIMPIAR EL ARRAY DE LOS ARTICULOS SELECCIONADOS EN EL SPINNER ARTICULOS.
                     for (int i = 0; i < items.size(); i++) {
-                        if (items.get(i).isSelected()) {
+                        if (items.get(i).isSelected())
+                        {
                             ArrayListContenedor insArt = new ArrayListContenedor();
-
                             insArt.setId(items.get(i).getId());
                             insArt.setName(items.get(i).getName());
                             insArt.setLote(items.get(i).getLote());
                             insArt.setCantidad(items.get(i).getCantidad());
                             insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
-                             listInsertArticulos.add(insArt);
+                            listInsertArticulos.add(insArt);
                         }
                     }
                 }
-
-
             });
         }
         catch (Exception E){
@@ -440,24 +431,25 @@ public class controles {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static  void limpiarSubGrupo(){
+        listArraySubgrupo.clear();
+        listArrayArticulos.clear();
+        listInsertArticulos.clear();
+        stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
+        stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
+        stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
+        {
+            @Override
+            public void onItemsSelected(List<ArrayListContenedor> items) {
+            }
+        });
+        stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
+        {
+            @Override
+            public void onItemsSelected(List<ArrayListContenedor> items) {
+            }
+        });
+    }
 
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
@@ -650,15 +642,7 @@ public class controles {
     }
 
 
-
-
-
-
-
-
-
-
-    public static void validacione_toma(Activity activity,Context context){
+    public static void ValidarStkw001(Activity activity,Context context){
         if (variables.tipo_stkw001==1){
             if( stkw001.txt_id_sucursal.getText().toString().equals("")
                     ||stkw001.txt_id_deposito.getText().toString().equals("")
@@ -707,43 +691,17 @@ public class controles {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
-                            {
-                                try
-                                {
-                                    Stkw002Adapter.registrar_inventario();
-                                    new androidx.appcompat.app.AlertDialog.Builder( context)
-                                            .setTitle("INFORME!!!")
-                                            .setCancelable(false)
-                                            .setMessage("REGISTRADO CON EXITO")
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    insert_toma();
-                                                }
-                                            }).show();
-                                }
-                                catch (Exception e)
-                                {
-                                    new androidx.appcompat.app.AlertDialog.Builder(context)
-                                            .setTitle("ATENCION!!!")
-                                            .setMessage(e.toString()).show();
-                                }
-                            }
+                            {  final  AsyncRegStkw001 task = new  AsyncRegStkw001();
+                                task.execute();
 
+                            }
                         })
                         .setNegativeButton("NO", null)
                         .show();
-
-
-            /*    for (int i = 0; i < controles.listInsertArticulos.size(); i++) {
-
-                    Toast.makeText(context,controles.listInsertArticulos.get(i).getName(),Toast.LENGTH_LONG).show();
-
-                }*/
-
-            }
+                }
         }
 
-        else {
+        else if (variables.tipo_stkw001==2) {
             if( stkw001.txt_id_sucursal.getText().toString().equals("")
                     ||stkw001.txt_id_deposito.getText().toString().equals("")
                     ||stkw001.txt_id_area.getText().toString().equals("")
@@ -758,7 +716,7 @@ public class controles {
                         .setBackgroundColor(R.color.design_default_color_error)
                         .show();
             }
-            else if (controles.ids_subgrupos.equals("")){
+            else if (ids_subgrupos.equals("")){
                 Alerter.create(activity)
                         .setTitle("ATENCION!")
                         .setText("SELECCIONE SUB-GRUPO.")
@@ -766,20 +724,35 @@ public class controles {
                         .setBackgroundColor(R.color.design_default_color_error)
                         .show();
             }
-
-            else {
-                insert_toma();
+            else if (listArrayArticulos.size()==0){ //SI EL FILTRO PARA LA SELECCION AUTOMATICA ES CERO, ES PORQUE NO ARROJO NINGUN ARTICULO PARA EL REGISTRO.
                 Alerter.create(activity)
                         .setTitle("ATENCION!")
-                        .setText("REGISTRADO.")
+                        .setText("LA COMBINACION DE FILTROS, NO CONTIENEN ARTICULOS PARA GENERAR LA TOMA.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.colorAccent)
+                        .setBackgroundColor(R.color.design_default_color_error)
+                        .show();
+            }
+            else {
+                new androidx.appcompat.app.AlertDialog.Builder(context)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("ATENCION!!!.")
+                        .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {  final  AsyncRegStkw001 task = new  AsyncRegStkw001();
+                                task.execute();
+
+                            }
+                        })
+                        .setNegativeButton("NO", null)
                         .show();
             }
         }
     }
 
-    public static void insert_toma(){
+    public static void InsertStkw001(){
 
         try {
             String id_cabecera="";
@@ -827,7 +800,9 @@ public class controles {
             PreparedStatement ps = connect.prepareStatement(insertar);
             ps.executeUpdate();
             int secuencia=1;
-            for (int i = 0; i < listInsertArticulos.size(); i++) {
+            if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
+            {
+                for (int i = 0; i < listInsertArticulos.size(); i++) {
                 int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
                 String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
                         "WINVD_NRO_INV," +
@@ -845,7 +820,6 @@ public class controles {
                         "WINVD_area," +
                         "WINVD_dpto," +
                         "WINVD_secc," +
-                        "" +
                         "WINVD_flia," +
                         "WINVD_grupo," +
                         "WINVD_subgr," +
@@ -853,16 +827,57 @@ public class controles {
                         "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
                         "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
                         "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
+
+
                 PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
                 ps2.executeUpdate();
-
                 secuencia++;
-            }
+            }}
+
+            else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
+            {
+                for (int i = 0; i < listArrayArticulos.size(); i++) {
+                    int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                    String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                            "WINVD_NRO_INV," +
+                            "WINVD_ART," +
+                            "WINVD_SECU," +
+                            "WINVD_CANT_ACT," +
+                            "WINVD_CANT_INV," +
+                            "WINVD_UBIC," +
+                            "WINVD_CODIGO_BARRA," +
+                            "WINVD_CANT_PED_RECEP," +
+                            "WINVD_LOTE," +
+                            "WINVD_FEC_VTO," +
+                            "WINVD_LOTE_CLAVE," +
+                            "WINVD_UM," +
+                            "WINVD_area," +
+                            "WINVD_dpto," +
+                            "WINVD_secc," +
+                            "" +
+                            "WINVD_flia," +
+                            "WINVD_grupo," +
+                            "WINVD_subgr," +
+                            "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listArrayArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
+                            "'"+listArrayArticulos.get(i).getLote()+"',TO_DATE('"+listArrayArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                            "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listArrayArticulos.get(i).getSubgrupo()+"','')";
+
+
+                    PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                    ps2.executeUpdate();
+
+                    secuencia++;
+                }}
             connect.commit();
+            tipoRespuestaStkw001=1;
+            mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
 
         }
         catch (Exception error){
-            String e=error.toString();
+            mensajeRespuestaStkw001=error.toString();
+            tipoRespuestaStkw001=0;
+
             try {
                 connect.rollback();
             } catch (SQLException throwables) {
@@ -871,7 +886,7 @@ public class controles {
         }
     }
 
-    public static void llenar_lista_stkw002(){
+    public static void listarStkw002(){
 
         try {
 
@@ -897,4 +912,47 @@ public class controles {
 
     }
 
+    public static class AsyncRegStkw001 extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            stkw001.progress = ProgressDialog.show(context_stkw001, "PROCESANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            InsertStkw001();
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            stkw001.progress.dismiss();
+            if(tipoRespuestaStkw001==1){
+                new androidx.appcompat.app.AlertDialog.Builder( context_stkw001)
+                        .setTitle("INFORME!!!")
+                        .setCancelable(false)
+                        .setMessage(mensajeRespuestaStkw001)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent i=new Intent(context_stkw001,menu_principal.class);
+                                context_stkw001.startActivity(i);
+                                activity_stkw001.finish();
+                            }
+                        }).show();
+            }
+            else {
+                new androidx.appcompat.app.AlertDialog.Builder( context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage(mensajeRespuestaStkw001)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).show();
+            }
+
+        }
+    }
 }

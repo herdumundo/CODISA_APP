@@ -30,7 +30,7 @@ public class stkw002 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.stkw002);
         recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
-        controles.llenar_lista_stkw002();
+        controles.listarStkw002();
         listar_recicler();
         controles.conexion_sqlite(this);
 
