@@ -25,14 +25,12 @@ import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.codisa_app.MultiSpinnerListener;
 import com.example.codisa_app.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import Utilidades.ArrayListContenedor;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.content.ContextCompat;
 

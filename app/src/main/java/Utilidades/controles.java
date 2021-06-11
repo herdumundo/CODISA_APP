@@ -16,16 +16,11 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.codisa_app.MultiSpinnerListener;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
-import com.example.codisa_app.Stkw002Adapter;
-import com.example.codisa_app.login;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
-import com.example.codisa_app.stkw002;
 import com.tapadoo.alerter.Alerter;
 
 import java.sql.Connection;
@@ -37,33 +32,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class controles {
-    public static ArrayList<String> arrSucursales       =   new ArrayList<>();
-    public static ArrayList<String> arrIdSucursales     =   new ArrayList<>();
-    public static ArrayList<String> arr_id_deposito     =   new ArrayList<>();
-    public static ArrayList<String> arr_deposito        =   new ArrayList<>();
-    public static ArrayList<String> arr_area            =   new ArrayList<>();
-    public static ArrayList<String> arr_id_area         =   new ArrayList<>();
-    public static ArrayList<String> arr_id_departamento =   new ArrayList<>();
-    public static ArrayList<String> arr_departamento    =   new ArrayList<>();
-    public static ArrayList<String> arr_seccion         =   new ArrayList<>();
-    public static ArrayList<String> arr_id_seccion      =   new ArrayList<>();
-    public static ArrayList<String> arr_id_familia      =   new ArrayList<>();
-    public static ArrayList<String> arr_familia         =   new ArrayList<>();
-    public static ArrayList<String> arr_id_grupo        =   new ArrayList<>();
-    public static ArrayList<String> arr_grupo           =   new ArrayList<>();
-    public static String            ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
-    static List<ArrayListContenedor>    listArraySubgrupo = new ArrayList<>();
-    static List<ArrayListContenedor>    listArrayArticulos = new ArrayList<>();
-    static List<ArrayListContenedor>    listInsertArticulos = new ArrayList<>();
-    public static  List<Stkw002Item> ListArrayInventarioArticulos;
-    public static ConexionSQLiteHelper  conSqlite,   conn_gm;
-    public static Connection        connection=null;
-    public static Connection_Oracle conexion = new Connection_Oracle();
-    public static Connection        connect ;
-    public static Context context_stkw001;
-    public static Activity activity_stkw001;
-    static int tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
-    static String mensajeRespuestaStkw001;
+    public static   ArrayList<String> arrSucursales       =   new ArrayList<>();
+    public static   ArrayList<String> arrIdSucursales     =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_deposito     =   new ArrayList<>();
+    public static   ArrayList<String> arr_deposito        =   new ArrayList<>();
+    public static   ArrayList<String> arr_area            =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_area         =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_departamento =   new ArrayList<>();
+    public static   ArrayList<String> arr_departamento    =   new ArrayList<>();
+    public static   ArrayList<String> arr_seccion         =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_seccion      =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_familia      =   new ArrayList<>();
+    public static   ArrayList<String> arr_familia         =   new ArrayList<>();
+    public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
+    public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
+    public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
+    static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
+    static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
+    static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
+    public static   List<Stkw002Item> ListArrayInventarioArticulos;
+    public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
+   // public static   Connection          connection=null;
+    public static   Connection_Oracle   conexion = new Connection_Oracle();
+    public static   Connection        connect ;
+    public static   Context context_stkw001;
+    public static   Context context_menuPrincipal;
+    public static   Activity activity_stkw001;
+    static int      tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
+    static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
+    static String   mensajeRespuestaStkw001;
+    static String   mensajeRespuestaExportStkw002;
+    static int      ContExportStkw002;
 
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,1);
@@ -119,7 +118,7 @@ public class controles {
 
     public static void listar_sucursales(Activity activity) {
 
-        stkw001.sp_sucursal = new SpinnerDialog(activity,arrSucursales,"Listado de arrSucursales");
+        stkw001.sp_sucursal = new SpinnerDialog(activity,arrSucursales,"Listado de Sucursales");
         stkw001_txt_sucursalOnclick(activity);
 
 
@@ -131,8 +130,8 @@ public class controles {
             connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUC_DEP   where suc_codigo='"+id_sucursal+"'");
-            arr_id_deposito.clear();
-            arr_deposito.clear();
+            //arr_id_deposito.clear();
+            //arr_deposito.clear();
 
             while ( rs.next())
             {
@@ -180,7 +179,6 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_DPTO   where dpto_area='"+id_area+"'");
             arr_id_departamento.clear();
             arr_departamento.clear();
-        //    listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -189,7 +187,6 @@ public class controles {
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
-            //limpiarSubGrupo();
         }
         catch (Exception e){
 
@@ -453,7 +450,9 @@ public class controles {
 
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
-        stkw001.txt_sucursal.setOnClickListener(new View.OnClickListener() {  @Override
+
+        stkw001.txt_sucursal.setOnClickListener(new View.OnClickListener() {
+            @Override
         public void onClick(View v)
         {
             stkw001.sp_sucursal.showSpinerDialog();
@@ -462,17 +461,34 @@ public class controles {
         stkw001.sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
-                controles.limpiarSubGrupo();
+
                 stkw001.txt_sucursal.setText(arrSucursales.get(i));
                 stkw001.txt_id_sucursal.setText(arrIdSucursales.get(i));
+                arr_id_deposito.clear();
+                arr_deposito.clear();
                 stkw001.txt_deposito.setText("");
                 stkw001.txt_id_deposito.setText("");
+                stkw001.txt_id_area.setText("");
+                stkw001.txt_area.setText("");
+                stkw001.txt_id_departamento.setText("");
+                stkw001.txt_departamento.setText("");
+                stkw001.txt_id_seccion.setText("");
+                stkw001.txt_seccion.setText("");
+                stkw001.txt_id_familia.setText("");
+                stkw001.txt_familia.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
+                limpiarSubGrupo();
+               // stkw001.txt_deposito.setText(arr_deposito.get(i));
+              //  stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
+
                 listar_depositos(activity,arrIdSucursales.get(i));
             }
         });
     }
 
     public static void Stkw001DepositoOnclick(){
+        stkw001.sp_deposito.showSpinerDialog();
         stkw001.txt_deposito.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v) {
             stkw001.sp_deposito.showSpinerDialog();
@@ -496,8 +512,7 @@ public class controles {
                 limpiarSubGrupo();
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
-                // listar_depositos(activity,controles.arrIdSucursales.get(i));
-            }
+             }
         });
     }
 
@@ -539,6 +554,7 @@ public class controles {
     }
 
     public static void Stkw001DepartamentoOnclick(Activity activity, Context context,int tipo_toma){
+        stkw001.sp_departamento.showSpinerDialog();
         stkw001.txt_departamento.setOnClickListener(new View.OnClickListener() {  @Override
         public void onClick(View v) {
             stkw001.sp_departamento.showSpinerDialog();
@@ -573,6 +589,7 @@ public class controles {
     }
 
     public static void Stkw001SeccionOnclick(Activity activity, Context context,int tipo_toma){
+        stkw001.sp_seccion.showSpinerDialog();
         stkw001.txt_seccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -602,6 +619,7 @@ public class controles {
     }
 
     public static void Stkw001FamiliaOnclick(Activity activity, Context context,int tipo_toma){
+        stkw001.sp_familia.showSpinerDialog();
         stkw001.txt_familia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -625,6 +643,7 @@ public class controles {
     }
 
     public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
+        stkw001.sp_grupo.showSpinerDialog();
         stkw001.txt_grupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -691,7 +710,7 @@ public class controles {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
-                            {  final  AsyncRegStkw001 task = new  AsyncRegStkw001();
+                            {  final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
                                 task.execute();
 
                             }
@@ -741,7 +760,7 @@ public class controles {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
-                            {  final  AsyncRegStkw001 task = new  AsyncRegStkw001();
+                            {  final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
                                 task.execute();
 
                             }
@@ -752,139 +771,6 @@ public class controles {
         }
     }
 
-    public static void InsertStkw001(){
-
-        try {
-            String id_cabecera="";
-            connect = conexion.Connections();
-            Statement stmt = connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
-            while (rs.next()){
-                id_cabecera=rs.getString(1);
-            }
-
-            connect.setAutoCommit(false);
-            String insertar = "insert into WEB_INVENTARIO(" +
-                    "WINVE_SUC,                          " +
-                    "WINVE_DEP,                       " +
-                    "WINVE_GRUPO,                 " +
-                    "WINVE_FEC,       " +
-                    "WINVE_LOGIN," +
-                    "WINVE_TIPO_TOMA,                    " +
-                    "WINVE_SECC,                      " +
-                    "WINVE_AREA,                  " +
-                    "WINVE_DPTO,      " +
-                    "WINVE_FLIA," +
-                    "WINVE_IND_LOTE," +
-                    "WINVE_ESTADO," +
-                    "WINVE_ART_EST," +
-                    "WINVE_ART_EXIST," +
-                    "WINVE_CANT_TOMA," +
-                    "WINVE_EMPR,WINVE_NUMERO) values  " +
-                    "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
-                    "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
-                    "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
-                    "CURRENT_TIMESTAMP," +
-                    "UPPER('" +variables.userdb+"')," +
-                    "'"+variables.tipo_stkw001_insert+"'," +
-                    "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
-                    "'"+stkw001.txt_id_area.getText().toString()+"'," +
-                    "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
-                    "'"+stkw001.txt_id_familia.getText().toString()+"'," +
-                    "'"+INVE_IND_LOTE+"'," +
-                    "'A'," +
-                    "'"+INVE_ART_EST+"'," +
-                    "'"+INVE_ART_EXIST+"'," +
-                    "'"+INVE_CANT_TOMA+"'," +
-                    "'1', "+id_cabecera+")";
-            PreparedStatement ps = connect.prepareStatement(insertar);
-            ps.executeUpdate();
-            int secuencia=1;
-            if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
-            {
-                for (int i = 0; i < listInsertArticulos.size(); i++) {
-                int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                        "WINVD_NRO_INV," +
-                        "WINVD_ART," +
-                        "WINVD_SECU," +
-                        "WINVD_CANT_ACT," +
-                        "WINVD_CANT_INV," +
-                        "WINVD_UBIC," +
-                        "WINVD_CODIGO_BARRA," +
-                        "WINVD_CANT_PED_RECEP," +
-                        "WINVD_LOTE," +
-                        "WINVD_FEC_VTO," +
-                        "WINVD_LOTE_CLAVE," +
-                        "WINVD_UM," +
-                        "WINVD_area," +
-                        "WINVD_dpto," +
-                        "WINVD_secc," +
-                        "WINVD_flia," +
-                        "WINVD_grupo," +
-                        "WINVD_subgr," +
-                        "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
-                        "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
-                        "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
-                        "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
-
-
-                PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                ps2.executeUpdate();
-                secuencia++;
-            }}
-
-            else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
-            {
-                for (int i = 0; i < listArrayArticulos.size(); i++) {
-                    int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
-                    String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                            "WINVD_NRO_INV," +
-                            "WINVD_ART," +
-                            "WINVD_SECU," +
-                            "WINVD_CANT_ACT," +
-                            "WINVD_CANT_INV," +
-                            "WINVD_UBIC," +
-                            "WINVD_CODIGO_BARRA," +
-                            "WINVD_CANT_PED_RECEP," +
-                            "WINVD_LOTE," +
-                            "WINVD_FEC_VTO," +
-                            "WINVD_LOTE_CLAVE," +
-                            "WINVD_UM," +
-                            "WINVD_area," +
-                            "WINVD_dpto," +
-                            "WINVD_secc," +
-                            "" +
-                            "WINVD_flia," +
-                            "WINVD_grupo," +
-                            "WINVD_subgr," +
-                            "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listArrayArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
-                            "'"+listArrayArticulos.get(i).getLote()+"',TO_DATE('"+listArrayArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
-                            "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
-                            "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listArrayArticulos.get(i).getSubgrupo()+"','')";
-
-
-                    PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                    ps2.executeUpdate();
-
-                    secuencia++;
-                }}
-            connect.commit();
-            tipoRespuestaStkw001=1;
-            mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-
-        }
-        catch (Exception error){
-            mensajeRespuestaStkw001=error.toString();
-            tipoRespuestaStkw001=0;
-
-            try {
-                connect.rollback();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-    }
 
     public static void listarStkw002(){
 
@@ -912,7 +798,80 @@ public class controles {
 
     }
 
-    public static class AsyncRegStkw001 extends AsyncTask<Void, Void, Void>
+    public static void ExportarStkw002(){
+        try {
+
+            SQLiteDatabase dbConsultaCont= conSqlite.getReadableDatabase();
+            Cursor cursorCont=dbConsultaCont.rawQuery("select  count(*) from stkw002inv" +
+                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' " ,null);
+            if(cursorCont.moveToNext()){
+                ContExportStkw002=cursorCont.getInt(0);
+            }
+
+
+            new AlertDialog.Builder(context_menuPrincipal)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("EXPORTACION.")
+                    .setMessage("¿DESEA ENVIAR LOS INVETARIOS REALIZADOS?")
+                    .setPositiveButton("SI", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            menu_principal.ProDialogExport =  new ProgressDialog(context_menuPrincipal);
+                            menu_principal.ProDialogExport.setMax(ContExportStkw002);
+                            LayerDrawable progressBarDrawable = new LayerDrawable(
+                            new Drawable[]{
+                            new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                            new int[]{Color.parseColor("black"),Color.parseColor("black")}),
+                            new ClipDrawable(
+                            new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                            new int[]{Color.parseColor("red"),Color.parseColor("red")}),
+                            Gravity.START,  ClipDrawable.HORIZONTAL),
+                            new ClipDrawable(   new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                            new int[]{Color.parseColor("red"),Color.parseColor("red")}),
+                            Gravity.START,  ClipDrawable.HORIZONTAL)    });
+                            progressBarDrawable.setId(0,android.R.id.background);
+                            progressBarDrawable.setId(1,android.R.id.secondaryProgress);
+                            progressBarDrawable.setId(2,android.R.id.progress);
+                            menu_principal.ProDialogExport.setTitle("INVENTARIOS REGISTRADOS.");
+                            menu_principal.ProDialogExport.setMessage("ENVIANDO...");
+                            menu_principal.ProDialogExport.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                            menu_principal.ProDialogExport.setProgressDrawable(progressBarDrawable);
+                            menu_principal.ProDialogExport.show();
+                            menu_principal.ProDialogExport.setCanceledOnTouchOutside(false);
+                            menu_principal.ProDialogExport.setCancelable(false);
+                            final AsyncExportStkw002 task = new AsyncExportStkw002();
+                            task.execute();
+                        }
+                    })
+                    .setNegativeButton("NO", null)
+                    .show();
+
+        }
+        catch (Exception e){
+            new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
+                    .setTitle("INFORME!!!")
+                    .setCancelable(false)
+                    .setMessage(e.toString())
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).show();
+            try {
+                connect.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
+////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
+    public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected void onPreExecute() {
@@ -921,7 +880,136 @@ public class controles {
         }
         @Override
         protected Void doInBackground(Void... params) {
-            InsertStkw001();
+            try {
+                String id_cabecera="";
+                connect = conexion.Connections();
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+                while (rs.next()){
+                    id_cabecera=rs.getString(1);
+                }
+
+                connect.setAutoCommit(false);
+                String insertar = "insert into WEB_INVENTARIO(" +
+                        "WINVE_SUC,                          " +
+                        "WINVE_DEP,                       " +
+                        "WINVE_GRUPO,                 " +
+                        "WINVE_FEC,       " +
+                        "WINVE_LOGIN," +
+                        "WINVE_TIPO_TOMA,                    " +
+                        "WINVE_SECC,                      " +
+                        "WINVE_AREA,                  " +
+                        "WINVE_DPTO,      " +
+                        "WINVE_FLIA," +
+                        "WINVE_IND_LOTE," +
+                        "WINVE_ESTADO," +
+                        "WINVE_ART_EST," +
+                        "WINVE_ART_EXIST," +
+                        "WINVE_CANT_TOMA," +
+                        "WINVE_EMPR,WINVE_NUMERO) values  " +
+                        "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                        "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
+                        "CURRENT_TIMESTAMP," +
+                        "UPPER('" +variables.userdb+"')," +
+                        "'"+variables.tipo_stkw001_insert+"'," +
+                        "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_familia.getText().toString()+"'," +
+                        "'"+INVE_IND_LOTE+"'," +
+                        "'A'," +
+                        "'"+INVE_ART_EST+"'," +
+                        "'"+INVE_ART_EXIST+"'," +
+                        "'"+INVE_CANT_TOMA+"'," +
+                        "'1', "+id_cabecera+")";
+                PreparedStatement ps = connect.prepareStatement(insertar);
+                ps.executeUpdate();
+                int secuencia=1;
+                if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
+                {
+                    for (int i = 0; i < listInsertArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," +
+                                "WINVD_ART," +
+                                "WINVD_SECU," +
+                                "WINVD_CANT_ACT," +
+                                "WINVD_CANT_INV," +
+                                "WINVD_UBIC," +
+                                "WINVD_CODIGO_BARRA," +
+                                "WINVD_CANT_PED_RECEP," +
+                                "WINVD_LOTE," +
+                                "WINVD_FEC_VTO," +
+                                "WINVD_LOTE_CLAVE," +
+                                "WINVD_UM," +
+                                "WINVD_area," +
+                                "WINVD_dpto," +
+                                "WINVD_secc," +
+                                "WINVD_flia," +
+                                "WINVD_grupo," +
+                                "WINVD_subgr," +
+                                "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
+                                "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
+
+
+                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+                        secuencia++;
+                    }}
+
+                else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
+                {
+                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," +
+                                "WINVD_ART," +
+                                "WINVD_SECU," +
+                                "WINVD_CANT_ACT," +
+                                "WINVD_CANT_INV," +
+                                "WINVD_UBIC," +
+                                "WINVD_CODIGO_BARRA," +
+                                "WINVD_CANT_PED_RECEP," +
+                                "WINVD_LOTE," +
+                                "WINVD_FEC_VTO," +
+                                "WINVD_LOTE_CLAVE," +
+                                "WINVD_UM," +
+                                "WINVD_area," +
+                                "WINVD_dpto," +
+                                "WINVD_secc," +
+                                "" +
+                                "WINVD_flia," +
+                                "WINVD_grupo," +
+                                "WINVD_subgr," +
+                                "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listArrayArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
+                                "'"+listArrayArticulos.get(i).getLote()+"',TO_DATE('"+listArrayArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listArrayArticulos.get(i).getSubgrupo()+"','')";
+
+
+                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+
+                        secuencia++;
+                    }}
+                connect.commit();
+                tipoRespuestaStkw001=1;
+                mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+
+            }
+            catch (Exception error){
+                mensajeRespuestaStkw001=error.toString();
+                tipoRespuestaStkw001=0;
+
+                try {
+                    connect.rollback();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
             return null;
         }
         @Override
@@ -955,4 +1043,86 @@ public class controles {
 
         }
     }
+
+    public static class AsyncExportStkw002 extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+           // menu_principal.ProDialogExport = ProgressDialog.show(context_menuPrincipal, "PROCESANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+           try {
+               SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+               Cursor cursor=db_consulta.rawQuery("select " +
+                       "winvd_nro_inv," +  //0
+                       "winvd_lote," +     //1
+                       "winvd_art ," +     //2
+                       "winvd_fec_vto," +  //3
+                       "winvd_area," +     //4
+                       "winvd_dpto," +     //5
+                       "winvd_secc," +     //6
+                       "winvd_flia," +     //7
+                       "winvd_grupo," +    //8
+                       "winvd_cant_act," + //9
+                       "winvd_cant_inv" +  //10
+                       " from stkw002inv" +
+                       " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' " ,null);
+               connect = conexion.Connections();
+               int i=1;
+               while (cursor.moveToNext())
+               {
+                   connect.setAutoCommit(false);
+                   String upd_inventario=" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " +
+                    "where winvd_nro_inv="  +cursor.getString(0)+"  and " +
+                    "winvd_lote='"          +cursor.getString(1)+"' and " +
+                    "winvd_area="           +cursor.getString(4)+"  and " +
+                    "winvd_dpto="           +cursor.getString(5)+"  and " +
+                    "winvd_secc="           +cursor.getString(6)+"  and " +
+                    "winvd_flia="           +cursor.getString(7)+"  and " +
+                    "winvd_grupo="          +cursor.getString(8)+" ";
+                   PreparedStatement ps = connect.prepareStatement(upd_inventario);
+                   ps.executeUpdate();
+                   menu_principal.ProDialogExport.setProgress(i);
+                   i++;
+                }
+               connect.commit();
+               mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
+           }catch (Exception e){
+               mensajeRespuestaExportStkw002=e.toString();
+           }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            menu_principal.ProDialogExport.dismiss();
+            if(tipoRespuestaExportStkw002==1){
+                new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
+                        .setTitle("INFORME!!!")
+                        .setCancelable(false)
+                        .setMessage(mensajeRespuestaExportStkw002)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).show();
+            }
+            else {
+                new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage(mensajeRespuestaExportStkw002)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).show();
+            }
+
+        }
+    }
+
+
 }

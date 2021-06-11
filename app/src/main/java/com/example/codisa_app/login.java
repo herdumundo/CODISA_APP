@@ -46,63 +46,6 @@ public class login extends AppCompatActivity
             task.execute();
         }
 
-        private void verificar_login(){
-
-        try
-        {
-            user=  txt_usuario.getText().toString();
-            passwd=txt_pass.getText().toString();
-            String url = "jdbc:oracle:thin:@(DESCRIPTION= (ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.19)(PORT=1521)) (CONNECT_DATA=(SERVICE_NAME=codisaprod)))";
-            String driver = "oracle.jdbc.OracleDriver";
-            StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            if(user.length()==0)
-            {
-               mensaje="INGRESE USUARIO";
-            }
-            else if(passwd.length()==0)
-            {
-                mensaje="INGRESE CONTRASEÑA";
-            }
-            else
-            {
-                Class.forName(driver);
-                connection= DriverManager.getConnection(url,user ,passwd );
-                // Toast.makeText(login.this,"REGISTRO EXITOSO",Toast.LENGTH_LONG).show();
-                mensaje="1";
-                variables.userdb=user;
-                variables.passdb=passwd;
-            }
-        }
-        catch (SQLException se)
-        {
-            if(se.getErrorCode()==1017){
-                mensaje="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
-             }
-            else if (se.getErrorCode()==17002)
-            {
-                mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
-            }
-            else if (se.getErrorCode()==20)
-            {
-                mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
-            }
-            else if (se.getErrorCode()==17452)
-            {
-                mensaje="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
-            }
-            else
-            {
-                 mensaje= String.valueOf(se.getErrorCode())  ;
-            }
-
-        }
-        catch (ClassNotFoundException e)
-        {
-           // Log.e("error here 2 : ", e.getMessage());
-        }
-
-     }
 
         class AsyncCaller extends AsyncTask<Void, Void, Void>
         {
@@ -117,7 +60,61 @@ public class login extends AppCompatActivity
             }
             @Override
             protected Void doInBackground(Void... params) {
-                verificar_login();
+
+                try
+                {
+                    user=  txt_usuario.getText().toString();
+                    passwd=txt_pass.getText().toString();
+                    String url = "jdbc:oracle:thin:@(DESCRIPTION= (ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.19)(PORT=1521)) (CONNECT_DATA=(SERVICE_NAME=codisaprod)))";
+                    String driver = "oracle.jdbc.OracleDriver";
+                    StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    if(user.length()==0)
+                    {
+                        mensaje="INGRESE USUARIO";
+                    }
+                    else if(passwd.length()==0)
+                    {
+                        mensaje="INGRESE CONTRASEÑA";
+                    }
+                    else
+                    {
+                        Class.forName(driver);
+                        connection= DriverManager.getConnection(url,user ,passwd );
+                        // Toast.makeText(login.this,"REGISTRO EXITOSO",Toast.LENGTH_LONG).show();
+                        mensaje="1";
+                        variables.userdb=user;
+                        variables.passdb=passwd;
+                    }
+                }
+                catch (SQLException se)
+                {
+                    if(se.getErrorCode()==1017){
+                        mensaje="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
+                    }
+                    else if (se.getErrorCode()==17002)
+                    {
+                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
+                    }
+                    else if (se.getErrorCode()==20)
+                    {
+                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
+                    }
+                    else if (se.getErrorCode()==17452)
+                    {
+                        mensaje="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
+                    }
+                    else
+                    {
+                        mensaje= String.valueOf(se.getErrorCode())  ;
+                    }
+
+                }
+                catch (ClassNotFoundException e)
+                {
+                    // Log.e("error here 2 : ", e.getMessage());
+                }
+
                 return null;
             }
 
@@ -149,12 +146,11 @@ public class login extends AppCompatActivity
                             i++;
                         }
 
-                        if(i>0){
+                        if(i>0){// SI ES MAYOR A CERO, ENTONCES POSEE PERMISOS PARA ACCEDER A LA APP.
                             Utilidades.variables.contenedor_menu=contenedor_opciones;
                             variables.NOMBRE_LOGIN=nombre_usuario;
                              //AQUI SE COLOCARA EL LISTVIEW PARA CONSULTAR LAS SUCURSALES DISPONIBLES. Y LUEGO DE SELECCIONARLA IR AL MENU PRINCIPAL
-                            /*
-    */                      list_sucursal();
+                            ListarSucursal();
                         }
                         else {
                             new AlertDialog.Builder(login.this)
@@ -184,7 +180,7 @@ public class login extends AppCompatActivity
             }
         }
 
-        private  void  list_sucursal()
+        private  void  ListarSucursal()
         {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(login.this);
             builderSingle.setTitle("SUCURSALES DISPONIBLES");

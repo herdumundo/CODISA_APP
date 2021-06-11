@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.security.spec.ECField;
 import java.sql.ResultSet;
@@ -30,19 +31,20 @@ import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class menu_principal extends AppCompatActivity {
-    public static ProgressDialog prodialog;
-    int contador=0;
+    public static ProgressDialog prodialog,ProDialogExport;
+    int ContProgressBarImportador=0;
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
     }
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
         getSupportActionBar().setTitle("USUARIO:"+ variables.NOMBRE_LOGIN);
         getSupportActionBar().setSubtitle("SUCURSAL: "+ variables.DESCRIPCION_SUCURSAL_LOGIN);
         controles.conexion_sqlite(this);
-
+        controles.context_menuPrincipal=this;
         String[] array_opciones=variables.contenedor_menu.split(",");
 
         for(int i=0; i<array_opciones.length; i++)
@@ -55,19 +57,19 @@ public class menu_principal extends AppCompatActivity {
 
     }
 
-    public void ir_stkw002(View v){
+    public void OnclickIrStkw002(View v){
         Intent i=new Intent(this,lista_stkw002_inv.class);
         startActivity(i);
     }
 
-    public void ir_stkw001(View v){
+    public void OnclickIrStkw001(View v){
 
 
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("ATENCION!!!.")
+                .setTitle("ATENCIÓN!!!.")
                 .setMessage("SELECCIONE EL TIPO DE INVENTARIO QUE DESEA GENERAR")
-                .setPositiveButton("SELECCION MANUAL", new DialogInterface.OnClickListener()
+                .setPositiveButton("MANUAL", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -81,7 +83,7 @@ public class menu_principal extends AppCompatActivity {
 
                     }
                 })
-                .setNeutralButton("SELECCION AUTOMATICA",new DialogInterface.OnClickListener() {
+                .setNeutralButton("POR CRITERIO DE SELECCIÓN",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         variables.titulo_stkw001="GENERACION DE TOMAS DE INVENTARIO AUTOMATICA";
@@ -97,37 +99,42 @@ public class menu_principal extends AppCompatActivity {
 
     }
 
+    public void OnclickExportar( View v){
 
-
-
-    public void sincronizarDatos(View v){
-        importar_inventario();
+        controles.ExportarStkw002();
     }
 
-    private void importar_inventario(){
+    public void OnclickSincronizarDatos(View v){
+        ImportarTomas();
+    }
 
+    private void ImportarTomas(){
         try {
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT count(*) as  contador " +
-                    "                               " +
-                    "                    FROM   " +
-                    "                       V_WEB_ARTICULOS_CLASIFICACION  a   " +
-                    "                       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
-                    "                       and a.ART_CODIGO=b.winvd_art       " +
-                    "                       and a.SECC_CODIGO=b.winvd_secc     " +
-                    "                       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
-                    "                       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
-                    "                       and c.winve_dep=a.ARDE_DEP  " +
-                    "                       and c.winve_area=a.AREA_CODIGO  " +
-                    "                       and c.winve_suc=a.ARDE_SUC   " +
-                    "                       and c.winve_secc=a.SECC_CODIGO  " +
-                    "                       where c.winve_empr=1 and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
+            ResultSet rs = stmt.executeQuery("" +
+                    "   SELECT " +
+                    "       count(*) as  contador " +
+                    "   FROM   " +
+                    "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
+                    "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
+                    "       and a.ART_CODIGO=b.winvd_art       " +
+                    "       and a.SECC_CODIGO=b.winvd_secc     " +
+                    "       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
+                    "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
+                    "       and c.winve_dep=a.ARDE_DEP  " +
+                    "       and c.winve_area=a.AREA_CODIGO  " +
+                    "       and c.winve_suc=a.ARDE_SUC   " +
+                    "       and c.winve_secc=a.SECC_CODIGO  " +
+                    "   where " +
+                    "       c.winve_empr=1 " +
+                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
 
             while (rs.next())
             {
-               contador=rs.getInt("contador");
+                ContProgressBarImportador=rs.getInt("contador");
             }
+            rs.close();
             new AlertDialog.Builder(menu_principal.this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("SINCRONIZACION.")
@@ -137,7 +144,7 @@ public class menu_principal extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             menu_principal.prodialog =  new ProgressDialog( menu_principal.this);
-                            menu_principal.prodialog.setMax(contador);
+                            menu_principal.prodialog.setMax(ContProgressBarImportador);
                             LayerDrawable progressBarDrawable = new LayerDrawable(
                                     new Drawable[]{
                                             new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
@@ -177,7 +184,7 @@ public class menu_principal extends AppCompatActivity {
 
     }
 
-    private void test(){
+    private void InsertarSqliteToma(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
             db1.execSQL("delete from STKW002INV  WHERE estado='A'");
@@ -213,76 +220,74 @@ public class menu_principal extends AppCompatActivity {
             {
 
             }
-            else {
-                SQLiteDatabase db=controles.conSqlite.getReadableDatabase();
-
-
-                db.execSQL(" INSERT INTO  STKW002INV (" +
-                        "ARDE_SUC," +
-                        "winvd_nro_inv," +
-                        "winvd_art," +
-                        "ART_DESC," +
-                        "winvd_lote," +
-                        "winvd_fec_vto," +
-                        "winvd_area," +
-                        "winvd_dpto," +
-                        "winvd_secc," +
-                        "winvd_flia," +
-                        "winvd_grupo," +
-                        "winvd_cant_act," +
-                        "winve_fec," +
-                        "dpto_desc," +
-                        "secc_desc," +
-                        "flia_desc," +
-                        "grup_desc," +
-                        "area_desc," +
-                        "winvd_cant_inv," +
-                        "estado) VALUES ('"+
-                        rs.getInt("ARDE_SUC")               +"','"+
-                        rs.getInt("winvd_nro_inv")          +"','"+
-                        rs.getString("winvd_art")           +"','"+
-                        rs.getString("ART_DESC")            +"','"+
-                        rs.getString("winvd_lote")          +"','"+
-                        rs.getString("winvd_fec_vto")       +"','"+
-                        rs.getString("winvd_area")          +"','"+
-                        rs.getString("winvd_dpto")          +"','"+
-                        rs.getString("winvd_secc")          +"','"+
-                        rs.getString("winvd_flia")          +"','"+
-                        rs.getString("winvd_grupo")         +"','"+
-                        rs.getString("winvd_cant_act")      +"','"+
-                        rs.getString("winve_fec")           +"','"+
-                        rs.getString("dpto_desc")           +"','"+
-                        rs.getString("secc_desc")           +"','"+
-                        rs.getString("flia_desc")           +"','"+
-                        rs.getString("grup_desc")           +"','"+
-                        rs.getString("area_desc")           +"'," +
-                        "'0'," +
-                        "'A') ");
-                //ESTADO PENDIENTE A INVENTARIAR.
+            else
+            {
+                SQLiteDatabase dbdbSTKW002INV=controles.conSqlite.getReadableDatabase();
+                dbdbSTKW002INV.execSQL(" INSERT INTO  STKW002INV (" +
+                "ARDE_SUC," +
+                "winvd_nro_inv," +
+                "winvd_art," +
+                "ART_DESC," +
+                "winvd_lote," +
+                "winvd_fec_vto," +
+                "winvd_area," +
+                "winvd_dpto," +
+                "winvd_secc," +
+                "winvd_flia," +
+                "winvd_grupo," +
+                "winvd_cant_act," +
+                "winve_fec," +
+                "dpto_desc," +
+                "secc_desc," +
+                "flia_desc," +
+                "grup_desc," +
+                "area_desc," +
+                "winvd_cant_inv," +
+                "estado) VALUES ('"+
+                rs.getInt("ARDE_SUC")               +"','"+
+                rs.getInt("winvd_nro_inv")          +"','"+
+                rs.getString("winvd_art")           +"','"+
+                rs.getString("ART_DESC")            +"','"+
+                rs.getString("winvd_lote")          +"','"+
+                rs.getString("winvd_fec_vto")       +"','"+
+                rs.getString("winvd_area")          +"','"+
+                rs.getString("winvd_dpto")          +"','"+
+                rs.getString("winvd_secc")          +"','"+
+                rs.getString("winvd_flia")          +"','"+
+                rs.getString("winvd_grupo")         +"','"+
+                rs.getString("winvd_cant_act")      +"','"+
+                rs.getString("winve_fec")           +"','"+
+                rs.getString("dpto_desc")           +"','"+
+                rs.getString("secc_desc")           +"','"+
+                rs.getString("flia_desc")           +"','"+
+                rs.getString("grup_desc")           +"','"+
+                rs.getString("area_desc")           +"'," +
+                "'0'," +
+                "'A') "); //ESTADO PENDIENTE A INVENTARIAR.
+                dbdbSTKW002INV.close();
             }
-
-
-              prodialog.setProgress(i);
+            db_consulta.close();
+            prodialog.setProgress(i);
             i++;
         }
+        rs.close();
         prodialog.dismiss();
         }
-        catch (Exception e){
-        String error=e.toString();
+        catch (Exception e)
+        {
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
             prodialog.dismiss();
         }
-
-
     }
-    class AsyncImportador extends AsyncTask<Void, Void, Void>
-    {
+
+    class AsyncImportador extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
         @Override
         protected Void doInBackground(Void... params) {
-            test();
+            InsertarSqliteToma();
             return null;
         }
 
