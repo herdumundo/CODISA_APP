@@ -80,9 +80,9 @@ public class controles {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(context, clase_destino);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            activity.finish();
-                            context.startActivity(intent);
 
+                            context.startActivity(intent);
+                            activity.finish();
                         }
                     })
                     .setNegativeButton("NO", null)
@@ -96,23 +96,27 @@ public class controles {
                     .setPositiveButton("SI", new DialogInterface.OnClickListener()
                     {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(DialogInterface dialog, int which)
+                        {
                             Intent intent = new Intent(context, clase_destino);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            activity.finish();
-                            context.startActivity(intent);
 
+                            context.startActivity(intent);
+                            activity.finish();
                         }
                     })
                     .setNegativeButton("NO", null)
                     .show();
         }
-
+        else if(tipo==5){
+            activity.finish();
+        }
         else {
             Intent intent = new Intent(context, clase_destino);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            activity.finish();
+
             context.startActivity(intent);
+            activity.finish();
         }
     }
 

@@ -10,11 +10,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -41,9 +43,13 @@ public class menu_principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
-        getSupportActionBar().setTitle("USUARIO:"+ variables.NOMBRE_LOGIN);
-        getSupportActionBar().setSubtitle("SUCURSAL: "+ variables.DESCRIPCION_SUCURSAL_LOGIN);
-        controles.conexion_sqlite(this);
+       // getSupportActionBar().setTitle("USUARIO:"+ variables.NOMBRE_LOGIN);
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>SUCURSAL:"+ variables.DESCRIPCION_SUCURSAL_LOGIN+" </font>"));
+
+         controles.conexion_sqlite(this);
         controles.context_menuPrincipal=this;
         String[] array_opciones=variables.contenedor_menu.split(",");
 
@@ -68,12 +74,12 @@ public class menu_principal extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("ATENCIÓN!!!.")
-                .setMessage("SELECCIONE EL TIPO DE INVENTARIO QUE DESEA GENERAR")
+                .setMessage("SELECCIONE EL TIPO DE TOMA QUE DESEA GENERAR")
                 .setPositiveButton("MANUAL", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        variables.titulo_stkw001="GENERACION DE TOMAS DE INVENTARIO MANUAL";
+                        variables.titulo_stkw001="TOMA MANUAL";
                         variables.tipo_stkw001=1;
                         variables.tipo_stkw001_insert="M";
 
@@ -86,7 +92,7 @@ public class menu_principal extends AppCompatActivity {
                 .setNeutralButton("POR CRITERIO DE SELECCIÓN",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        variables.titulo_stkw001="GENERACION DE TOMAS DE INVENTARIO AUTOMATICA";
+                        variables.titulo_stkw001="TOMA POR CRITERIO DE SELECCION";
                         variables.tipo_stkw001=2;
                         variables.tipo_stkw001_insert="C";
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
@@ -163,8 +169,8 @@ public class menu_principal extends AppCompatActivity {
                             progressBarDrawable.setId(0,android.R.id.background);
                             progressBarDrawable.setId(1,android.R.id.secondaryProgress);
                             progressBarDrawable.setId(2,android.R.id.progress);
-                            menu_principal.prodialog.setTitle("SINCRONIZANDO ANIMALES ACTUALIZADOS");
-                            menu_principal.prodialog.setMessage("DESCARGANDO...");
+                            menu_principal.prodialog.setTitle("SINCRONIZANDO DATOS");
+                            menu_principal.prodialog.setMessage("ESPERE...");
                             menu_principal.prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                             menu_principal.prodialog.setProgressDrawable(progressBarDrawable);
                             menu_principal.prodialog.show();

@@ -31,7 +31,6 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         ExampleViewHolder(View itemView) {
             super(itemView);
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
-           // this.textPosicion = (TextView) itemView.findViewById(R.id.txt_posicion);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
             this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
         }

@@ -25,6 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class login extends AppCompatActivity
     {
+    public void onBackPressed()  {
+            Utilidades.controles.volver_atras(this,this,  login.class,"DESEA SALIR DE LA APLICACION?",5);
+        }
+
         TextView txt_usuario,txt_pass;
         String mensaje,passwd,user="";
         Connection connection=null;

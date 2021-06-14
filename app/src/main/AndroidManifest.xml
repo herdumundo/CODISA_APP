@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".lista_stkw002_inv"></activity>
-        <activity android:name=".stkw002" />
-        <activity android:name=".menu_principal" />
-        <activity android:name=".stkw001" />
-        <activity android:name=".login">
+        <activity android:name=".lista_stkw002_inv" android:noHistory="true"/>
+        <activity android:name=".stkw002" android:noHistory="true" />
+        <activity android:name=".menu_principal" android:noHistory="true" />
+        <activity android:name=".stkw001" android:noHistory="true" />
+        <activity android:name=".login" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
