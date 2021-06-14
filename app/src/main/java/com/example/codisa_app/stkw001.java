@@ -3,7 +3,10 @@ package com.example.codisa_app;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -36,7 +39,9 @@ public class stkw001 extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stkw001);
-        getSupportActionBar().setTitle(variables.titulo_stkw001);
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ variables.titulo_stkw001+" </font>"));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
         txt_sucursal        = (TextView)findViewById(R.id.txt_desc_sucursal) ;

@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -40,9 +43,12 @@ public class login extends AppCompatActivity
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.login);
-            getSupportActionBar().setTitle("CODISA APP V.1.0");
+           // getSupportActionBar().setTitle("CODISA APP V.1.0");
             txt_usuario=(TextView)findViewById(R.id.txt_usuario);
             txt_pass=(TextView)findViewById(R.id.txt_pass);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
+
         }
         public void login (View v)
         {

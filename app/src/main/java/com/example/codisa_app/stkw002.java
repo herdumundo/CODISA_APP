@@ -33,10 +33,9 @@ public class stkw002 extends AppCompatActivity {
         controles.listarStkw002();
         listar_recicler();
         controles.conexion_sqlite(this);
-
-         Searchtext = (EditText) findViewById(R.id.search_input);
+        Searchtext = (EditText) findViewById(R.id.search_input);
         txt_cantidad = (EditText) findViewById(R.id.txt_cantidad);
-         Searchtext.addTextChangedListener(new TextWatcher()
+        Searchtext.addTextChangedListener(new TextWatcher()
         {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {

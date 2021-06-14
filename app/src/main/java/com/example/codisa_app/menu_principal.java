@@ -20,6 +20,7 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.spec.ECField;
@@ -34,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
+    public  static TextView txt_total;
     int ContProgressBarImportador=0;
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
@@ -43,13 +45,13 @@ public class menu_principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
-       // getSupportActionBar().setTitle("USUARIO:"+ variables.NOMBRE_LOGIN);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
+        txt_total=findViewById(R.id.txt_total);
 
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>SUCURSAL:"+ variables.DESCRIPCION_SUCURSAL_LOGIN+" </font>"));
-
-         controles.conexion_sqlite(this);
+        controles.conexion_sqlite(this);
+        controles.ConsultarPendientesExportar();
         controles.context_menuPrincipal=this;
         String[] array_opciones=variables.contenedor_menu.split(",");
 

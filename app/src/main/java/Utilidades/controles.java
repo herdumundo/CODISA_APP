@@ -871,7 +871,19 @@ public class controles {
 
     }
 
+    public static void ConsultarPendientesExportar(){
+        SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+        Cursor cursor=db_consulta.rawQuery("select  count(distinct winvd_nro_inv)" +
+                " from stkw002inv" +
+                " WHERE estado='P' " ,null);
+         ListArrayInventarioArticulos = new ArrayList();
+        if (cursor.moveToNext())
+        {
+            menu_principal.txt_total.setText(cursor.getString(0));
+        }
+        db_consulta.close();
 
+    }
 
 
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
@@ -1059,6 +1071,7 @@ public class controles {
         protected Void doInBackground(Void... params) {
            try {
                SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+               SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
                Cursor cursor=db_consulta.rawQuery("select " +
                        "winvd_nro_inv," +  //0
                        "winvd_lote," +     //1
@@ -1093,6 +1106,11 @@ public class controles {
                 }
                connect.commit();
                mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
+               db_UPDATE.execSQL(" update stkw002inv set estado='C' where estado='P'");
+               db_UPDATE.close();
+               db_consulta.close();
+               ConsultarPendientesExportar();
+               //FALTA ACTUALIZAR LA CABECERA DEL INVENTARIO EN EL ORACLE SERVER.
            }catch (Exception e){
                mensajeRespuestaExportStkw002=e.toString();
            }

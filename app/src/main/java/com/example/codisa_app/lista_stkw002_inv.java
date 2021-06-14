@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class lista_stkw002_inv extends AppCompatActivity {
+public class lista_stkw002_inv extends AppCompatActivity
+{
     ArrayList<Stkw002List> listaStkw002;
     ListView listView;
-   public static Button btn_buscar;
+    public static Button btn_buscar;
     int tipo=1;
-    public void onBackPressed()  {
+    public void onBackPressed()
+    {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
     }
     @Override
@@ -41,6 +44,8 @@ public class lista_stkw002_inv extends AppCompatActivity {
         consultar_tomas_generadas("A");
         btn_buscar.setBackgroundColor(Color.GREEN);
         getSupportActionBar().setTitle("LISTADO DE TOMAS PENDIENTES A INVENTARIAR");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
@@ -112,6 +117,7 @@ public class lista_stkw002_inv extends AppCompatActivity {
             btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.RED);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
             getSupportActionBar().setTitle("LISTADO DE TOMAS INVENTARIADAS");
 
         }
@@ -121,6 +127,8 @@ public class lista_stkw002_inv extends AppCompatActivity {
             btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.GREEN);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+
             getSupportActionBar().setTitle("LISTADO DE TOMAS PENDIENTES A INVENTARIAR");
 
         }
