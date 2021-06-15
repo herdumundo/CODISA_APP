@@ -9,17 +9,30 @@
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="444dp"
+        android:layout_width="389dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/boton2"
+        android:layout_marginBottom="16dp"
 
+        android:background="@drawable/boton2"
         android:drawableLeft="@mipmap/ic_gen"
         android:onClick="registrarToma"
         android:text="Generar Toma"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ListView
+        android:id="@+id/listViewDet_art"
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <RadioGroup
         android:id="@+id/radioGrupoLote"
@@ -51,7 +64,6 @@
             android:textSize="15dp" />
 
     </RadioGroup>
-
 
     <RadioGroup
         android:id="@+id/radioGrupoArticulo"
@@ -85,36 +97,10 @@
 
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/lbl_articulos"
-        android:layout_width="66dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="Articulos"
-        android:visibility="gone"
-        android:textColor="#4CAF50"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="251dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Incluir articulos con existencia cero"
-        android:textColor="#4CAF50"
-        android:textStyle="normal|bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
     <RadioGroup
         android:id="@+id/radioGrupoExistencia"
-        android:layout_width="146dp"
-        android:layout_height="32dp"
+        android:layout_width="119dp"
+        android:layout_height="33dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
@@ -134,14 +120,49 @@
 
         <RadioButton
             android:id="@+id/radioExistenciaNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
             android:layout_alignStart="@+id/radioGrupoExistencia"
             android:layout_alignBottom="@+id/radioGrupoExistencia"
             android:text="NO"
             android:textSize="15dp" />
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/txt_lv_vencimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:text="VENCIMIENTO"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/lbl_articulos"
+        android:layout_width="66dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Articulos"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="251dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Incluir articulos con existencia cero"
+        android:textColor="#4CAF50"
+        android:textStyle="normal|bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView3"
@@ -402,7 +423,7 @@
         android:id="@+id/txt_desc_sucursal"
         android:layout_width="190dp"
 
-        android:layout_height="19dp"
+        android:layout_height="23dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="28dp"
         android:drawableEnd="@drawable/ic_action_spinner"
@@ -434,13 +455,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
 
+    <TextView
+        android:id="@+id/txt_lv_cod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COD"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/txt_lv_lote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOTE"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+    <TextView
+        android:id="@+id/txt_lv_articulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ARTICULO"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
     <Utilidades.MultiSpinnerSearch
-        android:visibility="gone"
         android:id="@+id/spinerArticulos"
         android:layout_width="215dp"
         android:layout_height="29dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="27dp"
+        android:visibility="gone"
         app:hintText="Seleccione Articulos"
         app:layout_constraintStart_toEndOf="@+id/lbl_articulos"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
@@ -458,4 +509,28 @@
         app:layout_constraintStart_toEndOf="@+id/lbl_subgrupo"
         app:layout_constraintTop_toBottomOf="@+id/txt_grupo"
         tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.79" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical"
+
+        app:layout_constraintGuide_percent="0.59" />
 </androidx.constraintlayout.widget.ConstraintLayout>

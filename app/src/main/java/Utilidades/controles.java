@@ -16,6 +16,9 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
@@ -369,10 +372,9 @@ public class controles {
             Statement stmt2 = connect.createStatement();
             if(ids_subgrupos.length()>0){
 
-
             ResultSet rs2 = stmt2.executeQuery("" +
                     "select " +
-                    "   TO_NUMBER (arde_cant_act) as cantidad  ,v_web_articulos_clasificacion.* " +
+                    "   TO_NUMBER (arde_cant_act) as cantidad  ,TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento,v_web_articulos_clasificacion.* " +
                     "from " +
                     "   v_web_articulos_clasificacion " +
                     "where " +
@@ -388,12 +390,14 @@ public class controles {
             listInsertArticulos.clear();
             while ( rs2.next())
             {
+                String vencimiento=rs2.getString("vencimiento");
                 ArrayListContenedor contenedor = new ArrayListContenedor();
                 contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
                 contenedor.setName(rs2.getString("art_desc"));
                 contenedor.setLote(rs2.getString("arde_lote"));
                 contenedor.setCantidad(rs2.getString("cantidad"));
-                contenedor.setFechaVencimiento(rs2.getString("arde_fec_vto_lote"));
+                contenedor.setFechaVencimiento(rs2.getString("ARDE_FEC_VTO_LOTE"));
+                contenedor.setFecha_vencimientoParseado(vencimiento);
                 contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                 listArrayArticulos.add(contenedor);
             }
@@ -419,10 +423,29 @@ public class controles {
                             insArt.setLote(items.get(i).getLote());
                             insArt.setCantidad(items.get(i).getCantidad());
                             insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
+                            insArt.setFecha_vencimientoParseado(items.get(i).getFecha_vencimientoParseado());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
                             listInsertArticulos.add(insArt);
                         }
                     }
+                    ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View view = super.getView(position, convertView, parent);
+                            TextView txt_nro = (TextView) view.findViewById(R.id.txt_nro);
+                            TextView txt_producto = (TextView) view.findViewById(R.id.txt_producto);
+                            TextView txt_lote = (TextView) view.findViewById(R.id.txt_lote);
+                            TextView txt_vto = (TextView) view.findViewById(R.id.txt_vto);
+
+                            txt_nro.setText(""+listInsertArticulos.get(position).getId());
+                            txt_producto.setText(""+listInsertArticulos.get(position).getName());
+                            txt_lote.setText(""+listInsertArticulos.get(position).getLote());
+                            txt_vto.setText(""+listInsertArticulos.get(position).getFecha_vencimientoParseado());
+
+                            return view;
+                        }
+                    };
+                    stkw001.LvArticulosStkw001.setAdapter(adapter);
                 }
             });
         }
@@ -782,7 +805,7 @@ public class controles {
 
             SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
             Cursor cursor=db_consulta.rawQuery("select winvd_nro_inv,ART_DESC,winvd_lote,winvd_art ," +
-                    "winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act,winvd_cant_inv" +
+                    "date(winvd_fec_vto) as  winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act,winvd_cant_inv" +
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
             int cont=0;
@@ -922,7 +945,9 @@ public class controles {
                         "WINVE_ART_EST," +
                         "WINVE_ART_EXIST," +
                         "WINVE_CANT_TOMA," +
-                        "WINVE_EMPR,WINVE_NUMERO) values  " +
+                        "WINVE_EMPR," +
+                        "WINVE_NUMERO," +
+                        "WINVE_ESTADO_WEB) values  " +
                         "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
                         "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
                         "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
@@ -938,7 +963,7 @@ public class controles {
                         "'"+INVE_ART_EST+"'," +
                         "'"+INVE_ART_EXIST+"'," +
                         "'"+INVE_CANT_TOMA+"'," +
-                        "'1', "+id_cabecera+")";
+                        "'1', "+id_cabecera+",'A')";
                 PreparedStatement ps = connect.prepareStatement(insertar);
                 ps.executeUpdate();
                 int secuencia=1;
@@ -946,6 +971,8 @@ public class controles {
                 {
                     for (int i = 0; i < listInsertArticulos.size(); i++) {
                         int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                        String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
+
                         String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
                                 "WINVD_NRO_INV," +
                                 "WINVD_ART," +
@@ -966,7 +993,7 @@ public class controles {
                                 "WINVD_grupo," +
                                 "WINVD_subgr," +
                                 "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
-                                "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+listInsertArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                                "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
                                 "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
                                 "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
 
@@ -1071,39 +1098,58 @@ public class controles {
         protected Void doInBackground(Void... params) {
            try {
                SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
-               SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
-               Cursor cursor=db_consulta.rawQuery("select " +
-                       "winvd_nro_inv," +  //0
-                       "winvd_lote," +     //1
-                       "winvd_art ," +     //2
-                       "winvd_fec_vto," +  //3
-                       "winvd_area," +     //4
-                       "winvd_dpto," +     //5
-                       "winvd_secc," +     //6
-                       "winvd_flia," +     //7
-                       "winvd_grupo," +    //8
-                       "winvd_cant_act," + //9
-                       "winvd_cant_inv" +  //10
-                       " from stkw002inv" +
-                       " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' " ,null);
+               SQLiteDatabase db_consultaCab= conSqlite.getReadableDatabase();
+
+                SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
+
+               Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv from stkw002inv where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P'",null);
                connect = conexion.Connections();
-               int i=1;
-               while (cursor.moveToNext())
+               connect.setAutoCommit(false);
+               while (cursorCab.moveToNext())
                {
-                   connect.setAutoCommit(false);
-                   String upd_inventario=" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " +
-                    "where winvd_nro_inv="  +cursor.getString(0)+"  and " +
-                    "winvd_lote='"          +cursor.getString(1)+"' and " +
-                    "winvd_area="           +cursor.getString(4)+"  and " +
-                    "winvd_dpto="           +cursor.getString(5)+"  and " +
-                    "winvd_secc="           +cursor.getString(6)+"  and " +
-                    "winvd_flia="           +cursor.getString(7)+"  and " +
-                    "winvd_grupo="          +cursor.getString(8)+" ";
-                   PreparedStatement ps = connect.prepareStatement(upd_inventario);
-                   ps.executeUpdate();
-                   menu_principal.ProDialogExport.setProgress(i);
-                   i++;
-                }
+                   Cursor cursor=db_consulta.rawQuery("select " +
+                           "winvd_nro_inv," +  //0
+                           "winvd_lote," +     //1
+                           "winvd_art ," +     //2
+                           "winvd_fec_vto," +  //3
+                           "winvd_area," +     //4
+                           "winvd_dpto," +     //5
+                           "winvd_secc," +     //6
+                           "winvd_flia," +     //7
+                           "winvd_grupo," +    //8
+                           "winvd_cant_act," + //9
+                           "winvd_cant_inv" +  //10
+                           " from stkw002inv" +
+                           " WHERE " +
+                           "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+cursorCab.getString(0)+ " "  ,null);
+
+                   int i=1;
+                   while (cursor.moveToNext())
+                   {
+
+                       String upd_inventario=" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " +
+                               "where winvd_nro_inv="  +cursor.getString(0)+"  and " +
+                               "winvd_lote='"          +cursor.getString(1)+"' and " +
+                               "winvd_area="           +cursor.getString(4)+"  and " +
+                               "winvd_dpto="           +cursor.getString(5)+"  and " +
+                               "winvd_secc="           +cursor.getString(6)+"  and " +
+                               "winvd_flia="           +cursor.getString(7)+"  and " +
+                               "winvd_grupo="          +cursor.getString(8)+" ";
+                       PreparedStatement ps = connect.prepareStatement(upd_inventario);
+                       ps.executeUpdate();
+                       menu_principal.ProDialogExport.setProgress(i);
+                       i++;
+                   }
+
+                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' WHERE WINVE_NUMERO="+cursorCab.getString(0);
+                   PreparedStatement pscAB = connect.prepareStatement(upd_inventarioCab);
+                   pscAB.executeUpdate();
+
+
+               }
+
+
+
                connect.commit();
                mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
                db_UPDATE.execSQL(" update stkw002inv set estado='C' where estado='P'");

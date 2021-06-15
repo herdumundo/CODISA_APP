@@ -6,6 +6,7 @@ public class ArrayListContenedor {
 	private String lote;
 	private String cantidad;
 	private String fecha_vencimiento;
+	private String fecha_vencimientoParseado;
 	private String subgrupo;
 	private boolean isSelected;
 	private Object object;
@@ -13,13 +14,15 @@ public class ArrayListContenedor {
 	public ArrayListContenedor() {
 	}
 
-	public ArrayListContenedor(String name, boolean isSelected, String lote, String cantidad,String fecha_vencimiento,String subgrupo) {
+	public ArrayListContenedor(String name, boolean isSelected, String lote, String cantidad,
+							   String fecha_vencimiento,String subgrupo,String fecha_vencimientoParseado) {
 		this.name = name;
 		this.isSelected = isSelected;
 		this.lote = lote;
 		this.cantidad = cantidad;
 		this.fecha_vencimiento = fecha_vencimiento;
 		this.subgrupo = subgrupo;
+		this.fecha_vencimientoParseado = fecha_vencimientoParseado;
  	}
 
 	public Object getObject() {
@@ -87,6 +90,12 @@ public class ArrayListContenedor {
 		this.fecha_vencimiento = fecha_vencimiento;
 	}
 
+	public String getFecha_vencimientoParseado() {
+		return fecha_vencimientoParseado;
+	}
+	public void setFecha_vencimientoParseado(String fecha_vencimientoParseado) {
+		this.fecha_vencimientoParseado = fecha_vencimientoParseado;
+	}
 
 	public boolean isSelected() {
 		return isSelected;

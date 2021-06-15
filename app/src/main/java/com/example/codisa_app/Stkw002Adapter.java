@@ -47,10 +47,10 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
 
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
         Stkw002Item currentItem = (Stkw002Item) this.exampleList.get(position);
-        holder.textProducto.setText(currentItem.getProducto());
+        holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
         // holder.textPosicion.setText(currentItem.getPosicion());
         holder.textCantidad.setText(currentItem.getCantidad());
-        holder.textLote.setText(currentItem.getLote());
+        holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
  //ESTA SENTENCIA SE UTILIZA PARA QUE AL CAMBIAR EL TEXT, YA EJECUTE LA ACTUALIZACION DEL ARRAYLIST
      /*   holder.textCantidad.addTextChangedListener(new TextWatcher()
         {
@@ -97,8 +97,8 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 String cod_articulo =exampleList.get(i).getCodArticulo();
                 String fecha_vto =exampleList.get(i).getVencimiento();
                 db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"' " +
-                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+cod_articulo+" and winvd_lote='"+lote+"'  and winvd_fec_vto='"+fecha_vto+"'");
-
+                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+cod_articulo+" and winvd_lote='"+lote+"'  and date(  winvd_fec_vto)='"+fecha_vto+"'");
+                // A FECHA DE VENCIMIENTO SE LE PARSEO A DATE, PARA QUE DEVUELBA YYYY-MM-DD, YA QUE EL VALOR QUE RECIBIMOS YA SE ENCUENTRA TAMBIEN PARSEADO.
             }
    }catch(Exception e)
         {

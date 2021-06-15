@@ -136,7 +136,7 @@ public class menu_principal extends AppCompatActivity {
                     "       and c.winve_secc=a.SECC_CODIGO  " +
                     "   where " +
                     "       c.winve_empr=1 " +
-                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
+                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
 
             while (rs.next())
             {
@@ -195,7 +195,7 @@ public class menu_principal extends AppCompatActivity {
     private void InsertarSqliteToma(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
-            db1.execSQL("delete from STKW002INV  WHERE estado='A'");
+            db1.execSQL("delete from STKW002INV  WHERE estado IN ('A','C')");
             db1.close();
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
@@ -218,10 +218,11 @@ public class menu_principal extends AppCompatActivity {
                     "       and c.winve_secc=a.SECC_CODIGO  " +
                     "   where " +
                     "       c.winve_empr=1 " +
-                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+"");
+                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
             int i=1;
         while (rs.next())
-        {
+        {// SI SE QUIERE VOLVER A IMPORTAR UNA TOMA, QUE YA SE ENCUENTRA INVENTARIADO PERO CON PENDIENTE DE EXPORTACION,
+            // ENTONCES NO HACE INSERT AL SQLITE.
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
             Cursor cursor=db_consulta.rawQuery("select * from STKW002INV where  winvd_nro_inv ='"+rs.getInt("winvd_nro_inv")+"' and estado='P'" ,null);
             if (cursor.moveToNext())

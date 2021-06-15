@@ -7,50 +7,46 @@
     android:background="@drawable/bg_design"
     tools:context=".login">
 
-    <EditText
-        android:id="@+id/txt_usuario"
-        android:layout_width="291dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/et_cust"
-        android:drawableLeft="@drawable/ic_user"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Usuario"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="288dp"
 
-    <EditText
-        android:id="@+id/txt_pass"
-        android:layout_width="291dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/et_cust"
         android:drawableLeft="@drawable/ic_pass"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
+
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_usuario"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_pass"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_pass"
+            android:hint="CONTRASEÑA"
+
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button3"
         android:layout_width="239dp"
         android:layout_height="50dp"
-        android:background="@drawable/boton2"
         android:onClick="login"
         android:text="Ingresar"
+        android:background="@drawable/et_cust"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_pass"
-        app:layout_constraintVertical_bias="0.183"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         tools:ignore="MissingConstraints" />
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -62,4 +58,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_banner_codisa" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="288dp"
+
+        android:layout_height="58dp"
+        android:layout_marginTop="212dp"
+        android:background="@drawable/et_cust"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_user"
+
+            android:hint="USUARIO" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
