@@ -7,8 +7,9 @@ public class Stkw002Item {
     private String lote;
      private String cod_articulo;
     private String vencimiento;
+    private String secuencia;
 
-    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ) {
+    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia ) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
      //   this.posicion = posicion;
@@ -16,16 +17,23 @@ public class Stkw002Item {
         this.lote = lote;
         this.cod_articulo = cod_articulo;
         this.vencimiento = vencimiento;
+        this.secuencia = secuencia;
     }
 
     public String getProducto() {
         return this.producto;
     }
 
-   /* public String getPosicion() {
-        return this.posicion;
+    public String getSecuencia() {
+        return this.secuencia;
     }
-*/
+    public void setSecuencia(String secuencia) {
+        this.secuencia = secuencia;
+    }
+
+
+
+
     public String getCantidad() {
         return this.cantidad;
     }

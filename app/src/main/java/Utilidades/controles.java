@@ -24,6 +24,7 @@ import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
+import com.example.codisa_app.stkw002;
 import com.tapadoo.alerter.Alerter;
 
 import java.sql.Connection;
@@ -414,6 +415,7 @@ public class controles {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                     listInsertArticulos.clear(); //CADA VEZ QUE SELECCIONAMOS SUB-GRUPO, DEBE LIMPIAR EL ARRAY DE LOS ARTICULOS SELECCIONADOS EN EL SPINNER ARTICULOS.
+                    int total_articulos=0;
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected())
                         {
@@ -426,8 +428,10 @@ public class controles {
                             insArt.setFecha_vencimientoParseado(items.get(i).getFecha_vencimientoParseado());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
                             listInsertArticulos.add(insArt);
+                            total_articulos++;
                         }
                     }
+                    stkw001.txt_total.setText(String.valueOf(total_articulos));
                     ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -804,15 +808,27 @@ public class controles {
         try {
 
             SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
-            Cursor cursor=db_consulta.rawQuery("select winvd_nro_inv,ART_DESC,winvd_lote,winvd_art ," +
-                    "date(winvd_fec_vto) as  winvd_fec_vto,winvd_area,winvd_dpto,winvd_secc,winvd_flia,winvd_grupo,winvd_cant_act,winvd_cant_inv" +
+            Cursor cursor=db_consulta.rawQuery("select " +
+                    "winvd_nro_inv," + //0
+                    "ART_DESC," +//1
+                    "winvd_lote," +//2
+                    "winvd_art ," +//3
+                    "date(winvd_fec_vto) as  winvd_fec_vto," +//4
+                    "winvd_area," +//5
+                    "winvd_dpto," +//6
+                    "winvd_secc," +//7
+                    "winvd_flia," +//8
+                    "winvd_grupo," +//9
+                    "winvd_cant_act," +//10
+                    "winvd_cant_inv," +//11
+                    "winvd_secu" +//12
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
             int cont=0;
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
             {
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4)));
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(12)));
                 cont++;
             }
 
@@ -1111,14 +1127,15 @@ public class controles {
                            "winvd_nro_inv," +  //0
                            "winvd_lote," +     //1
                            "winvd_art ," +     //2
-                           "winvd_fec_vto," +  //3
+                           "strftime('%d/%m/%Y',winvd_fec_vto)," +  //3
                            "winvd_area," +     //4
                            "winvd_dpto," +     //5
                            "winvd_secc," +     //6
                            "winvd_flia," +     //7
                            "winvd_grupo," +    //8
                            "winvd_cant_act," + //9
-                           "winvd_cant_inv" +  //10
+                           "winvd_cant_inv," +//10
+                           "winvd_secu" +  //11
                            " from stkw002inv" +
                            " WHERE " +
                            "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+cursorCab.getString(0)+ " "  ,null);
@@ -1126,23 +1143,18 @@ public class controles {
                    int i=1;
                    while (cursor.moveToNext())
                    {
-
+                       // String fecha_vto=cursor.getString(3);
                        String upd_inventario=" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " +
-                               "where winvd_nro_inv="  +cursor.getString(0)+"  and " +
-                               "winvd_lote='"          +cursor.getString(1)+"' and " +
-                               "winvd_area="           +cursor.getString(4)+"  and " +
-                               "winvd_dpto="           +cursor.getString(5)+"  and " +
-                               "winvd_secc="           +cursor.getString(6)+"  and " +
-                               "winvd_flia="           +cursor.getString(7)+"  and " +
-                               "winvd_grupo="          +cursor.getString(8)+"  AND " +
-                               "WINVD_FEC_VTO='"+cursor.getString(3)+"'";
+                               "where winvd_nro_inv="  +cursor.getString(0)+"  " +
+                               "and winvd_secu="+ cursor.getString(11)+"";
+
                        PreparedStatement ps = connect.prepareStatement(upd_inventario);
                        ps.executeUpdate();
                        menu_principal.ProDialogExport.setProgress(i);
                        i++;
                    }
 
-                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' WHERE WINVE_NUMERO="+cursorCab.getString(0);
+                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB=UPPER('"+variables.userdb+"') WHERE WINVE_NUMERO="+cursorCab.getString(0);
                    PreparedStatement pscAB = connect.prepareStatement(upd_inventarioCab);
                    pscAB.executeUpdate();
 

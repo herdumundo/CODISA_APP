@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Utilidades.*;
@@ -22,6 +23,7 @@ public class stkw002 extends AppCompatActivity {
         Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
     }
     EditText Searchtext,txt_cantidad;
+
     private  Stkw002Adapter adapter;
     RecyclerView recyclerView ;
 
@@ -81,7 +83,7 @@ public class stkw002 extends AppCompatActivity {
         }
     }
 
-    public void reg(View v){
+    public void RegistrarSTKW002(View v){
         Searchtext.requestFocus();
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)

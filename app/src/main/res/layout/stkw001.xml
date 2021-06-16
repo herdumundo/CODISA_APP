@@ -7,6 +7,26 @@
     tools:context=".stkw001">
 
 
+    <TextView
+        android:id="@+id/txt_totalArticulos"
+        android:layout_width="53dp"
+        android:layout_height="24dp"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintStart_toEndOf="@+id/txt_lv_articulo4"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_lv_articulo4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="TOTAL ARTICULOS SELECCIONADOS:"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/btnRegistrar"
         android:layout_width="389dp"

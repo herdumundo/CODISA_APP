@@ -18,13 +18,11 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
-    private static List<Stkw002Item> exampleList;
- //   private List<Stkw002Item> exampleListFull;
+    private static List<Stkw002Item> listaStkw002;
+ //   private List<Stkw002Item> listaStkw002Full;
 
     class ExampleViewHolder extends ViewHolder {
-       // ImageView imageView;
         TextView textProducto;
-       // TextView textPosicion;
         TextView textCantidad;
         TextView textLote;
 
@@ -36,9 +34,9 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         }
     }
 
-    Stkw002Adapter(List<Stkw002Item> exampleList2) {
-        this.exampleList = exampleList2;
-      //  this.exampleListFull = new ArrayList(exampleList2);
+    Stkw002Adapter(List<Stkw002Item> listaStkw002) {
+        this.listaStkw002 = listaStkw002;
+      //  this.listaStkw002Full = new ArrayList(listaStkw0022);
     }
 
     public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,9 +44,8 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     }
 
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
-        Stkw002Item currentItem = (Stkw002Item) this.exampleList.get(position);
+        Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
-        // holder.textPosicion.setText(currentItem.getPosicion());
         holder.textCantidad.setText(currentItem.getCantidad());
         holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
  //ESTA SENTENCIA SE UTILIZA PARA QUE AL CAMBIAR EL TEXT, YA EJECUTE LA ACTUALIZACION DEL ARRAYLIST
@@ -59,7 +56,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
 
             }
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                exampleList.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
+                listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
             }
             public void afterTextChanged(Editable editable) {
              }
@@ -69,7 +66,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
-                    exampleList.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
+                    listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
 
                 }
             }
@@ -77,13 +74,13 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
          }
 
     public int getItemCount() {
-        return this.exampleList.size();
+        return this.listaStkw002.size();
     }
 
     /* access modifiers changed from: 0000 */
    public void setFilter(List<Stkw002Item> filterdNames) {
 
-        this.exampleList = filterdNames;
+        this.listaStkw002 = filterdNames;
         notifyDataSetChanged();
      }
 
@@ -91,14 +88,15 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
 
         try {
             SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
-            for (int i = 0; i < exampleList.size(); i++) {
-                String cantidad =exampleList.get(i).getCantidad();
-                String lote =exampleList.get(i).getLote();
-                String cod_articulo =exampleList.get(i).getCodArticulo();
-                String fecha_vto =exampleList.get(i).getVencimiento();
+            for (int i = 0; i < listaStkw002.size(); i++) {
+                String cantidad =listaStkw002.get(i).getCantidad();
+                String lote =listaStkw002.get(i).getLote();
+                String cod_articulo =listaStkw002.get(i).getCodArticulo();
+                String fecha_vto =listaStkw002.get(i).getVencimiento();
+                String secuencia =listaStkw002.get(i).getSecuencia();
                 db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"' " +
-                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+cod_articulo+" and winvd_lote='"+lote+"'  and date(  winvd_fec_vto)='"+fecha_vto+"'");
-                // A FECHA DE VENCIMIENTO SE LE PARSEO A DATE, PARA QUE DEVUELBA YYYY-MM-DD, YA QUE EL VALOR QUE RECIBIMOS YA SE ENCUENTRA TAMBIEN PARSEADO.
+                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_secu="+secuencia);
+                // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }
    }catch(Exception e)
         {

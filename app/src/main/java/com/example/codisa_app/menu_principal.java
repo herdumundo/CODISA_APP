@@ -204,13 +204,13 @@ public class menu_principal extends AppCompatActivity {
                     "   SELECT " +
                     "       a.ARDE_SUC, b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
                     "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec," +
-                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc " +
+                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu  " +
                     "   FROM   " +
                     "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
                     "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
                     "       and a.ART_CODIGO=b.winvd_art       " +
                     "       and a.SECC_CODIGO=b.winvd_secc     " +
-                    "       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
+                    "        AND TO_DATE(a.ARDE_FEC_VTO_LOTE,'DD/MM/YYYY')=TO_DATE(b.winvd_fec_vto,'DD/MM/YYYY')     " +
                     "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
                     "       and c.winve_dep=a.ARDE_DEP  " +
                     "       and c.winve_area=a.AREA_CODIGO  " +
@@ -252,6 +252,8 @@ public class menu_principal extends AppCompatActivity {
                 "grup_desc," +
                 "area_desc," +
                 "winvd_cant_inv," +
+                "winvd_subgr," +
+                "winvd_secu," +
                 "estado) VALUES ('"+
                 rs.getInt("ARDE_SUC")               +"','"+
                 rs.getInt("winvd_nro_inv")          +"','"+
@@ -270,9 +272,11 @@ public class menu_principal extends AppCompatActivity {
                 rs.getString("secc_desc")           +"','"+
                 rs.getString("flia_desc")           +"','"+
                 rs.getString("grup_desc")           +"','"+
-                rs.getString("area_desc")           +"'," +
-                "'0'," +
-                "'A') "); //ESTADO PENDIENTE A INVENTARIAR.
+                rs.getString("area_desc")           +"','" +
+                "0','" +
+                rs.getString("sugr_codigo")         +"','" +
+                rs.getString("winvd_secu")          +"','" +
+                "A') "); //ESTADO PENDIENTE A INVENTARIAR.
                 dbdbSTKW002INV.close();
             }
             db_consulta.close();

@@ -31,7 +31,7 @@ public class stkw001 extends AppCompatActivity {
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,
                                         txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
                                         txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos, txt_lv_cod,txt_lv_articulo,
-                                        txt_lv_lote,txt_lv_vencimiento;
+                                        txt_lv_lote,txt_lv_vencimiento,txt_total;
 
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos;
 
@@ -56,6 +56,7 @@ public class stkw001 extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
+        txt_total=findViewById(R.id.txt_totalArticulos);
 
         txt_lv_cod          = findViewById(R.id.txt_lv_cod) ;
         txt_lv_articulo     = findViewById(R.id.txt_lv_articulo) ;
