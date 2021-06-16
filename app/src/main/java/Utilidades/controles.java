@@ -1134,21 +1134,19 @@ public class controles {
                                "winvd_dpto="           +cursor.getString(5)+"  and " +
                                "winvd_secc="           +cursor.getString(6)+"  and " +
                                "winvd_flia="           +cursor.getString(7)+"  and " +
-                               "winvd_grupo="          +cursor.getString(8)+" ";
+                               "winvd_grupo="          +cursor.getString(8)+"  AND " +
+                               "WINVD_FEC_VTO='"+cursor.getString(3)+"'";
                        PreparedStatement ps = connect.prepareStatement(upd_inventario);
                        ps.executeUpdate();
                        menu_principal.ProDialogExport.setProgress(i);
                        i++;
                    }
 
-                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' WHERE WINVE_NUMERO="+cursorCab.getString(0);
+                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' WHERE WINVE_NUMERO="+cursorCab.getString(0);
                    PreparedStatement pscAB = connect.prepareStatement(upd_inventarioCab);
                    pscAB.executeUpdate();
 
-
                }
-
-
 
                connect.commit();
                mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
