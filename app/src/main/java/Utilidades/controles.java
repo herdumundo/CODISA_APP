@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
+import com.example.codisa_app.lista_stkw001_inv;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
 import com.example.codisa_app.stkw002;
@@ -50,10 +51,13 @@ public class controles {
     public static   ArrayList<String> arr_familia         =   new ArrayList<>();
     public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
+
     public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
     static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
+    public static          ArrayList<Stkw002List> listaStkw001;
+
     public static   List<Stkw002Item> ListArrayInventarioArticulos;
     public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
    // public static   Connection          connection=null;
@@ -924,6 +928,70 @@ public class controles {
 
     }
 
+    public static void CancelarToma(int nroToma,Context context){
+        try {
+            connect = conexion.Connections();
+            connect.setAutoCommit(false);
+            String Cancelar="UPDATE WEB_INVENTARIO SET WINVE_ESTADO_WEB='E',WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' WHERE WINVE_NUMERO="+nroToma+" ";
+            PreparedStatement ps = connect.prepareStatement(Cancelar);
+            ps.executeUpdate();
+            connect.commit();
+            ConsultarTomasServer(context);
+
+        }
+        catch (Exception error){
+           String er=error.toString();
+
+            try {
+                connect.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void ConsultarTomasServer(Context context) {
+        try {
+
+            controles.connect = controles.conexion.Connections();
+            Statement stmt = controles.connect.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT winve_numero,winve_fec,flia_desc,grup_desc " +
+                    "FROM WEB_INVENTARIO inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
+                    "inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA WHERE WINVE_ESTADO_WEB='A' " );
+
+            Stkw002List Stkw001List=null;
+            listaStkw001=new ArrayList<Stkw002List>();
+            while (rs.next())
+            {
+                Stkw001List=new Stkw002List();
+                Stkw001List.setNroToma(rs.getString("WINVE_NUMERO"));
+                Stkw001List.setFechaToma(rs.getString("WINVE_FEC"));
+                Stkw001List.setFamilia(rs.getString("flia_desc"));
+                Stkw001List.setGrupo(rs.getString("grup_desc"));
+                listaStkw001.add(Stkw001List);
+            }
+            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem3, R.id.text1, listaStkw001) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    TextView text1 = (TextView) view.findViewById(R.id.text1);
+                    TextView text2 = (TextView) view.findViewById(R.id.text2);
+                    TextView text3 = (TextView) view.findViewById(R.id.text3);
+                    text1.setText("NRO. DE TOMA: "+listaStkw001.get(position).getNroToma());
+                    text2.setText("FAMILIA: "+listaStkw001.get(position).getFamilia());
+                    text3.setText("GRUPO:"+listaStkw001.get(position).getGrupo()+"  FECHA DE GENERACION: "+listaStkw001.get(position).getFechaToma());
+
+                    return view;
+                }
+            };
+            lista_stkw001_inv.listView.setAdapter(adapter);
+        }
+        catch (Exception e){
+            String err=e.toString();
+        }
+    }
 
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
