@@ -107,6 +107,15 @@ public class menu_principal extends AppCompatActivity {
 
     }
 
+    public void OnclickIrStkw001Cancelacion(View v){
+
+
+        Intent intent = new Intent(menu_principal.this, lista_stkw001_inv.class);
+        finish();
+        startActivity(intent);
+
+    }
+
     public void OnclickExportar( View v){
 
         controles.ExportarStkw002();

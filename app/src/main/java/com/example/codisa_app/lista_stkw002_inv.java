@@ -104,11 +104,13 @@ public class lista_stkw002_inv extends AppCompatActivity
                 }
             };
             listView.setAdapter(adapter);
-            }
+        }
         catch (Exception e){
             String err=e.toString();
         }
     }
+
+
     public void cambio_consulta(View v ){
 
         if(tipo==1){

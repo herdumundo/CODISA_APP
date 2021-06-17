@@ -10,30 +10,42 @@
         android:id="@+id/OPC_SINC"
         android:layout_width="346dp"
         android:layout_height="50dp"
-        android:layout_marginTop="540dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/boton2"
         android:drawableLeft="@mipmap/ic_sync"
-        android:text="SINCRONIZAR DATOS"
         android:onClick="OnclickSincronizarDatos"
 
+        android:text="SINCRONIZAR DATOS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/OPC_EXPORT" />
 
     <Button
         android:id="@+id/OPC_EXPORT"
         android:layout_width="346dp"
         android:layout_height="50dp"
-        android:layout_marginTop="464dp"
-        android:background="@drawable/boton2"
+        android:layout_marginTop="12dp"
         android:drawableLeft="@mipmap/ic_exp"
-        android:text="EXPORTAR DATOS"
         android:onClick="OnclickExportar"
+        android:text="EXPORTAR DATOS"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tomasGen"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/tomasGen"
+        android:layout_width="346dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="512dp"
+        android:drawableLeft="@drawable/ic_filter_list_black_24dp"
+        android:onClick="OnclickIrStkw001Cancelacion"
+        android:text="TOMAS GENERADAS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/STKW002"
@@ -44,8 +56,8 @@
         android:background="@drawable/boton2"
         android:drawableLeft="@drawable/ic_lista"
         android:onClick="OnclickIrStkw002"
-        android:visibility="gone"
         android:text="REGISTRO DE INVENTARIO"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,8 +69,8 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="80dp"
-        android:drawableLeft="@drawable/ic_write"
         android:background="@drawable/boton2"
+        android:drawableLeft="@drawable/ic_write"
         android:onClick="OnclickIrStkw001"
         android:text="TOMA DE INVENTARIO"
         android:visibility="gone"

@@ -33,8 +33,7 @@
         android:layout_height="54dp"
         android:layout_marginBottom="16dp"
 
-        android:background="@drawable/boton2"
-        android:drawableLeft="@mipmap/ic_gen"
+         android:drawableLeft="@mipmap/ic_gen"
         android:onClick="registrarToma"
         android:text="Generar Toma"
         app:layout_constraintBottom_toBottomOf="parent"
