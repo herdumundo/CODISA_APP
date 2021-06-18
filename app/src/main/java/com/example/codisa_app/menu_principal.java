@@ -66,6 +66,7 @@ public class menu_principal extends AppCompatActivity {
     }
 
     public void OnclickIrStkw002(View v){
+        variables.tipoListaStkw002=1;
         Intent i=new Intent(this,lista_stkw002_inv.class);
         startActivity(i);
     }
@@ -204,7 +205,7 @@ public class menu_principal extends AppCompatActivity {
     private void InsertarSqliteToma(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
-            db1.execSQL("delete from STKW002INV  WHERE estado IN ('A','C')");
+            db1.execSQL("delete from STKW002INV  WHERE estado IN ('A','C','E')");
             db1.close();
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
@@ -240,6 +241,7 @@ public class menu_principal extends AppCompatActivity {
             }
             else
             {
+                String decripcionArt=  rs.getString("ART_DESC").replaceAll("'","");
                 SQLiteDatabase dbdbSTKW002INV=controles.conSqlite.getReadableDatabase();
                 dbdbSTKW002INV.execSQL(" INSERT INTO  STKW002INV (" +
                 "ARDE_SUC," +
@@ -267,7 +269,7 @@ public class menu_principal extends AppCompatActivity {
                 rs.getInt("ARDE_SUC")               +"','"+
                 rs.getInt("winvd_nro_inv")          +"','"+
                 rs.getString("winvd_art")           +"','"+
-                rs.getString("ART_DESC")            +"','"+
+                decripcionArt           +"','"+
                 rs.getString("winvd_lote")          +"','"+
                 rs.getString("winvd_fec_vto")       +"','"+
                 rs.getString("winvd_area")          +"','"+
@@ -297,7 +299,8 @@ public class menu_principal extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
+            String asd=e.toString();
+           // Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
             prodialog.dismiss();
         }
     }

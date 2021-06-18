@@ -29,7 +29,7 @@ public class lista_stkw002_inv extends AppCompatActivity
     ArrayList<Stkw002List> listaStkw002;
     ListView listView;
     public static Button btn_buscar;
-    int tipo=1;
+
     public void onBackPressed()
     {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
@@ -94,7 +94,7 @@ public class lista_stkw002_inv extends AppCompatActivity
                     text1.setText("NRO. DE TOMA: "+listaStkw002.get(position).getNroToma());
                     text2.setText("FAMILIA: "+listaStkw002.get(position).getFamilia());
                     text3.setText("GRUPO: "+listaStkw002.get(position).getGrupo());
-                    if(tipo==1){
+                    if(variables.tipoListaStkw002==1){
                         view.setBackgroundColor(Color.RED);
                     }
                     else {
@@ -113,9 +113,10 @@ public class lista_stkw002_inv extends AppCompatActivity
 
     public void cambio_consulta(View v ){
 
-        if(tipo==1){
+        if(variables.tipoListaStkw002==1){//SI ES IGUAL A 1 ENTONCES ES UN INVENTARIO YA REALIZADO.
             consultar_tomas_generadas("P");
-            tipo=2;
+            variables.tipoStkw002=1;
+            variables.tipoListaStkw002=2;
             btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.RED);
@@ -123,9 +124,10 @@ public class lista_stkw002_inv extends AppCompatActivity
             getSupportActionBar().setTitle("LISTADO DE TOMAS INVENTARIADAS");
 
         }
-        else if (tipo==2){
+        else if (variables.tipoListaStkw002==2){
             consultar_tomas_generadas("A");
-            tipo=1;
+            variables.tipoStkw002=2;
+            variables.tipoListaStkw002=1;
             btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.GREEN);

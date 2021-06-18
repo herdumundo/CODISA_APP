@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import Utilidades.*;
 import java.util.ArrayList;
 
 public class stkw002 extends AppCompatActivity {
+    Button btnEliminar;
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
     }
@@ -31,7 +34,15 @@ public class stkw002 extends AppCompatActivity {
      {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.stkw002);
-        recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
+         recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
+         btnEliminar=  findViewById( R.id.btn_eliminar);
+         if(variables.tipoStkw002==1){
+             btnEliminar.setVisibility(View.VISIBLE);
+         }
+         else {
+             btnEliminar.setVisibility(View.GONE);
+
+         }
         controles.listarStkw002();
         listar_recicler();
         controles.conexion_sqlite(this);
@@ -85,6 +96,7 @@ public class stkw002 extends AppCompatActivity {
 
     public void RegistrarSTKW002(View v){
         Searchtext.requestFocus();
+        Searchtext.setText("");
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("ATENCION!!!.")
@@ -112,8 +124,52 @@ public class stkw002 extends AppCompatActivity {
                         catch (Exception e)
                         {
                             new AlertDialog.Builder(stkw002.this)
-                            .setTitle("ATENCION!!!")
-                            .setMessage(e.toString()).show();
+                                    .setTitle("ATENCION!!!")
+                                    .setMessage(e.toString()).show();
+                        }
+                    }
+
+                })
+                .setNegativeButton("NO", null)
+                .show();
+    }
+
+
+    public void EliminarSTKW002(View v){
+        Searchtext.requestFocus();
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("ATENCION!!!.")
+                .setMessage("DESEA ELIMINAR EL INVENTARIO REALIZADO?")
+                .setPositiveButton("SI, ELIMINAR", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        try
+                        {
+                            SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
+                            db_UPDATE.execSQL(" update STKW002INV set  estado ='E'   where winvd_nro_inv="+ variables.nro_registro_toma+" ");
+
+                                     new AlertDialog.Builder( stkw002.this)
+                                    .setTitle("INFORME!!!")
+                                    .setCancelable(false)
+                                    .setMessage("REGISTRO ELIMINADO CON EXITO.")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            variables.tipoListaStkw002=1;
+
+                                            Intent i=new Intent(stkw002.this,lista_stkw002_inv.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    }).show();
+                        }
+                        catch (Exception e)
+                        {
+                            new AlertDialog.Builder(stkw002.this)
+                                    .setTitle("ATENCION!!!")
+                                    .setMessage(e.toString()).show();
                         }
                     }
 

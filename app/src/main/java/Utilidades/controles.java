@@ -932,7 +932,8 @@ public class controles {
         try {
             connect = conexion.Connections();
             connect.setAutoCommit(false);
-            String Cancelar="UPDATE WEB_INVENTARIO SET WINVE_ESTADO_WEB='E',WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' WHERE WINVE_NUMERO="+nroToma+" ";
+            String Cancelar="UPDATE WEB_INVENTARIO SET WINVE_ESTADO_WEB='E',WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB=UPPER('"+variables.userdb+"')" +
+                    " WHERE WINVE_NUMERO="+nroToma+" ";
             PreparedStatement ps = connect.prepareStatement(Cancelar);
             ps.executeUpdate();
             connect.commit();
@@ -959,7 +960,8 @@ public class controles {
 
             ResultSet rs = stmt.executeQuery("SELECT winve_numero,winve_fec,flia_desc,grup_desc " +
                     "FROM WEB_INVENTARIO inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
-                    "inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA WHERE WINVE_ESTADO_WEB='A' " );
+                    "inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  " +
+                    "V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA WHERE WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') " );
 
             Stkw002List Stkw001List=null;
             listaStkw001=new ArrayList<Stkw002List>();
