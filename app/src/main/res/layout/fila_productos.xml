@@ -15,10 +15,12 @@
     app:cardElevation="@dimen/card_recycler_elevation">
 
     <RelativeLayout
+        android:background="@drawable/border2"
+
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="#A7AAFF"
+
         android:padding="@dimen/text_margin">
 
         <EditText

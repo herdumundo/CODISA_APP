@@ -22,6 +22,8 @@
         android:text="VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR" />
 
     <ListView
+
+
         android:id="@+id/listViewInv"
         android:layout_width="match_parent"
         android:layout_height="619dp"

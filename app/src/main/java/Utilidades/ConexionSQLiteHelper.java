@@ -17,9 +17,6 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     public ConexionSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
-
-
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -31,9 +28,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 "   winvd_flia INTEGER,flia_desc TEXT," +
                 "   winvd_grupo INTEGER,grup_desc TEXT, " +
                 "   winvd_subgr INTEGER," +
-                "   estado TEXT)");
-
-
+                "   estado TEXT,WINVE_LOGIN_CERRADO_WEB TEXT )");
     }
 
     /*
@@ -41,6 +36,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     A= PENDIENTE DE REALIZACION DEL INVENTARIO
     P= INVENTARIO REALIZADO PENDIENTE DE EXPORTACION AL SERVER CENTURY.
     C= INVENTARIO EXPORTADO CON EXITO.
+    C= INVENTARIO CANCELADO.
 
 
      */

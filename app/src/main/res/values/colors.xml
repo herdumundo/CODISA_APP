@@ -19,11 +19,12 @@
     <color name="azul">#01144A</color>
     <color name="azul_claro">#082168</color>
     <color name="azul_claro2">#0F2C80</color>
+    <color name="cel">#436DE8</color>
     <color name="azul3">#021C67</color>
     <color name="celeste">#0998AA</color>
     <color name="whiteTextColor">#fff</color>
     <color name="primaryTextColor">#00a5ff</color>
-     <color name="red">#FFFFFF</color>
+    <color name="red">#FFFFFF</color>
 
     <color name="gray">#D1D0CE</color>
 

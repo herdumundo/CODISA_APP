@@ -94,7 +94,11 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 String cod_articulo =listaStkw002.get(i).getCodArticulo();
                 String fecha_vto =listaStkw002.get(i).getVencimiento();
                 String secuencia =listaStkw002.get(i).getSecuencia();
-                db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"' " +
+                if(cantidad.length()==0)
+                {
+                    cantidad="0";
+                }
+                db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"', WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' " +
                         " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_secu="+secuencia);
                 // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }

@@ -69,6 +69,4 @@ public class lista_stkw001_inv extends AppCompatActivity {
     }
 
 
-    //SE CONSULTA LA TOMA QUE GENERO EL USUARIO, PARA PODER CANCELARLO.
-
 }
