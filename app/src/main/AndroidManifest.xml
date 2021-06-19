@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".lista_stkw001_inv"></activity>
+        <activity android:name=".Scroll"></activity>
+        <activity android:name=".lista_stkw001_inv" />
         <activity
             android:name=".lista_stkw002_inv"
             android:noHistory="true" />

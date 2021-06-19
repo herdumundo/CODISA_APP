@@ -51,7 +51,7 @@ public class controles {
     public static   ArrayList<String> arr_familia         =   new ArrayList<>();
     public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
-
+    public static String table;
     public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
@@ -79,6 +79,7 @@ public class controles {
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
         if(tipo==1){
             variables.tipoListaStkw002=1;
+            variables.tipoStkw002=2;
             new AlertDialog.Builder(context)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("ATENCION!!!.")
@@ -851,7 +852,7 @@ public class controles {
 
             SQLiteDatabase dbConsultaCont= conSqlite.getReadableDatabase();
             Cursor cursorCont=dbConsultaCont.rawQuery("select  count(*) from stkw002inv" +
-                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND " ,null);
+                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+ "')" ,null);
             if(cursorCont.moveToNext()){
                 ContExportStkw002=cursorCont.getInt(0);
             }
@@ -919,7 +920,7 @@ public class controles {
         SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
         Cursor cursor=db_consulta.rawQuery("select  count(distinct winvd_nro_inv)" +
                 " from stkw002inv" +
-                " WHERE estado='P' " ,null);
+                " WHERE estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')" ,null);
          ListArrayInventarioArticulos = new ArrayList();
         if (cursor.moveToNext())
         {
@@ -996,6 +997,56 @@ public class controles {
         }
     }
 
+    public static void listarWebViewStkw001Cancelacion(int nroToma) {
+        try {
+             String html="";
+             connect =  conexion.Connections();
+            Statement stmt =  connect.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT  " +
+                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
+                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
+                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,  dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
+                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
+                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
+                    " and a.ART_CODIGO=b.winvd_art    " +
+                    "  and a.SECC_CODIGO=b.winvd_secc   " +
+                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
+                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
+                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
+                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
+                    "  where C.WINVE_NUMERO="+nroToma );
+            int cont=0;
+            while (rs.next()){
+                cont++;
+                html=html+  "<tr>" +
+                        "<td>"+rs.getString("winvd_art")+"</td>" +
+                        "<td>"+rs.getString("ART_DESC")+"</td>" +
+                        "<td>"+rs.getString("winvd_lote")+"</td>" +
+                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
+                        "</tr>";
+
+            }
+            rs.close();
+
+              table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                    "<thead> " +
+                    "<tr>" +
+                      "<td>COD</td>" +
+                      "<td>ARTICULO</td>" +
+                    "<td>LOTE</td>" +
+                    "<td>FECHA VENCIMIENTO</td>" +
+                     "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
+
+
+        }
+        catch (Exception e){
+            String mens=e.toString();
+
+        }
+
+
+    }
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
@@ -1184,19 +1235,21 @@ public class controles {
         @Override
         protected Void doInBackground(Void... params) {
             SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
+
+            int tipoRegistro=0;
            try {
                SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
                SQLiteDatabase db_consultaCab= conSqlite.getReadableDatabase();
 
-
-
-               Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB from stkw002inv " +
-                       "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' and WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"'",null);
+                Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB from stkw002inv " +
+                "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
                connect = conexion.Connections();
                connect.setAutoCommit(false);
-               db_UPDATE.beginTransaction();
+               int contadorMensaje=0; // EN EL CASO DE QUE QUEDE EN CERO, ENTONCES EL MENSAJE SERA, DE QUE NO HAY DATOS PARA EXPORTAR
                while (cursorCab.moveToNext())
-               {
+               {    int nroCabecera=cursorCab.getInt(0);
+                   db_UPDATE.beginTransaction();
+                   contadorMensaje++;
                    String WINVE_LOGIN_CERRADO_WEB=cursorCab.getString(1);
                    Cursor cursor=db_consulta.rawQuery("select " +
                            "winvd_nro_inv," +  //0
@@ -1213,56 +1266,75 @@ public class controles {
                            "winvd_secu" +  //11
                            " from stkw002inv" +
                            " WHERE " +
-                           "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+cursorCab.getString(0)+
-                           " and WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"'"  ,null);
+                           "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+nroCabecera+
+                           " and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')"  ,null);
 
                    int i=1;
+                    // ESTE CURSOR RECORRE EL DETALLE DEL SQLITE, PARA ACTUALIZAR,
+                    // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
                    while (cursor.moveToNext())
-                   {
-                       // String fecha_vto=cursor.getString(3);
-                       String upd_inventario=" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " +
-                               "where winvd_nro_inv="  +cursor.getString(0)+"  " +
-                               "and winvd_secu="+ cursor.getString(11)+"";
+                    {
+                       // SE ACTUALIZAR EL DETALLE DEL SERVIDOR.
+                        PreparedStatement ps = connect.prepareStatement(" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " + "" +
+                                " where winvd_nro_inv="  +cursor.getString(0)+"   and winvd_secu="+ cursor.getString(11)+"");
+                        ps.executeUpdate();
 
-                       PreparedStatement ps = connect.prepareStatement(upd_inventario);
-                       ps.executeUpdate();
-                       db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+" and winvd_secu="+ cursor.getString(11)+""   );
-
-                       menu_principal.ProDialogExport.setProgress(i);
-                       i++;
-                   }
-
-                   String upd_inventarioCab="UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
+                        //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C
+                        db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+"  and winvd_secu="+ cursor.getString(11)+""   );
+                        menu_principal.ProDialogExport.setProgress(i);
+                        i++;
+                    }
+                    //SERVER ACTUALIZA LA CABECERA
+                   PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
                            "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
                            "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
-                           "WHERE WINVE_NUMERO="+cursorCab.getString(0);
-                   PreparedStatement pscAB = connect.prepareStatement(upd_inventarioCab);
+                           "WHERE WINVE_NUMERO="+cursorCab.getString(0));
                    pscAB.executeUpdate();
 
-               }
-                db_UPDATE.endTransaction();
+                   db_UPDATE.setTransactionSuccessful();
+                   db_UPDATE.endTransaction();
+               }//FIN DEL CURSOR CABECERA
 
+                if(contadorMensaje==0){
+                    mensajeRespuestaExportStkw002="NO SE ENCONTRARON REGISTROS POR EXPORTAR.";
+                }
+                else {
+                    mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
 
-               mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
-               //SQLITE ACTUALIZA CANTIDAD INVENTARIO, ESTADO,USUARIO QUE REGISTRO.
-            //   db_UPDATE.execSQL(" update stkw002inv set estado='C' where estado='P'");
-              // db_UPDATE.close();
-               db_consulta.close();
-             //  ConsultarPendientesExportar();
-               //FALTA ACTUALIZAR LA CABECERA DEL INVENTARIO EN EL ORACLE SERVER.
-           }catch (Exception e){
-               mensajeRespuestaExportStkw002=e.toString();
-           }
-            //
-            finally {
+                }
+                db_consulta.close();
 
-               try {
-                   //db_UPDATE.setTransactionSuccessful();
+           }catch (Exception e)
+           {
+               try
+               {
+                   db_UPDATE.endTransaction();
                    connect.rollback();
-                   ConsultarPendientesExportar();
-               } catch (SQLException throwables) {
+                   tipoRegistro=1;
+                   db_UPDATE.close();
+
+               } catch (SQLException throwables)
+               {
                    throwables.printStackTrace();
                }
+               mensajeRespuestaExportStkw002=e.toString();
+               return null;
+           }
+            //
+            finally
+           {
+                try {
+                        if (tipoRegistro==0)
+                        {
+                            connect.commit();
+                            db_UPDATE.close();
+                            ConsultarPendientesExportar();
+                        }
+
+                    } catch (SQLException throwables)
+                        {
+                            throwables.printStackTrace();
+                        }
            }
             return null;
         }

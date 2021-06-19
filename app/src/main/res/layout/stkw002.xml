@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".stkw002">
+    tools:context=".stkw002"
+     >
 
     <Button
         android:id="@+id/button"
@@ -33,6 +34,7 @@
         android:drawableLeft="@drawable/ic_delete"
         android:onClick="EliminarSTKW002"
         android:text="ELIMINAR INVENTARIO"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,11 +115,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView"
         android:layout_width="wrap_content"
-        android:layout_height="522dp"
+        android:layout_height="518dp"
         android:layout_marginTop="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
 

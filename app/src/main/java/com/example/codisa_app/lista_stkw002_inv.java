@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,9 +44,10 @@ public class lista_stkw002_inv extends AppCompatActivity
         btn_buscar =(Button)findViewById(R.id.btn_pendientes_exportacion);
         consultar_tomas_generadas("A");
         btn_buscar.setBackgroundColor(Color.GREEN);
-        getSupportActionBar().setTitle("LISTADO DE TOMAS PENDIENTES A INVENTARIAR");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
 
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>LISTADO DE TOMAS PENDIENTES A INVENTARIAR </font>"));
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
@@ -68,10 +70,15 @@ public class lista_stkw002_inv extends AppCompatActivity
         try {
 
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
-            Cursor cursor=db_consulta.rawQuery("select" +
-                    " distinct winvd_nro_inv,winve_fec,flia_desc,grup_desc " +
-                    "from STKW002INV WHERE ESTADO='"+estado+"' " +
-                    "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1" ,null);
+            String sql="";
+            if(estado.equals("A")){
+                sql="select  distinct winvd_nro_inv,winve_fec,flia_desc,grup_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1";
+            }else {
+                sql="select  distinct winvd_nro_inv,winve_fec,flia_desc,grup_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1";
+            }
+            Cursor cursor=db_consulta.rawQuery(sql ,null);
             int cont=0;
             Stkw002List Stkw002List=null;
             listaStkw002=new ArrayList<Stkw002List>();
@@ -120,8 +127,9 @@ public class lista_stkw002_inv extends AppCompatActivity
             btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.RED);
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
-            getSupportActionBar().setTitle("LISTADO DE TOMAS INVENTARIADAS");
+           // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>LISTADO DE TOMAS INVENTARIADAS </font>"));
+
 
         }
         else if (variables.tipoListaStkw002==2){
@@ -131,9 +139,9 @@ public class lista_stkw002_inv extends AppCompatActivity
             btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
             btn_buscar.setBackgroundColor(Color.GREEN);
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+         //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>LISTADO DE TOMAS PENDIENTES A INVENTARIAR </font>"));
 
-            getSupportActionBar().setTitle("LISTADO DE TOMAS PENDIENTES A INVENTARIAR");
 
         }
     }

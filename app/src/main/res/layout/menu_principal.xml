@@ -5,50 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".menu_principal"
-     >
+    android:background="@drawable/border4"
+    >
 
     <Button
         android:id="@+id/OPC_SINC"
         android:layout_width="346dp"
         android:layout_height="50dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="32dp"
+
         android:background="@drawable/border"
-
         android:drawableLeft="@drawable/ic_sincronizar"
-        android:onClick="OnclickSincronizarDatos"
 
+        android:onClick="OnclickSincronizarDatos"
         android:text="SINCRONIZAR DATOS"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OPC_EXPORT" />
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/OPC_EXPORT"
         android:layout_width="346dp"
         android:layout_height="50dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/border"
         android:drawableLeft="@drawable/ic_exportar"
         android:onClick="OnclickExportar"
         android:text="EXPORTAR DATOS"
+        app:layout_constraintBottom_toTopOf="@+id/OPC_SINC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tomasGen"
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:background="@drawable/border"
         android:id="@+id/tomasGen"
         android:layout_width="346dp"
         android:layout_height="50dp"
-        android:layout_marginTop="512dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/border"
         android:drawableLeft="@drawable/ic_filter_list_black_24dp"
         android:onClick="OnclickIrStkw001Cancelacion"
+        android:visibility="gone"
         android:text="TOMAS GENERADAS"
+        app:layout_constraintBottom_toTopOf="@+id/OPC_EXPORT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button

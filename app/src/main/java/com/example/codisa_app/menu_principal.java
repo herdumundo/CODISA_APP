@@ -36,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
     public  static TextView txt_total;
+    Button tomasGen;
     int ContProgressBarImportador=0;
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
@@ -53,10 +54,15 @@ public class menu_principal extends AppCompatActivity {
         controles.conexion_sqlite(this);
         controles.ConsultarPendientesExportar();
         controles.context_menuPrincipal=this;
+        tomasGen=findViewById(R.id.tomasGen);
         String[] array_opciones=variables.contenedor_menu.split(",");
 
         for(int i=0; i<array_opciones.length; i++)
         {
+            String id=array_opciones[i];
+            if(id.equals("STKW001")){
+                tomasGen.setVisibility(View.VISIBLE);
+            }
             int ID_BOTONES = getResources().getIdentifier(array_opciones[i], "id", getPackageName());
             Button stock = ((Button) findViewById(ID_BOTONES));
 
@@ -67,6 +73,7 @@ public class menu_principal extends AppCompatActivity {
 
     public void OnclickIrStkw002(View v){
         variables.tipoListaStkw002=1;
+        variables.tipoStkw002=2;
         Intent i=new Intent(this,lista_stkw002_inv.class);
         startActivity(i);
     }

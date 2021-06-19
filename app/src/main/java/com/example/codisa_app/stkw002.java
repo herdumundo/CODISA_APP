@@ -33,7 +33,7 @@ public class stkw002 extends AppCompatActivity {
      public void onCreate(Bundle savedInstanceState)
      {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.stkw002);
+        setContentView((int) R.layout.scroll);
          recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
          btnEliminar=  findViewById( R.id.btn_eliminar);
          if(variables.tipoStkw002==1){

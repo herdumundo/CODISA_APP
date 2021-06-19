@@ -31,7 +31,7 @@ public class stkw001 extends AppCompatActivity {
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,
                                         txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
                                         txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos, txt_lv_cod,txt_lv_articulo,
-                                        txt_lv_lote,txt_lv_vencimiento,txt_total;
+                                        txt_lv_lote,txt_lv_vencimiento,txt_total,txt_lbl_articulo;
 
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos;
 
@@ -53,11 +53,12 @@ public class stkw001 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stkw001);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ variables.titulo_stkw001+" </font>"));
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
         txt_total=findViewById(R.id.txt_totalArticulos);
-
+        txt_lbl_articulo    = findViewById(R.id.txt_lbl_articulo) ;
         txt_lv_cod          = findViewById(R.id.txt_lv_cod) ;
         txt_lv_articulo     = findViewById(R.id.txt_lv_articulo) ;
         txt_lv_lote         = findViewById(R.id.txt_lv_lote) ;
@@ -104,6 +105,7 @@ public class stkw001 extends AppCompatActivity {
         {
             spinerArticulos.setVisibility(View.VISIBLE);
             lbl_articulos.setVisibility(View.VISIBLE);
+            txt_lbl_articulo.setVisibility(View.VISIBLE);
         }
         else {
             txt_lv_cod.setVisibility(View.GONE);

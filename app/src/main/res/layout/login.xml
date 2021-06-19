@@ -35,11 +35,12 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="239dp"
-        android:layout_height="50dp"
+        android:layout_width="298dp"
+        android:layout_height="63dp"
+        android:background="@drawable/border"
+        android:drawableLeft="@drawable/ic_login"
         android:onClick="login"
         android:text="Ingresar"
-        android:background="@drawable/et_cust"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
