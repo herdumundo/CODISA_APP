@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -48,7 +50,7 @@ public class login extends AppCompatActivity
             txt_pass=(TextView)findViewById(R.id.txt_pass);
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
             getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
-
+            controles.conexion_sqlite(this);
         }
         public void login (View v)
         {
@@ -104,11 +106,16 @@ public class login extends AppCompatActivity
                     }
                     else if (se.getErrorCode()==17002)
                     {
-                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
+                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED1.";
                     }
                     else if (se.getErrorCode()==20)
                     {
-                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED.";
+                        // mensaje="ERROR DE CONEXION, VERIFIQUE LA RED2.";
+                          mensaje="2";
+
+
+
+
                     }
                     else if (se.getErrorCode()==17452)
                     {
@@ -122,6 +129,7 @@ public class login extends AppCompatActivity
                 }
                 catch (ClassNotFoundException e)
                 {
+
                     // Log.e("error here 2 : ", e.getMessage());
                 }
 
@@ -160,6 +168,25 @@ public class login extends AppCompatActivity
                             Utilidades.variables.contenedor_menu=contenedor_opciones;
                             variables.NOMBRE_LOGIN=nombre_usuario;
                              //AQUI SE COLOCARA EL LISTVIEW PARA CONSULTAR LAS SUCURSALES DISPONIBLES. Y LUEGO DE SELECCIONARLA IR AL MENU PRINCIPAL
+
+                            SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
+                            db1.execSQL("delete from USUARIOS_FORMULARIOS_SUCURSALES  WHERE LOGIN_O =upper('"+txt_usuario.getText()+"')");
+                            db1.close();
+                            Statement stmt2= connect.createStatement();
+                            ResultSet rs2 = stmt2.executeQuery("select distinct formulario,nombre,LOGIN_O,SUCURSAL_DESCRIPCION ,ROL_SUCURSAL   " +
+                                    "from v_web_operador_rol_prog where  formulario in ('STKW001','STKW002') and login_o='"+user.toUpperCase()+"'");
+                            while ( rs2.next())
+                            {
+                                SQLiteDatabase dblogin=controles.conSqlite.getReadableDatabase();
+                                dblogin.execSQL(" INSERT INTO  USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO,NOMBRE,LOGIN_O,LOGIN_PASS,SUCURSAL_DESCRIPCION,ROL_SUCURSAL) " +
+                                        "VALUES ('"+rs2.getString("formulario")+"','"+rs2.getString("nombre")+"','"+rs2.getString("LOGIN_O")+"'," +
+                                        "upper('"+txt_pass.getText()+"'),'"+rs2.getString("SUCURSAL_DESCRIPCION")+"'," +
+                                        "'"+rs2.getString("ROL_SUCURSAL")+"' )") ;
+                                //ESTADO PENDIENTE A INVENTARIAR.
+                                dblogin.close();
+                            }
+
+
                             ListarSucursal();
                         }
                         else {
@@ -178,6 +205,44 @@ public class login extends AppCompatActivity
                                 .setNegativeButton("CERRAR", null).show();
                     }
 
+                 }
+                 else if(mensaje=="2")
+                 {
+                     SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
+                     Cursor cursorlog=db_consulta.rawQuery("select distinct formulario,nombre from  USUARIOS_FORMULARIOS_SUCURSALES " +
+                             "where upper(LOGIN_O)=upper('"+txt_usuario.getText()+"') and upper(LOGIN_PASS)=upper('"+txt_pass.getText()+"')",null);
+                     String contenedor_opciones="";
+                     String nombre_usuario="";
+                     int i=0;
+
+                     while ( cursorlog.moveToNext())
+                     {
+                         if(i==0){
+                             contenedor_opciones=cursorlog.getString(0) ;
+                             nombre_usuario=cursorlog.getString(1) ;
+                         }
+                         else
+                         {
+                             contenedor_opciones=contenedor_opciones+","+cursorlog.getString(0);
+                         }
+
+                         i++;
+                     }
+
+                     if(i==0){
+                         new AlertDialog.Builder(login.this)
+                                 .setTitle("ATENCION!!!")
+                                 .setMessage("ERROR DE CONEXION.")
+                                 .setNegativeButton("CERRAR", null).show();
+                     }
+                     else {
+                         variables.contenedor_menu=contenedor_opciones;
+                         variables.NOMBRE_LOGIN=nombre_usuario;
+
+                         ListarSucursalLite();
+
+
+                     }
                  }
                  else {
                      new AlertDialog.Builder(login.this)
@@ -211,6 +276,9 @@ public class login extends AppCompatActivity
                     arrayIdSucursal.add(rs.getString("ROL_SUCURSAL"));
                     arrayDescSucursal.add(rs.getString("SUCURSAL_DESCRIPCION"));
                 }
+
+
+
             }
             catch (Exception e)
             {
@@ -240,5 +308,64 @@ public class login extends AppCompatActivity
                     }
                 });
                 builderSingle.show();
+        }
+
+        private  void  ListarSucursalLite()
+        {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(login.this);
+            builderSingle.setTitle("SUCURSALES DISPONIBLES");
+            ArrayAdapter<String> arrayDescSucursal = new ArrayAdapter<String>(login.this, android.R.layout.select_dialog_singlechoice);
+            ArrayList<String> arrayIdSucursal = new ArrayList<>();
+            try
+            {
+                arrayDescSucursal.clear();
+                arrayIdSucursal.clear();
+                controles.arrSucursales.clear();
+                controles.arrIdSucursales.clear();
+
+
+                SQLiteDatabase db_consultaSuc= controles.conSqlite.getReadableDatabase();
+                Cursor cursorlogSuc=db_consultaSuc.rawQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL from USUARIOS_FORMULARIOS_SUCURSALES " +
+                        "where upper(LOGIN_O)=upper('"+txt_usuario.getText()+"') and " +
+                        "upper(LOGIN_PASS)=upper('"+txt_pass.getText()+"')",null);
+
+                while ( cursorlogSuc.moveToNext())
+                {   controles.arrSucursales.add(cursorlogSuc.getString(0));
+                    controles.arrIdSucursales.add(cursorlogSuc.getString(1));
+                    arrayIdSucursal.add(cursorlogSuc.getString(1));
+                    arrayDescSucursal.add(cursorlogSuc.getString(0));
+                }
+
+
+
+            }
+            catch (Exception e)
+            {
+                new AlertDialog.Builder(login.this)
+                        .setTitle("ATENCION!!!")
+                        .setMessage(e.toString())
+                        .setNegativeButton("CERRAR", null).show();
+            }
+            builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int posicion)
+                {
+                    variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
+                    variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
+
+                    Intent is=new Intent(login.this,menu_principal.class);
+                    startActivity(is);
+                    finish();
+                }
+            });
+            builderSingle.show();
         }
     }

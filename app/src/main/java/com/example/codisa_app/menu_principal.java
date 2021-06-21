@@ -130,6 +130,10 @@ public class menu_principal extends AppCompatActivity {
     }
 
     public void OnclickSincronizarDatos(View v){
+       /* Intent intent = new Intent(menu_principal.this, MainActivity.class);
+        finish();
+        startActivity(intent);
+*/
         ImportarTomas();
     }
 

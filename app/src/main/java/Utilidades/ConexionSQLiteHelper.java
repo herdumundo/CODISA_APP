@@ -29,7 +29,10 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 "   winvd_grupo INTEGER,grup_desc TEXT, " +
                 "   winvd_subgr INTEGER," +
                 "   estado TEXT,WINVE_LOGIN_CERRADO_WEB TEXT )");
-    }
+
+        db.execSQL("CREATE TABLE USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO TEXT,NOMBRE TEXT ,LOGIN_O TEXT,LOGIN_PASS" +
+                " TEXT,SUCURSAL_DESCRIPCION TEXT, ROL_SUCURSAL INTEGER)");
+     }
 
     /*
     NOTA: INFORMES DE ESTADO EN STAW002INV
@@ -44,6 +47,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva)
     {
         db.execSQL("DROP TABLE IF EXISTS STKW002INV");
+        db.execSQL("DROP TABLE IF EXISTS USUARIOS_FORMULARIOS_SUCURSALES");
 
          onCreate(db);
     }

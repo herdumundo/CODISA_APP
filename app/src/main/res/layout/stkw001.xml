@@ -10,6 +10,8 @@
 
     <TextView
         android:id="@+id/txt_totalArticulos"
+        android:textColor="#000000"
+
         android:layout_width="53dp"
         android:layout_height="24dp"
         android:textStyle="normal|bold"
@@ -17,12 +19,18 @@
         app:layout_constraintStart_toEndOf="@+id/txt_lbl_articulo"
         tools:ignore="MissingConstraints" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
     <TextView
         android:id="@+id/txt_lbl_articulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
+        android:textColor="#000000"
+
         android:textStyle="normal|bold"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
@@ -158,6 +166,8 @@
         android:layout_width="wrap_content"
         android:layout_height="22dp"
         android:text="VENCIMIENTO"
+        android:textColor="#000000"
+
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
@@ -169,7 +179,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Articulos"
-        android:textColor="#4CAF50"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +193,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Incluir articulos con existencia cero"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -193,9 +203,9 @@
         android:layout_width="215dp"
         android:layout_height="27dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Incluir articulos descontinuados"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -207,7 +217,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Sub-Grupo:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_grupo"
@@ -243,7 +253,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Grupo:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_familia"
@@ -269,7 +279,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Familia:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_seccion"
@@ -316,7 +326,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Seccion:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_departamento"
@@ -352,7 +362,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Departamento:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_area"
@@ -381,6 +391,9 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_id_deposito"
         tools:ignore="MissingConstraints" />
 
+
+
+
     <TextView
         android:id="@+id/lbl_area"
         android:layout_width="wrap_content"
@@ -388,7 +401,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="Area:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_deposito"
@@ -414,7 +427,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:text="Sucursal:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -427,7 +440,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Deposito:"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_sucursal"
@@ -473,9 +486,9 @@
         android:layout_width="75dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="Incluir lote"
-        android:textColor="#4CAF50"
+        android:textColor="#030561"
         android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
@@ -485,6 +498,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="COD"
+        android:textColor="#000000"
+
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -496,6 +511,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOTE"
+        android:textColor="#000000"
+
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintStart_toStartOf="@+id/guideline3" />
@@ -505,6 +522,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ARTICULO"
+        android:textColor="#000000"
+
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -540,7 +559,7 @@
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_dark"
+        android:textColor="#030561"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
