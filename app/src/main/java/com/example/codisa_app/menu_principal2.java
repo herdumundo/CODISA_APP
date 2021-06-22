@@ -2,10 +2,9 @@ package com.example.codisa_app;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -14,34 +13,32 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.VpnService;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.security.spec.ECField;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-
-import Utilidades.Stkw002List;
-import Utilidades.controles;
-import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class menu_principal extends AppCompatActivity {
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import Utilidades.controles;
+import Utilidades.variables;
+
+public class menu_principal2 extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
     public  static TextView txt_total;
     CardView tomasGen;
     int ContProgressBarImportador=0;
     public void onBackPressed()  {
-        Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
+        controles.volver_atras(this,this, login.class,"DESEA SALIR DE LA APLICACION?",3);
     }
     @Override
 
@@ -95,7 +92,7 @@ public class menu_principal extends AppCompatActivity {
                         variables.tipo_stkw001=1;
                         variables.tipo_stkw001_insert="M";
 
-                        Intent intent = new Intent(menu_principal.this, stkw001.class);
+                        Intent intent = new Intent(menu_principal2.this, stkw001.class);
                         finish();
                         startActivity(intent);
 
@@ -107,7 +104,7 @@ public class menu_principal extends AppCompatActivity {
                         variables.titulo_stkw001="TOMA POR CRITERIO DE SELECCION";
                         variables.tipo_stkw001=2;
                         variables.tipo_stkw001_insert="C";
-                        Intent intent = new Intent(menu_principal.this, stkw001.class);
+                        Intent intent = new Intent(menu_principal2.this, stkw001.class);
                         finish();
                         startActivity(intent);
 
@@ -120,7 +117,7 @@ public class menu_principal extends AppCompatActivity {
     public void OnclickIrStkw001Cancelacion(View v){
 
 
-        Intent intent = new Intent(menu_principal.this, lista_stkw001_inv.class);
+        Intent intent = new Intent(menu_principal2.this, lista_stkw001_inv.class);
         finish();
         startActivity(intent);
 
@@ -166,7 +163,7 @@ public class menu_principal extends AppCompatActivity {
                 ContProgressBarImportador=rs.getInt("contador");
             }
             rs.close();
-            new AlertDialog.Builder(menu_principal.this)
+            new AlertDialog.Builder(menu_principal2.this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("SINCRONIZACION.")
                     .setMessage("¿DESEA ACTUALIZAR LOS DATOS DISPONIBLES?")
@@ -174,8 +171,8 @@ public class menu_principal extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            menu_principal.prodialog =  new ProgressDialog( menu_principal.this);
-                            menu_principal.prodialog.setMax(ContProgressBarImportador);
+                            menu_principal2.prodialog =  new ProgressDialog( menu_principal2.this);
+                            menu_principal2.prodialog.setMax(ContProgressBarImportador);
                             LayerDrawable progressBarDrawable = new LayerDrawable(
                                     new Drawable[]{
                                             new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
@@ -194,13 +191,13 @@ public class menu_principal extends AppCompatActivity {
                             progressBarDrawable.setId(0,android.R.id.background);
                             progressBarDrawable.setId(1,android.R.id.secondaryProgress);
                             progressBarDrawable.setId(2,android.R.id.progress);
-                            menu_principal.prodialog.setTitle("SINCRONIZANDO DATOS");
-                            menu_principal.prodialog.setMessage("ESPERE...");
-                            menu_principal.prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            menu_principal.prodialog.setProgressDrawable(progressBarDrawable);
-                            menu_principal.prodialog.show();
-                            menu_principal.prodialog.setCanceledOnTouchOutside(false);
-                            menu_principal.prodialog.setCancelable(false);
+                            menu_principal2.prodialog.setTitle("SINCRONIZANDO DATOS");
+                            menu_principal2.prodialog.setMessage("ESPERE...");
+                            menu_principal2.prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                            menu_principal2.prodialog.setProgressDrawable(progressBarDrawable);
+                            menu_principal2.prodialog.show();
+                            menu_principal2.prodialog.setCanceledOnTouchOutside(false);
+                            menu_principal2.prodialog.setCancelable(false);
                             final AsyncImportador task = new  AsyncImportador();
                             task.execute();
 

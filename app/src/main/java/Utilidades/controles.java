@@ -976,16 +976,18 @@ public class controles {
                 Stkw001List.setGrupo(rs.getString("grup_desc"));
                 listaStkw001.add(Stkw001List);
             }
-            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem3, R.id.text1, listaStkw001) {
+            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem_card, R.id.text1, listaStkw001) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
+                    TextView text4 = (TextView) view.findViewById(R.id.text4);
                     text1.setText("NRO. DE TOMA: "+listaStkw001.get(position).getNroToma());
-                    text2.setText("FAMILIA: "+listaStkw001.get(position).getFamilia());
-                    text3.setText("GRUPO:"+listaStkw001.get(position).getGrupo()+"  FECHA DE GENERACION: "+listaStkw001.get(position).getFechaToma());
+                    text2.setText("FECHA: "+listaStkw001.get(position).getFechaToma());
+                    text3.setText("FAMILIA:"+listaStkw001.get(position).getFamilia());
+                    text4.setText("GRUPO:"+listaStkw001.get(position).getGrupo());
 
                     return view;
                 }

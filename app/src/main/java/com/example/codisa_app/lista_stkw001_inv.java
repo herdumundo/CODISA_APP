@@ -74,26 +74,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
 
 
                 alert.show();
-                /*
-                int nro_registro =Integer.parseInt(controles.listaStkw001.get(pos).getNroToma());
 
-                new AlertDialog.Builder(lista_stkw001_inv.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("ATENCION!!!.")
-                        .setMessage("¿DESEA CANCELAR LA TOMA GENERADA?")
-                        .setPositiveButton("SI, CANCELAR", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                controles.CancelarToma(nro_registro,lista_stkw001_inv.this);
-                             //   Toast.makeText(lista_stkw001_inv.this,String.valueOf(nro_registro),Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .setNegativeButton("NO", null)
-                        .show();
-
-*/
             }
         });
 

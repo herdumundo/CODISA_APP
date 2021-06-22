@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import Utilidades.Connection_Oracle;
 import Utilidades.controles;
@@ -56,6 +58,7 @@ public class login extends AppCompatActivity
         {
             final AsyncCaller task = new AsyncCaller();
             task.execute();
+
         }
 
 
@@ -72,11 +75,10 @@ public class login extends AppCompatActivity
             }
             @Override
             protected Void doInBackground(Void... params) {
-
                 try
                 {
-                    user=  txt_usuario.getText().toString();
-                    passwd=txt_pass.getText().toString();
+                    user=  txt_usuario.getText().toString().trim().toString();
+                    passwd=txt_pass.getText().toString().trim().toString();
                     String url = "jdbc:oracle:thin:@(DESCRIPTION= (ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.19)(PORT=1521)) (CONNECT_DATA=(SERVICE_NAME=codisaprod)))";
                     String driver = "oracle.jdbc.OracleDriver";
                     StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -106,7 +108,7 @@ public class login extends AppCompatActivity
                     }
                     else if (se.getErrorCode()==17002)
                     {
-                        mensaje="ERROR DE CONEXION, VERIFIQUE LA RED1.";
+                        mensaje="2";//  mensaje="ERROR DE CONEXION, VERIFIQUE LA RED1.";
                     }
                     else if (se.getErrorCode()==20)
                     {
@@ -170,7 +172,7 @@ public class login extends AppCompatActivity
                              //AQUI SE COLOCARA EL LISTVIEW PARA CONSULTAR LAS SUCURSALES DISPONIBLES. Y LUEGO DE SELECCIONARLA IR AL MENU PRINCIPAL
 
                             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
-                            db1.execSQL("delete from USUARIOS_FORMULARIOS_SUCURSALES  WHERE LOGIN_O =upper('"+txt_usuario.getText()+"')");
+                            db1.execSQL("delete from USUARIOS_FORMULARIOS_SUCURSALES  WHERE LOGIN_O =upper('"+txt_usuario.getText().toString().trim()+"')");
                             db1.close();
                             Statement stmt2= connect.createStatement();
                             ResultSet rs2 = stmt2.executeQuery("select distinct formulario,nombre,LOGIN_O,SUCURSAL_DESCRIPCION ,ROL_SUCURSAL   " +
@@ -180,7 +182,7 @@ public class login extends AppCompatActivity
                                 SQLiteDatabase dblogin=controles.conSqlite.getReadableDatabase();
                                 dblogin.execSQL(" INSERT INTO  USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO,NOMBRE,LOGIN_O,LOGIN_PASS,SUCURSAL_DESCRIPCION,ROL_SUCURSAL) " +
                                         "VALUES ('"+rs2.getString("formulario")+"','"+rs2.getString("nombre")+"','"+rs2.getString("LOGIN_O")+"'," +
-                                        "upper('"+txt_pass.getText()+"'),'"+rs2.getString("SUCURSAL_DESCRIPCION")+"'," +
+                                        "upper('"+txt_pass.getText().toString().trim()+"'),'"+rs2.getString("SUCURSAL_DESCRIPCION")+"'," +
                                         "'"+rs2.getString("ROL_SUCURSAL")+"' )") ;
                                 //ESTADO PENDIENTE A INVENTARIAR.
                                 dblogin.close();
@@ -210,7 +212,7 @@ public class login extends AppCompatActivity
                  {
                      SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
                      Cursor cursorlog=db_consulta.rawQuery("select distinct formulario,nombre from  USUARIOS_FORMULARIOS_SUCURSALES " +
-                             "where upper(LOGIN_O)=upper('"+txt_usuario.getText()+"') and upper(LOGIN_PASS)=upper('"+txt_pass.getText()+"')",null);
+                             "where upper(LOGIN_O)=upper('"+txt_usuario.getText().toString().trim()+"') and upper(LOGIN_PASS)=upper('"+txt_pass.getText().toString().trim()+"')",null);
                      String contenedor_opciones="";
                      String nombre_usuario="";
                      int i=0;
@@ -326,8 +328,8 @@ public class login extends AppCompatActivity
 
                 SQLiteDatabase db_consultaSuc= controles.conSqlite.getReadableDatabase();
                 Cursor cursorlogSuc=db_consultaSuc.rawQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL from USUARIOS_FORMULARIOS_SUCURSALES " +
-                        "where upper(LOGIN_O)=upper('"+txt_usuario.getText()+"') and " +
-                        "upper(LOGIN_PASS)=upper('"+txt_pass.getText()+"')",null);
+                        "where upper(LOGIN_O)=upper('"+txt_usuario.getText().toString().trim()+"') and " +
+                        "upper(LOGIN_PASS)=upper('"+txt_pass.getText().toString().trim()+"')",null);
 
                 while ( cursorlogSuc.moveToNext())
                 {   controles.arrSucursales.add(cursorlogSuc.getString(0));

@@ -101,6 +101,7 @@ public class stkw001 extends AppCompatActivity {
         radioLoteSi         .setChecked(true);
         radioExistenciaNo   .setChecked(true);
         radioArticuloNo     .setChecked(true);
+
         if(variables.tipo_stkw001==1)
         {
             spinerArticulos.setVisibility(View.VISIBLE);

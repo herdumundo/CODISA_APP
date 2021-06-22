@@ -68,7 +68,7 @@
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceListItem"
         android:textColor="@color/colorBlack"
-        android:textSize="14sp"
+        android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toEndOf="@+id/txt_nro"

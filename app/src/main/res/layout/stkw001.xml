@@ -4,37 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".stkw001"
-    android:background="@drawable/border4">
+    android:background="@drawable/border4"
+    tools:context=".stkw001">
 
 
     <TextView
         android:id="@+id/txt_totalArticulos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="#000000"
+        android:background="#8AFF6F"
 
-        android:layout_width="53dp"
-        android:layout_height="24dp"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
         app:layout_constraintStart_toEndOf="@+id/txt_lbl_articulo"
+        app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
         tools:ignore="MissingConstraints" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"/>
     <TextView
         android:id="@+id/txt_lbl_articulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
         android:textColor="#000000"
-
+        android:background="#8AFF6F"
         android:textStyle="normal|bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
-        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -42,9 +37,9 @@
         android:layout_width="389dp"
         android:layout_height="54dp"
         android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/ic_registrar"
-
         android:background="@drawable/border"
+
+        android:drawableLeft="@drawable/ic_registrar"
         android:onClick="registrarToma"
         android:text="Generar Toma"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +54,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="40dp"
 
         app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +89,11 @@
             android:layout_alignBottom="@+id/radioGrupoLote"
             android:text="NO"
             android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
 
     </RadioGroup>
 
@@ -163,11 +163,11 @@
 
     <TextView
         android:id="@+id/txt_lv_vencimiento"
-        android:layout_width="wrap_content"
-        android:layout_height="22dp"
+        android:layout_width="87dp"
+        android:layout_height="17dp"
+        android:background="#939393"
         android:text="VENCIMIENTO"
         android:textColor="#000000"
-
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
@@ -392,8 +392,6 @@
         tools:ignore="MissingConstraints" />
 
 
-
-
     <TextView
         android:id="@+id/lbl_area"
         android:layout_width="wrap_content"
@@ -495,11 +493,11 @@
 
     <TextView
         android:id="@+id/txt_lv_cod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="18dp"
+        android:background="#939393"
         android:text="COD"
         android:textColor="#000000"
-
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -508,19 +506,20 @@
 
     <TextView
         android:id="@+id/txt_lv_lote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="76dp"
+        android:layout_height="18dp"
+        android:background="#939393"
         android:text="LOTE"
         android:textColor="#000000"
-
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
         app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <TextView
         android:id="@+id/txt_lv_articulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="198dp"
+        android:layout_height="18dp"
+        android:background="#939393"
         android:text="ARTICULO"
         android:textColor="#000000"
 
@@ -559,8 +558,8 @@
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#030561"
         android:orientation="vertical"
+        android:textColor="#030561"
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -578,4 +577,6 @@
         android:orientation="vertical"
 
         app:layout_constraintGuide_percent="0.59" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
