@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.codisa_app.R;
@@ -51,16 +52,15 @@ public class controles {
     public static   ArrayList<String> arr_familia         =   new ArrayList<>();
     public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
-    public static String table;
+    public static   String table;
     public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
     static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
-    public static          ArrayList<Stkw002List> listaStkw001;
+    public static   ArrayList<Stkw002List> listaStkw001;
 
     public static   List<Stkw002Item> ListArrayInventarioArticulos;
     public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
-   // public static   Connection          connection=null;
     public static   Connection_Oracle   conexion = new Connection_Oracle();
     public static   Connection        connect ;
     public static   Context context_stkw001;
@@ -377,6 +377,7 @@ public class controles {
             }
             TotalJoin= inLote+inEstado+inExistenciaCero;
             Statement stmt2 = connect.createStatement();
+            limpiarListaViewArticulosSTKW001();
             if(ids_subgrupos.length()>0){
 
             ResultSet rs2 = stmt2.executeQuery("" +
@@ -466,9 +467,11 @@ public class controles {
 
 
     public static  void limpiarSubGrupo(){
+
         listArraySubgrupo.clear();
         listArrayArticulos.clear();
         listInsertArticulos.clear();
+        limpiarListaViewArticulosSTKW001();
         stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
         stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
         stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
@@ -812,7 +815,7 @@ public class controles {
     public static void listarStkw002(){
 
         try {
-
+                int contador_stkw002=0;
             SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
             Cursor cursor=db_consulta.rawQuery("select " +
                     "winvd_nro_inv," + //0
@@ -834,9 +837,12 @@ public class controles {
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
             {
+                contador_stkw002++;
                 ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(12)));
                 cont++;
             }
+            stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
+
 
 
 
@@ -856,7 +862,6 @@ public class controles {
             if(cursorCont.moveToNext()){
                 ContExportStkw002=cursorCont.getInt(0);
             }
-
 
             new AlertDialog.Builder(context_menuPrincipal)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -938,6 +943,7 @@ public class controles {
                     " WHERE WINVE_NUMERO="+nroToma+" ";
             PreparedStatement ps = connect.prepareStatement(Cancelar);
             ps.executeUpdate();
+            ps.close();
             connect.commit();
             ConsultarTomasServer(context);
 
@@ -984,10 +990,13 @@ public class controles {
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
                     TextView text4 = (TextView) view.findViewById(R.id.text4);
+                    ImageView txtimagen =   view.findViewById(R.id.txtimagen);
+
                     text1.setText("NRO. DE TOMA: "+listaStkw001.get(position).getNroToma());
                     text2.setText("FECHA: "+listaStkw001.get(position).getFechaToma());
                     text3.setText("FAMILIA:"+listaStkw001.get(position).getFamilia());
                     text4.setText("GRUPO:"+listaStkw001.get(position).getGrupo());
+                    txtimagen.setImageResource(R.drawable.ic_consulta);
 
                     return view;
                 }
@@ -1052,6 +1061,7 @@ public class controles {
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
+        int con=0;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1106,41 +1116,56 @@ public class controles {
                         "'1', "+id_cabecera+",'A')";
                 PreparedStatement ps = connect.prepareStatement(insertar);
                 ps.executeUpdate();
+                ps.close();
                 int secuencia=1;
                 if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
                 {
                     for (int i = 0; i < listInsertArticulos.size(); i++) {
                         int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                        String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
+                        String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
 
                         String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                "WINVD_NRO_INV," +
-                                "WINVD_ART," +
-                                "WINVD_SECU," +
-                                "WINVD_CANT_ACT," +
-                                "WINVD_CANT_INV," +
-                                "WINVD_UBIC," +
-                                "WINVD_CODIGO_BARRA," +
-                                "WINVD_CANT_PED_RECEP," +
-                                "WINVD_LOTE," +
-                                "WINVD_FEC_VTO," +
-                                "WINVD_LOTE_CLAVE," +
-                                "WINVD_UM," +
-                                "WINVD_area," +
-                                "WINVD_dpto," +
-                                "WINVD_secc," +
-                                "WINVD_flia," +
-                                "WINVD_grupo," +
-                                "WINVD_subgr," +
-                                "WINVD_indiv)  VALUES ("+id_cabecera+",'"+listInsertArticulos.get(i).getId()+"',"+secuencia+","+cantidad_actual+",'','','',''," +
-                                "'"+listInsertArticulos.get(i).getLote()+"',TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
+                                "WINVD_NRO_INV," + //1
+                                "WINVD_ART," +//2
+                                "WINVD_SECU," +//3
+                                "WINVD_CANT_ACT," +//4
+                                "WINVD_CANT_INV," +//5
+                                "WINVD_UBIC," +//6
+                                "WINVD_CODIGO_BARRA," +//7
+                                "WINVD_CANT_PED_RECEP," +//8
+                                "WINVD_LOTE," +//9
+                                "WINVD_FEC_VTO," +//10
+                                "WINVD_LOTE_CLAVE," +//11
+                                "WINVD_UM," +//12
+                                "WINVD_area," +//13
+                                "WINVD_dpto," +//14
+                                "WINVD_secc," +//15
+                                "WINVD_flia," +//16
+                                "WINVD_grupo," +//17
+                                "WINVD_subgr," +//18
+                                "WINVD_indiv" +//19
+                                ")  VALUES ("+
+                                id_cabecera+",'"+
+                                listInsertArticulos.get(i).getId()+"',"+
+                                secuencia+","+
+                                cantidad_actual+"," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +  "'"+
+                                listInsertArticulos.get(i).getLote()+"'," +
+                                "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
+                                "''," +
+                                "''," +
                                 "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
                                 "'"+stkw001.txt_id_familia.getText().toString()+"','"+stkw001.txt_id_grupo.getText().toString()+"','"+listInsertArticulos.get(i).getSubgrupo()+"','')";
 
 
                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
                         ps2.executeUpdate();
+                        ps2.close();
                         secuencia++;
+                        con++;
                     }}
 
                 else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
@@ -1175,8 +1200,9 @@ public class controles {
 
                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
                         ps2.executeUpdate();
-
+                        ps2.close();
                         secuencia++;
+                        con++;
                     }}
                 connect.commit();
                 tipoRespuestaStkw001=1;
@@ -1227,6 +1253,10 @@ public class controles {
         }
     }
 
+
+
+
+
     public static class AsyncExportStkw002 extends AsyncTask<Void, Void, Void>
     {
         @Override
@@ -1237,6 +1267,7 @@ public class controles {
         @Override
         protected Void doInBackground(Void... params) {
             SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
+            SQLiteDatabase dbAnularSqliteCab= conSqlite.getReadableDatabase();
 
             int tipoRegistro=0;
            try {
@@ -1249,8 +1280,9 @@ public class controles {
                connect.setAutoCommit(false);
                int contadorMensaje=0; // EN EL CASO DE QUE QUEDE EN CERO, ENTONCES EL MENSAJE SERA, DE QUE NO HAY DATOS PARA EXPORTAR
                while (cursorCab.moveToNext())
-               {    int nroCabecera=cursorCab.getInt(0);
-                   db_UPDATE.beginTransaction();
+               {
+                   int nroCabecera=cursorCab.getInt(0);
+
                    contadorMensaje++;
                    String WINVE_LOGIN_CERRADO_WEB=cursorCab.getString(1);
                    Cursor cursor=db_consulta.rawQuery("select " +
@@ -1271,31 +1303,49 @@ public class controles {
                            "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+nroCabecera+
                            " and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')"  ,null);
 
-                   int i=1;
-                    // ESTE CURSOR RECORRE EL DETALLE DEL SQLITE, PARA ACTUALIZAR,
-                    // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
-                   while (cursor.moveToNext())
-                    {
-                       // SE ACTUALIZAR EL DETALLE DEL SERVIDOR.
-                        PreparedStatement ps = connect.prepareStatement(" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " + "" +
-                                " where winvd_nro_inv="  +cursor.getString(0)+"   and winvd_secu="+ cursor.getString(11)+"");
-                        ps.executeUpdate();
+                   //PRIMERO CONSULTA SI EL NRO DE TOMA A EXPORTAR, NO SE ENCUENTRA ANULADO EN EL SERVER
+                   Statement stmtAnulados =  connect.createStatement();
 
-                        //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C
-                        db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+"  and winvd_secu="+ cursor.getString(11)+""   );
-                        menu_principal.ProDialogExport.setProgress(i);
-                        i++;
+                   ResultSet rsAnulados = stmtAnulados.executeQuery("SELECT WINVE_estado_web FROM  web_inventario WHERE WINVE_NUMERO="+nroCabecera+" " );
+                   String anulado="";
+                   while (rsAnulados.next()){
+                       anulado=rsAnulados.getString("WINVE_estado_web");
                     }
-                    //SERVER ACTUALIZA LA CABECERA
-                   PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
-                           "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
-                           "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
-                           "WHERE WINVE_NUMERO="+cursorCab.getString(0));
-                   pscAB.executeUpdate();
+                   //SI SE ENCUENTRA ANULADO, VA AL SQLITE Y ACTUALIZA EL ESTADO A "E"
+                    if(anulado.trim().equals("E"))
+                    { //
+                        dbAnularSqliteCab.execSQL(" update stkw002inv set estado='E' where winvd_nro_inv="  +nroCabecera+" "   );
+                    }
+                   //SI NO ESTA ANULADO, ENTONCES EXPORTA
+                   else {
+                            db_UPDATE.beginTransaction();
+                            int i=1;
+                            // ESTE CURSOR RECORRE EL DETALLE DEL SQLITE, PARA ACTUALIZAR,
+                            // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
+                            while (cursor.moveToNext())
+                            {
+                                // SE ACTUALIZAR EL DETALLE DEL SERVIDOR.
+                                PreparedStatement ps = connect.prepareStatement(" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " + "" +
+                                       " where winvd_nro_inv="  +cursor.getString(0)+"   and winvd_secu="+ cursor.getString(11)+"");
+                                ps.executeUpdate();
+                                ps.close();
+                               //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C
+                               db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+"  and winvd_secu="+ cursor.getString(11)+""   );
+                               menu_principal.ProDialogExport.setProgress(i);
+                               i++;
+                            }
+                            //SERVER ACTUALIZA LA CABECERA
+                            PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
+                                   "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
+                                   "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
+                                   "WHERE WINVE_NUMERO="+nroCabecera);
+                            pscAB.executeUpdate();
+                        pscAB.close();
+                            db_UPDATE.setTransactionSuccessful();
+                            db_UPDATE.endTransaction();
 
-                   db_UPDATE.setTransactionSuccessful();
-                   db_UPDATE.endTransaction();
-               }//FIN DEL CURSOR CABECERA
+                   }
+                }//FIN DEL CURSOR CABECERA
 
                 if(contadorMensaje==0){
                     mensajeRespuestaExportStkw002="NO SE ENCONTRARON REGISTROS POR EXPORTAR.";
@@ -1315,9 +1365,11 @@ public class controles {
                    tipoRegistro=1;
                    db_UPDATE.close();
 
-               } catch (SQLException throwables)
+               } catch (Exception es)
                {
-                   throwables.printStackTrace();
+                  // throwables.printStackTrace();
+                   mensajeRespuestaExportStkw002=es.toString();
+
                }
                mensajeRespuestaExportStkw002=e.toString();
                return null;
@@ -1333,9 +1385,10 @@ public class controles {
                             ConsultarPendientesExportar();
                         }
 
-                    } catch (SQLException throwables)
+                    } catch (Exception e)
                         {
-                            throwables.printStackTrace();
+                           // throwables.printStackTrace();
+                            mensajeRespuestaExportStkw002=e.toString();
                         }
            }
             return null;
@@ -1370,5 +1423,25 @@ public class controles {
         }
     }
 
+    public static void limpiarListaViewArticulosSTKW001(){
+        ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView txt_nro = (TextView) view.findViewById(R.id.txt_nro);
+                TextView txt_producto = (TextView) view.findViewById(R.id.txt_producto);
+                TextView txt_lote = (TextView) view.findViewById(R.id.txt_lote);
+                TextView txt_vto = (TextView) view.findViewById(R.id.txt_vto);
 
+                txt_nro.setText(""+listInsertArticulos.get(position).getId());
+                txt_producto.setText(""+listInsertArticulos.get(position).getName());
+                txt_lote.setText(""+listInsertArticulos.get(position).getLote());
+                txt_vto.setText(""+listInsertArticulos.get(position).getFecha_vencimientoParseado());
+
+                return view;
+            }
+        };
+        stkw001.LvArticulosStkw001.setAdapter(adapter);
+        stkw001.txt_total.setText("0");
+    }
 }

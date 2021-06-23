@@ -38,6 +38,8 @@
             android:screenOrientation = "portrait"/>
         <activity
             android:name=".menu_principal"
+            android:screenOrientation = "portrait"
+
             android:noHistory="true" />
         <activity
             android:name=".stkw001"

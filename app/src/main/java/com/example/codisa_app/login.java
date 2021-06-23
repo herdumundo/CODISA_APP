@@ -35,24 +35,26 @@ public class login extends AppCompatActivity
     public void onBackPressed()  {
             Utilidades.controles.volver_atras(this,this,  login.class,"DESEA SALIR DE LA APLICACION?",5);
         }
+        Connection connection=null;
+        Connection connect;
+        Connection_Oracle conexion = new Connection_Oracle();
 
         TextView txt_usuario,txt_pass;
         String mensaje,passwd,user="";
-        Connection connection=null;
-        Connection_Oracle conexion = new Connection_Oracle();
-        Connection connect ;
         ProgressDialog pdLoading;
         @Override
         protected void onCreate(Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.login);
-           // getSupportActionBar().setTitle("CODISA APP V.1.0");
             txt_usuario=(TextView)findViewById(R.id.txt_usuario);
             txt_pass=(TextView)findViewById(R.id.txt_pass);
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
             getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
             controles.conexion_sqlite(this);
+
+           // Multi t1=new Multi();
+            //t1.start();
         }
         public void login (View v)
         {
@@ -370,4 +372,10 @@ public class login extends AppCompatActivity
             });
             builderSingle.show();
         }
+
+
+
+
+
+
     }

@@ -25,7 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.spec.ECField;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -39,7 +41,10 @@ public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
     public  static TextView txt_total;
     CardView tomasGen;
-    int ContProgressBarImportador=0;
+    int error_importador=1;
+
+    static int   ContProgressBarImportador=0;
+      String mensajeImporError="";
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
     }
@@ -120,28 +125,153 @@ public class menu_principal extends AppCompatActivity {
     public void OnclickIrStkw001Cancelacion(View v){
 
 
-        Intent intent = new Intent(menu_principal.this, lista_stkw001_inv.class);
+        Intent intent = new Intent(this, lista_stkw001_inv.class);
         finish();
         startActivity(intent);
 
     }
 
     public void OnclickExportar( View v){
+    try {
 
         controles.ExportarStkw002();
+
+    }
+    catch (Exception e){
+        new androidx.appcompat.app.AlertDialog.Builder( this)
+                .setTitle("INFORME!!!")
+                .setMessage(e.toString()).show();
+
+    }
     }
 
     public void OnclickSincronizarDatos(View v){
-       /* Intent intent = new Intent(menu_principal.this, MainActivity.class);
-        finish();
-        startActivity(intent);
-*/
-        ImportarTomas();
+
+        final async task = new async();
+        task.execute();
+      //ImportarTomas();
+
+
+    }
+
+    public   class async extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            prodialog = ProgressDialog.show(menu_principal.this, "PROCESANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+           try {
+               error_importador=1;
+               controles.connect = controles.conexion.Connections();
+               Statement stmt = controles.connect.createStatement();
+               ResultSet rs = stmt.executeQuery("" +
+                       "   SELECT " +
+                       "       count(*) as  contador " +
+                       "   FROM   " +
+                       "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
+                       "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
+                       "       and a.ART_CODIGO=b.winvd_art       " +
+                       "       and a.SECC_CODIGO=b.winvd_secc     " +
+                       "       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
+                       "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
+                       "       and c.winve_dep=a.ARDE_DEP  " +
+                       "       and c.winve_area=a.AREA_CODIGO  " +
+                       "       and c.winve_suc=a.ARDE_SUC   " +
+                       "       and c.winve_secc=a.SECC_CODIGO  " +
+                       "   where " +
+                       "       c.winve_empr=1 " +
+                       "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
+
+               while (rs.next())
+               {
+                   ContProgressBarImportador=rs.getInt("contador");
+               }
+               rs.close();
+               error_importador=0;
+
+
+           }
+           catch (Exception e){
+
+               mensajeImporError=e.getMessage();
+
+           }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            prodialog.dismiss();
+            if (error_importador==0){
+
+                new AlertDialog.Builder(menu_principal.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("SINCRONIZACION.")
+                        .setMessage("¿DESEA ACTUALIZAR LOS DATOS DISPONIBLES?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                prodialog =  new ProgressDialog( menu_principal.this);
+                                prodialog.setMax(ContProgressBarImportador);
+                                LayerDrawable progressBarDrawable = new LayerDrawable(
+                                        new Drawable[]{
+                                                new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                                        new int[]{Color.parseColor("black"),Color.parseColor("black")}),
+                                                new ClipDrawable(
+                                                        new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                                                new int[]{Color.parseColor("yellow"),Color.parseColor("yellow")}),
+                                                        Gravity.START,
+                                                        ClipDrawable.HORIZONTAL),
+                                                new ClipDrawable(
+                                                        new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                                                new int[]{Color.parseColor("yellow"),Color.parseColor("yellow")}),
+                                                        Gravity.START,
+                                                        ClipDrawable.HORIZONTAL)
+                                        });
+                                progressBarDrawable.setId(0,android.R.id.background);
+                                progressBarDrawable.setId(1,android.R.id.secondaryProgress);
+                                progressBarDrawable.setId(2,android.R.id.progress);
+                                prodialog.setTitle("SINCRONIZANDO DATOS");
+                                prodialog.setMessage("ESPERE...");
+                                prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                prodialog.setProgressDrawable(progressBarDrawable);
+                                prodialog.show();
+                                prodialog.setCanceledOnTouchOutside(false);
+                                prodialog.setCancelable(false);
+                                   final AsyncImportador task = new  AsyncImportador();
+                                task.execute();
+
+                            }
+                        })
+                        .setNegativeButton("NO", null)
+                        .show();
+            }
+
+            else {
+                new androidx.appcompat.app.AlertDialog.Builder(menu_principal.this)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage(mensajeImporError)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).show();
+            }
+
+
+
+        }
     }
 
     private void ImportarTomas(){
         try {
-            controles.connect = controles.conexion.Connections();
+          /*  controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
             ResultSet rs = stmt.executeQuery("" +
                     "   SELECT " +
@@ -165,8 +295,8 @@ public class menu_principal extends AppCompatActivity {
             {
                 ContProgressBarImportador=rs.getInt("contador");
             }
-            rs.close();
-            new AlertDialog.Builder(menu_principal.this)
+            rs.close();*/
+            new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("SINCRONIZACION.")
                     .setMessage("¿DESEA ACTUALIZAR LOS DATOS DISPONIBLES?")
@@ -174,8 +304,8 @@ public class menu_principal extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            menu_principal.prodialog =  new ProgressDialog( menu_principal.this);
-                            menu_principal.prodialog.setMax(ContProgressBarImportador);
+                            prodialog =  new ProgressDialog( menu_principal.this);
+                            prodialog.setMax(ContProgressBarImportador);
                             LayerDrawable progressBarDrawable = new LayerDrawable(
                                     new Drawable[]{
                                             new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
@@ -194,13 +324,13 @@ public class menu_principal extends AppCompatActivity {
                             progressBarDrawable.setId(0,android.R.id.background);
                             progressBarDrawable.setId(1,android.R.id.secondaryProgress);
                             progressBarDrawable.setId(2,android.R.id.progress);
-                            menu_principal.prodialog.setTitle("SINCRONIZANDO DATOS");
-                            menu_principal.prodialog.setMessage("ESPERE...");
-                            menu_principal.prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            menu_principal.prodialog.setProgressDrawable(progressBarDrawable);
-                            menu_principal.prodialog.show();
-                            menu_principal.prodialog.setCanceledOnTouchOutside(false);
-                            menu_principal.prodialog.setCancelable(false);
+                            prodialog.setTitle("SINCRONIZANDO DATOS");
+                            prodialog.setMessage("ESPERE...");
+                            prodialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                            prodialog.setProgressDrawable(progressBarDrawable);
+                            prodialog.show();
+                            prodialog.setCanceledOnTouchOutside(false);
+                            prodialog.setCancelable(false);
                             final AsyncImportador task = new  AsyncImportador();
                             task.execute();
 
@@ -211,6 +341,15 @@ public class menu_principal extends AppCompatActivity {
             }
         catch (Exception e){
 
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("ATENCION!!!")
+                    .setCancelable(false)
+                    .setMessage(e.getMessage())
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).show();
         }
 
     }

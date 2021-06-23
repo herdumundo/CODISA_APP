@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,8 +26,10 @@ import Utilidades.MultiSpinnerSearch;
 import Utilidades.controles;
 import Utilidades.variables;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class stkw001 extends AppCompatActivity {
     public static   SpinnerDialog       sp_sucursal,sp_deposito,sp_area,sp_departamento,sp_seccion,sp_familia,sp_grupo;
@@ -46,6 +51,17 @@ public class stkw001 extends AppCompatActivity {
     {
         controles.volver_atras(this,this,menu_principal.class,"¿DESEA VOLVER AL MENU PRINCIPAL?",1);
     }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                controles.volver_atras(this,this,menu_principal.class,"¿DESEA VOLVER AL MENU PRINCIPAL?",1);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     //tipo_stkw001 1 = MANUAL, 2= AUTOMATICO
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,8 +69,13 @@ public class stkw001 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stkw001);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ variables.titulo_stkw001+" </font>"));
-
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+        this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
         txt_total=findViewById(R.id.txt_totalArticulos);
@@ -101,7 +122,7 @@ public class stkw001 extends AppCompatActivity {
         radioLoteSi         .setChecked(true);
         radioExistenciaNo   .setChecked(true);
         radioArticuloNo     .setChecked(true);
-
+        controles.limpiarSubGrupo();
         if(variables.tipo_stkw001==1)
         {
             spinerArticulos.setVisibility(View.VISIBLE);
@@ -125,6 +146,8 @@ public class stkw001 extends AppCompatActivity {
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
                             controles.INVE_IND_LOTE="S";
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                         break;
                     case R.id.radioLoteNo:
@@ -133,6 +156,8 @@ public class stkw001 extends AppCompatActivity {
                     //    num=2;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                         break;
                 }
@@ -149,6 +174,8 @@ public class stkw001 extends AppCompatActivity {
                         controles.INVE_ART_EXIST="S";
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                        // Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;
@@ -157,6 +184,8 @@ public class stkw001 extends AppCompatActivity {
                         controles.INVE_ART_EXIST="N";
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                      //   Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;
@@ -175,6 +204,8 @@ public class stkw001 extends AppCompatActivity {
                         BolDescontinuados=true;
                         if (variables.tipo_stkw001==1){
                             controles.listarArticulos();
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                       //  Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
                         break;
@@ -184,7 +215,10 @@ public class stkw001 extends AppCompatActivity {
 
                         //    num=2;
                         if (variables.tipo_stkw001==1){
+
                             controles.listarArticulos();
+                            controles.limpiarListaViewArticulosSTKW001();
+
                         }
                       //  Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
                         break;

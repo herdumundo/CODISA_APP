@@ -1,16 +1,24 @@
 package com.example.codisa_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +30,22 @@ import java.util.ArrayList;
 
 public class stkw002 extends AppCompatActivity {
     Button btnEliminar;
+    public static TextView txtTotalArt;
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
     }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     EditText Searchtext,txt_cantidad;
 
     private  Stkw002Adapter adapter;
@@ -36,6 +57,14 @@ public class stkw002 extends AppCompatActivity {
         setContentView((int) R.layout.scroll);
          recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
          btnEliminar=  findViewById( R.id.btn_eliminar);
+         txtTotalArt=  findViewById( R.id.txtTotalArt);
+         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>REGISTRO INVENTARIO </font>"));
+         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+         this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
          if(variables.tipoStkw002==1){
              btnEliminar.setVisibility(View.VISIBLE);
          }
@@ -43,9 +72,13 @@ public class stkw002 extends AppCompatActivity {
              btnEliminar.setVisibility(View.GONE);
 
          }
+
         controles.listarStkw002();
         listar_recicler();
         controles.conexion_sqlite(this);
+
+
+
         Searchtext = (EditText) findViewById(R.id.search_input);
         txt_cantidad = (EditText) findViewById(R.id.txt_cantidad);
         Searchtext.addTextChangedListener(new TextWatcher()
