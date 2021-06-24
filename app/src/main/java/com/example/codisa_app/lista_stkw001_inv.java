@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import Utilidades.variables;
 
 public class lista_stkw001_inv extends AppCompatActivity {
    public static ListView listView,listView2;
+   public static ProgressDialog pgDialog;
     public void onBackPressed()
     {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
@@ -47,6 +49,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_stkw001_inv);
         listView =(ListView)findViewById(R.id.listViewInvStkw001);
+        controles.contextListaStkw001=this;
         controles.ConsultarTomasServer( this);
          getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CANCELACIÓN DE TOMAS </font>"));
 
@@ -61,63 +64,10 @@ public class lista_stkw001_inv extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
                 int nro_registro =Integer.parseInt(controles.listaStkw001.get(pos).getNroToma());
+                controles.nroTomaCancelacion=nro_registro;
+                final controles.AsyncListarCancelaciones task = new controles.AsyncListarCancelaciones();
+                task.execute();
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(lista_stkw001_inv.this);
-                alert.setTitle("ARTICULOS CARGADOS");
-                controles.listarWebViewStkw001Cancelacion(nro_registro);
-                WebView wv = new WebView(lista_stkw001_inv.this);
-                wv.loadData(controles.table, "text/html", "utf-8");
-
-
-                alert.setView(wv);
-                alert.setNegativeButton("CERRAR", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-                alert.setNeutralButton("CANCELAR TOMA", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                        AlertDialog.Builder alert2 = new AlertDialog.Builder(lista_stkw001_inv.this);
-                        alert2.setTitle("¿ESTÁ SEGURO QUE DESEA CANCELAR LA TOMA NRO."+nro_registro+"?");
-                        alert2.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog2, int id) {
-                                dialog2.dismiss();
-                            }
-                        });
-                        alert2.setNeutralButton("SI", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog2, int which) {
-                                controles.CancelarToma(nro_registro,lista_stkw001_inv.this);
-                                dialog2.dismiss();
-
-                                AlertDialog.Builder alert3 = new AlertDialog.Builder(lista_stkw001_inv.this);
-                                alert3.setTitle("REGISTRO CANCELADO CON EXITO.");
-                                alert3.setNeutralButton("CERRAR", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog3, int which) {
-                                        dialog3.dismiss();
-
-                                    }
-                                });
-
-                                alert3.show();
-
-
-
-
-                            }
-                        });
-
-                        alert2.show();
-
-                            }
-                });
-                alert.show();
             }
         });
 

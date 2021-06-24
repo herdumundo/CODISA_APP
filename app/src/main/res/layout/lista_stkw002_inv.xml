@@ -26,14 +26,28 @@
 
         android:id="@+id/listViewInv"
         android:layout_width="match_parent"
-        android:layout_height="619dp"
+        android:layout_height="580dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="151dp"
         android:layout_marginEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSinresultado"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_width="408dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_pendientes_exportacion"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="3dp"
+        android:text="NO SE ENCONTRARON RESULTADOS." />
 </RelativeLayout>

@@ -241,7 +241,7 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        app:srcCompat="@mipmap/ic_sincronizar" />
+                        app:srcCompat="@drawable/ic_sincronizar" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

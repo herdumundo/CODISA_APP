@@ -43,6 +43,7 @@ public class menu_principal extends AppCompatActivity {
     public  static TextView txt_total;
     CardView tomasGen;
     int error_importador=1;
+//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 TOKEN
 
     static int   ContProgressBarImportador=0;
       String mensajeImporError="";
@@ -55,7 +56,6 @@ public class menu_principal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
         txt_total=findViewById(R.id.txt_total);
-//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 TOKEN
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>SUCURSAL:"+ variables.DESCRIPCION_SUCURSAL_LOGIN+" </font>"));

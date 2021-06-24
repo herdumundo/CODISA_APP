@@ -8,35 +8,73 @@
     tools:context=".stkw001">
 
 
+    <LinearLayout
+        android:id="@+id/relative"
+        android:layout_width="362dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="84dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_weight="1"
+            android:text="COD"
+            android:textColor="#f00"></TextView>
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:text="ARTICULO"
+            android:textColor="#f00"></TextView>
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:text="LOTE"
+            android:textColor="#f00"></TextView>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:text="VEN"
+            android:textColor="#f00"></TextView>
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/txt_totalArticulos"
+        android:id="@+id/txtTotalArticuloGrilla"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:background="#8AFF6F"
-        android:visibility="gone"
-
-        android:textStyle="normal|bold"
-        app:layout_constraintStart_toEndOf="@+id/txt_lbl_articulo"
-        app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/txt_lbl_articulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#8A8A8A"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
-        android:visibility="gone"
         android:textColor="#000000"
-        android:background="#8AFF6F"
-        android:textStyle="normal|bold"
 
+
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
         app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.029"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="389dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/border"
@@ -51,26 +89,28 @@
     <ListView
         android:id="@+id/listViewDet_art"
         android:layout_width="match_parent"
-        android:layout_height="104dp"
+        android:layout_height="75dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/relative"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-16dp">
+
+
+    </ListView>
 
     <RadioGroup
         android:id="@+id/radioGrupoLote"
-        android:layout_width="179dp"
+        android:layout_width="135dp"
 
-        android:layout_height="33dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/spinerSubGrupo">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <!-- In RadioGroup create the 1 Radio Button-->
         <!-- like this we will add some more Radio Button-->
@@ -81,33 +121,36 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoLote"
             android:text="SI"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
 
         <RadioButton
             android:id="@+id/radioLoteNo"
-            android:layout_width="77dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignStart="@+id/radioGrupoLote"
             android:layout_alignBottom="@+id/radioGrupoLote"
             android:text="NO"
-            android:textSize="15dp" />
+            android:textSize="15dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:textStyle="bold" />
 
     </RadioGroup>
 
     <RadioGroup
         android:id="@+id/radioGrupoArticulo"
-        android:layout_width="143dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="127dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/radioGrupoExistencia">
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="1dp">
 
         <!-- In RadioGroup create the 1 Radio Button-->
         <!-- like this we will add some more Radio Button-->
@@ -118,7 +161,9 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoArticulo"
             android:text="SI"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/radioArticuloNo"
@@ -127,7 +172,9 @@
             android:layout_alignStart="@+id/radioGrupoArticulo"
             android:layout_alignBottom="@+id/radioGrupoArticulo"
             android:text="NO"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+
+            android:textStyle="bold" />
 
     </RadioGroup>
 
@@ -135,11 +182,10 @@
         android:id="@+id/radioGrupoExistencia"
         android:layout_width="119dp"
         android:layout_height="33dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/radioGrupoLote">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <!-- In RadioGroup create the 1 Radio Button-->
         <!-- like this we will add some more Radio Button-->
@@ -150,67 +196,68 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoExistencia"
             android:text="SI"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/radioExistenciaNo"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignStart="@+id/radioGrupoExistencia"
             android:layout_alignBottom="@+id/radioGrupoExistencia"
             android:text="NO"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+
+            android:textStyle="bold" />
 
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/txt_lv_vencimiento"
-        android:layout_width="87dp"
-        android:layout_height="17dp"
-        android:background="#939393"
-        android:text="VENCIMIENTO"
-        android:textColor="#000000"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/lbl_articulos"
         android:layout_width="66dp"
         android:layout_height="21dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="56dp"
         android:text="Articulos"
-        android:textColor="#000000"
+        android:textColor="#030561"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints" />
+
+    <Utilidades.MultiSpinnerSearch
+        android:id="@+id/spinerArticulos"
+        android:layout_width="215dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="48dp"
+        app:hintText="Seleccione Articulos"
+        app:layout_constraintStart_toEndOf="@+id/lbl_articulos"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="251dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="244dp"
+        android:layout_height="27dp"
         android:text="Incluir articulos con existencia cero"
         android:textColor="#030561"
         android:textStyle="normal|bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGrupoLote"
+        tools:layout_editor_absoluteX="12dp" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="215dp"
-        android:layout_height="27dp"
+        android:layout_width="209dp"
+        android:layout_height="26dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:text="Incluir articulos descontinuados"
         android:textColor="#030561"
         android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGrupoExistencia" />
 
     <TextView
         android:id="@+id/lbl_subgrupo"
@@ -227,13 +274,15 @@
 
     <TextView
         android:id="@+id/txt_grupo"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:drawableEnd="@drawable/ic_action_spinner"
         android:hint="Seleccione grupo"
+        android:textStyle="bold"
 
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/txt_id_grupo"
         app:layout_constraintTop_toBottomOf="@+id/txt_familia"
         tools:ignore="MissingConstraints" />
@@ -243,7 +292,9 @@
         android:layout_width="21dp"
         android:layout_height="19dp"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="12dp"
+
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_familia"
         tools:ignore="MissingConstraints" />
@@ -263,13 +314,15 @@
 
     <TextView
         android:id="@+id/txt_familia"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-
+        android:layout_marginTop="10dp"
         android:drawableEnd="@drawable/ic_action_spinner"
+
         android:hint="Seleccione familia"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/txt_id_familia"
         app:layout_constraintTop_toBottomOf="@+id/txt_seccion"
         tools:ignore="MissingConstraints" />
@@ -289,12 +342,16 @@
 
     <TextView
         android:id="@+id/txt_seccion"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+
         android:drawableEnd="@drawable/ic_action_spinner"
         android:hint="Seleccione seccion"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/txt_id_seccion"
         app:layout_constraintTop_toBottomOf="@+id/txt_departamento"
         tools:ignore="MissingConstraints" />
@@ -303,9 +360,9 @@
         android:id="@+id/txt_id_seccion"
         android:layout_width="21dp"
         android:layout_height="19dp"
-
         android:layout_marginStart="116dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_departamento"
         tools:ignore="MissingConstraints" />
@@ -313,10 +370,10 @@
     <TextView
         android:id="@+id/txt_id_familia"
         android:layout_width="21dp"
-
         android:layout_height="19dp"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_seccion"
         tools:ignore="MissingConstraints" />
@@ -326,7 +383,7 @@
         android:layout_width="58dp"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="Seccion:"
         android:textColor="#030561"
         android:textStyle="bold"
@@ -336,12 +393,15 @@
 
     <TextView
         android:id="@+id/txt_departamento"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:drawableEnd="@drawable/ic_action_spinner"
         android:hint="Seleccione departamento"
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/txt_id_departamento"
         app:layout_constraintTop_toBottomOf="@+id/txt_area"
         tools:ignore="MissingConstraints" />
@@ -350,9 +410,10 @@
         android:id="@+id/txt_id_departamento"
         android:layout_width="21dp"
         android:layout_height="19dp"
-
         android:layout_marginStart="116dp"
-        android:layout_marginTop="8dp"
+
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_area"
         tools:ignore="MissingConstraints" />
@@ -362,7 +423,7 @@
         android:layout_width="99dp"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="Departamento:"
         android:textColor="#030561"
         android:textStyle="bold"
@@ -372,12 +433,16 @@
 
     <TextView
         android:id="@+id/txt_area"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="10dp"
         android:drawableEnd="@drawable/ic_action_spinner"
         android:hint="Seleccione area"
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toEndOf="@+id/txt_id_area"
         app:layout_constraintTop_toBottomOf="@+id/txt_deposito"
         tools:ignore="MissingConstraints" />
@@ -387,8 +452,9 @@
         android:layout_width="21dp"
         android:layout_height="19dp"
         android:layout_marginStart="116dp"
+        android:layout_marginTop="10dp"
 
-        android:layout_marginTop="40dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_deposito"
         tools:ignore="MissingConstraints" />
@@ -399,7 +465,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="12dp"
         android:text="Area:"
         android:textColor="#030561"
         android:textStyle="bold"
@@ -409,13 +475,15 @@
 
     <TextView
         android:id="@+id/txt_deposito"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="19dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
-
         android:drawableEnd="@drawable/ic_action_spinner"
+
         android:hint="Seleccione deposito"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/txt_id_deposito"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
         tools:ignore="MissingConstraints" />
@@ -448,26 +516,29 @@
 
     <TextView
         android:id="@+id/txt_id_sucursal"
+
         android:layout_width="21dp"
         android:layout_height="19dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="116dp"
         android:layout_marginTop="28dp"
-        app:layout_constraintStart_toEndOf="@+id/lbl_sucursal"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
 
         android:id="@+id/txt_desc_sucursal"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
 
-        android:layout_height="23dp"
+        android:layout_height="19dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="28dp"
         android:drawableEnd="@drawable/ic_action_spinner"
+
         android:hint="Seleccione sucursal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.006"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/txt_id_sucursal"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -476,9 +547,11 @@
         android:id="@+id/txt_id_deposito"
         android:layout_width="21dp"
         android:layout_height="19dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="116dp"
+
         android:layout_marginTop="12dp"
-        app:layout_constraintStart_toEndOf="@+id/lbl_deposito"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_sucursal" />
 
     <TextView
@@ -486,99 +559,26 @@
         android:layout_width="75dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:text="Incluir lote"
         android:textColor="#030561"
         android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo" />
 
-    <TextView
-        android:id="@+id/txt_lv_cod"
-        android:layout_width="40dp"
-        android:layout_height="18dp"
-        android:background="#939393"
-        android:text="COD"
-        android:textColor="#000000"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <TextView
-        android:id="@+id/txt_lv_lote"
-        android:layout_width="76dp"
-        android:layout_height="18dp"
-        android:background="#939393"
-        android:text="LOTE"
-        android:textColor="#000000"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
-
-    <TextView
-        android:id="@+id/txt_lv_articulo"
-        android:layout_width="198dp"
-        android:layout_height="18dp"
-        android:background="#939393"
-        android:text="ARTICULO"
-        android:textColor="#000000"
-
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/listViewDet_art"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline4" />
-
-    <Utilidades.MultiSpinnerSearch
-        android:id="@+id/spinerArticulos"
-        android:layout_width="215dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="27dp"
-        android:visibility="gone"
-        app:hintText="Seleccione Articulos"
-        app:layout_constraintStart_toEndOf="@+id/lbl_articulos"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="MissingConstraints" />
 
     <Utilidades.MultiSpinnerSearch
 
         android:id="@+id/spinerSubGrupo"
-        android:layout_width="215dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="203dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="20dp"
         app:hintText="Seleccione Sub-Grupo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.009"
+        app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintStart_toEndOf="@+id/lbl_subgrupo"
         app:layout_constraintTop_toBottomOf="@+id/txt_grupo"
         tools:ignore="MissingConstraints" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:textColor="#030561"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.79" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:orientation="vertical"
-
-        app:layout_constraintGuide_percent="0.59" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

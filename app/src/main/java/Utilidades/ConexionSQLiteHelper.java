@@ -11,7 +11,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
 
     }
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "CODISA_INV.db";
 
     public ConexionSQLiteHelper(Context context) {
@@ -39,7 +39,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     A= PENDIENTE DE REALIZACION DEL INVENTARIO
     P= INVENTARIO REALIZADO PENDIENTE DE EXPORTACION AL SERVER CENTURY.
     C= INVENTARIO EXPORTADO CON EXITO.
-    C= INVENTARIO CANCELADO.
+    E= INVENTARIO CANCELADO.
 
 
      */

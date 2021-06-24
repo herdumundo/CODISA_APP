@@ -10,11 +10,11 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="377dp"
+        android:layout_width="match_parent"
 
-        android:layout_height="45dp"
+        android:layout_height="42dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border"
+        android:background="@drawable/border2"
         android:drawableLeft="@drawable/ic_registrar"
         android:onClick="RegistrarSTKW002"
         android:text="REGISTRAR"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/btn_eliminar"
-        android:layout_width="377dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="4dp"
 
@@ -127,7 +127,7 @@
 
     <TextView
         android:id="@+id/txtTotalArt"
-        android:layout_width="153dp"
+        android:layout_width="match_parent"
         android:layout_height="18dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/RecyclerView"

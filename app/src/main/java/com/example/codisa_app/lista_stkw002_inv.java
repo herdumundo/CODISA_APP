@@ -35,6 +35,7 @@ import java.util.ArrayList;
 public class lista_stkw002_inv extends AppCompatActivity
 {
     ArrayList<Stkw002List> listaStkw002;
+    public static TextView txtSinresultado;
     ListView listView;
     public static Button btn_buscar;
 
@@ -60,9 +61,10 @@ public class lista_stkw002_inv extends AppCompatActivity
         setContentView(R.layout.lista_stkw002_inv);
         controles.conexion_sqlite(this);
         listView =(ListView)findViewById(R.id.listViewInv);
+        txtSinresultado=findViewById(R.id.txtSinresultado);
         btn_buscar =(Button)findViewById(R.id.btn_pendientes_exportacion);
         consultar_tomas_generadas("A");
-        btn_buscar.setBackgroundColor(Color.GREEN);
+    //    btn_buscar.setBackgroundColor(Color.GREEN);
 
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>PENDIENTES A INVENTARIAR </font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
@@ -114,6 +116,7 @@ public class lista_stkw002_inv extends AppCompatActivity
                 Stkw002List.setFamilia(cursor.getString(2));
                 Stkw002List.setGrupo(cursor.getString(3));
                 listaStkw002.add(Stkw002List);
+                cont++;
             }
             ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.listitem_card, R.id.text1, listaStkw002) {
                 @Override
@@ -127,12 +130,12 @@ public class lista_stkw002_inv extends AppCompatActivity
                     text2.setText("FAMILIA: "+listaStkw002.get(position).getFamilia());
                     text3.setText("GRUPO: "+listaStkw002.get(position).getGrupo());
                     if(variables.tipoListaStkw002==1){
-                        view.setBackgroundColor(Color.RED);
+                      //  view.setBackgroundColor(Color.RED);
                         txtimagen.setImageResource(R.drawable.ic_list);
 
                     }
                     else {
-                        view.setBackgroundColor(Color.GREEN);
+                        //view.setBackgroundColor(Color.GREEN);
                         txtimagen.setImageResource(R.drawable.ic_pendiente);
 
                     }
@@ -140,6 +143,15 @@ public class lista_stkw002_inv extends AppCompatActivity
                 }
             };
             listView.setAdapter(adapter);
+            if(cont==0){
+                txtSinresultado.setVisibility(View.VISIBLE);
+            }
+            else {
+                txtSinresultado.setVisibility(View.GONE);
+
+            }
+
+
         }
         catch (Exception e){
             String err=e.toString();
@@ -155,7 +167,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             variables.tipoListaStkw002=2;
             btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
-            btn_buscar.setBackgroundColor(Color.RED);
+         //   btn_buscar.setBackgroundColor(Color.RED);
            // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
             getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>TOMAS INVENTARIADAS </font>"));
 
@@ -167,7 +179,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             variables.tipoListaStkw002=1;
             btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
-            btn_buscar.setBackgroundColor(Color.GREEN);
+           // btn_buscar.setBackgroundColor(Color.GREEN);
          //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
             getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>PENDIENTES A INVENTARIAR </font>"));
 

@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class controles {
     public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
     public static   String table;
+    public static int nroTomaCancelacion;
     public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
@@ -64,6 +66,7 @@ public class controles {
     public static   Connection_Oracle   conexion = new Connection_Oracle();
     public static   Connection        connect ;
     public static   Context context_stkw001;
+    public static   Context contextListaStkw001;
     public static   Context context_menuPrincipal;
     public static   Activity activity_stkw001;
     static int      tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
@@ -73,7 +76,7 @@ public class controles {
     static int      ContExportStkw002;
 
     public static void conexion_sqlite(Context context) {
-        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,1);
+        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,2);
      }
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
@@ -293,7 +296,6 @@ public class controles {
 
     }
 
-
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
         try
         {
@@ -438,7 +440,7 @@ public class controles {
                             total_articulos++;
                         }
                     }
-                    stkw001.txt_total.setText(String.valueOf(total_articulos));
+                    stkw001.txtTotalArticuloGrilla.setText("TOTAL ARTICULOS SELECCIONADOS: "+total_articulos);
                     ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -465,7 +467,6 @@ public class controles {
         }
     }
 
-
     public static  void limpiarSubGrupo(){
 
         listArraySubgrupo.clear();
@@ -487,7 +488,6 @@ public class controles {
             }
         });
     }
-
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
 
@@ -800,7 +800,8 @@ public class controles {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
-                            {  final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
+                            {
+                                final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
                                 task.execute();
 
                             }
@@ -947,9 +948,24 @@ public class controles {
             connect.commit();
             ConsultarTomasServer(context);
 
+            AlertDialog.Builder alert3 = new AlertDialog.Builder(context);
+            alert3.setTitle("REGISTRO CANCELADO CON EXITO.");
+            alert3.setNeutralButton("CERRAR", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog3, int which)
+                {
+                    dialog3.dismiss();
+
+                }
+            });
+            alert3.show();
         }
         catch (Exception error){
-           String er=error.toString();
+            new AlertDialog.Builder(context)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("ATENCIÓN!!!.")
+            .setMessage(error.getMessage()).show();
 
             try {
                 connect.rollback();
@@ -1008,56 +1024,7 @@ public class controles {
         }
     }
 
-    public static void listarWebViewStkw001Cancelacion(int nroToma) {
-        try {
-             String html="";
-             connect =  conexion.Connections();
-            Statement stmt =  connect.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT  " +
-                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
-                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
-                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,  dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
-                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
-                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
-                    " and a.ART_CODIGO=b.winvd_art    " +
-                    "  and a.SECC_CODIGO=b.winvd_secc   " +
-                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
-                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
-                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
-                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
-                    "  where C.WINVE_NUMERO="+nroToma );
-            int cont=0;
-            while (rs.next()){
-                cont++;
-                html=html+  "<tr>" +
-                        "<td>"+rs.getString("winvd_art")+"</td>" +
-                        "<td>"+rs.getString("ART_DESC")+"</td>" +
-                        "<td>"+rs.getString("winvd_lote")+"</td>" +
-                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
-                        "</tr>";
-
-            }
-            rs.close();
-
-              table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
-                    "<thead> " +
-                    "<tr>" +
-                      "<td>COD</td>" +
-                      "<td>ARTICULO</td>" +
-                    "<td>LOTE</td>" +
-                    "<td>FECHA VENCIMIENTO</td>" +
-                     "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
-
-
-        }
-        catch (Exception e){
-            String mens=e.toString();
-
-        }
-
-
-    }
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
@@ -1254,8 +1221,118 @@ public class controles {
     }
 
 
+    public static class AsyncListarCancelaciones extends AsyncTask<Void, Void, Void>
+    {
+         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            lista_stkw001_inv.pgDialog = ProgressDialog.show(contextListaStkw001, "CONSULTANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            listarWebViewStkw001Cancelacion(nroTomaCancelacion);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            lista_stkw001_inv.pgDialog.dismiss();
+            AlertDialog.Builder alert = new AlertDialog.Builder(contextListaStkw001);
+            alert.setTitle("ARTICULOS CARGADOS");
+            WebView wv = new WebView(contextListaStkw001);
+            wv.loadData(table, "text/html", "utf-8");
+            alert.setView(wv);
+            alert.setNegativeButton("CERRAR", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    dialog.dismiss();
+                }
+            });
+            alert.setNeutralButton("CANCELAR TOMA", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    AlertDialog.Builder alert2 = new AlertDialog.Builder(contextListaStkw001);
+                    alert2.setTitle("¿ESTÁ SEGURO QUE DESEA CANCELAR LA TOMA NRO."+nroTomaCancelacion+"?");
+                    alert2.setNegativeButton("NO", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog2, int id)
+                        {
+                            dialog2.dismiss();
+                        }
+                    });
+                    alert2.setNeutralButton("SI", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog2, int which)
+                        {
+                            CancelarToma(nroTomaCancelacion,contextListaStkw001);
+                            dialog2.dismiss();
+
+                        }
+                    });
+                    alert2.show();
+                }
+            });
+            alert.show();
+        }
+    }
+
+    public static void listarWebViewStkw001Cancelacion(int nroToma) {
+        try {
+            String html="";
+            table="";
+            connect =  conexion.Connections();
+            Statement stmt =  connect.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT  " +
+                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
+                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
+                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,  dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
+                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
+                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
+                    " and a.ART_CODIGO=b.winvd_art    " +
+                    "  and a.SECC_CODIGO=b.winvd_secc   " +
+                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
+                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
+                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
+                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
+                    "  where C.WINVE_NUMERO="+nroToma );
+            int cont=0;
+            while (rs.next()){
+                cont++;
+                html=html+  "<tr>" +
+                        "<td>"+rs.getString("winvd_art")+"</td>" +
+                        "<td>"+rs.getString("ART_DESC")+"</td>" +
+                        "<td>"+rs.getString("winvd_lote")+"</td>" +
+                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
+                        "</tr>";
+
+            }
+            rs.close();
+
+            table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                    "<thead> " +
+                    "<tr>" +
+                    "<td>COD</td>" +
+                    "<td>ARTICULO</td>" +
+                    "<td>LOTE</td>" +
+                    "<td>FECHA VENCIMIENTO</td>" +
+                    "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
 
 
+        }
+        catch (Exception e){
+            String mens=e.toString();
+
+        }
+
+
+    }
 
     public static class AsyncExportStkw002 extends AsyncTask<Void, Void, Void>
     {
@@ -1442,6 +1519,6 @@ public class controles {
             }
         };
         stkw001.LvArticulosStkw001.setAdapter(adapter);
-        stkw001.txt_total.setText("0");
+        stkw001.txtTotalArticuloGrilla.setText("TOTAL ARTICULOS SELECCIONADOS: 0");
     }
 }

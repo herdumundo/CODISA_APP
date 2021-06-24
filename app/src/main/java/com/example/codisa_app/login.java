@@ -49,8 +49,9 @@ public class login extends AppCompatActivity
             setContentView(R.layout.login);
             txt_usuario=(TextView)findViewById(R.id.txt_usuario);
             txt_pass=(TextView)findViewById(R.id.txt_pass);
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
+            getSupportActionBar().hide();
+            //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+           // /getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
             controles.conexion_sqlite(this);
 
            // Multi t1=new Multi();
@@ -273,7 +274,9 @@ public class login extends AppCompatActivity
                 controles.arrIdSucursales.clear();
                 connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL from v_web_operador_rol_prog where login_o='"+user.toUpperCase()+"'");
+                ResultSet rs = stmt.executeQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL " +
+                        "from v_web_operador_rol_prog where " +
+                        "login_o='"+user.toUpperCase()+"' order by 2");
                 while ( rs.next())
                 {   controles.arrSucursales.add(rs.getString("SUCURSAL_DESCRIPCION"));
                     controles.arrIdSucursales.add(rs.getString("ROL_SUCURSAL"));
@@ -281,22 +284,12 @@ public class login extends AppCompatActivity
                     arrayDescSucursal.add(rs.getString("SUCURSAL_DESCRIPCION"));
                 }
 
-
-
-            }
-            catch (Exception e)
-            {
-                new AlertDialog.Builder(login.this)
-                .setTitle("ATENCION!!!")
-                .setMessage(e.toString())
-                .setNegativeButton("CERRAR", null).show();
-            }
-            builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+                builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
                 builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
                 {
@@ -312,6 +305,16 @@ public class login extends AppCompatActivity
                     }
                 });
                 builderSingle.show();
+
+            }
+            catch (Exception e)
+            {
+                new AlertDialog.Builder(login.this)
+                .setTitle("ATENCION!!!")
+                .setMessage(e.toString())
+                .setNegativeButton("CERRAR", null).show();
+            }
+
         }
 
         private  void  ListarSucursalLite()
@@ -327,11 +330,10 @@ public class login extends AppCompatActivity
                 controles.arrSucursales.clear();
                 controles.arrIdSucursales.clear();
 
-
                 SQLiteDatabase db_consultaSuc= controles.conSqlite.getReadableDatabase();
                 Cursor cursorlogSuc=db_consultaSuc.rawQuery("select distinct SUCURSAL_DESCRIPCION ,ROL_SUCURSAL from USUARIOS_FORMULARIOS_SUCURSALES " +
                         "where upper(LOGIN_O)=upper('"+txt_usuario.getText().toString().trim()+"') and " +
-                        "upper(LOGIN_PASS)=upper('"+txt_pass.getText().toString().trim()+"')",null);
+                        "upper(LOGIN_PASS)=upper('"+txt_pass.getText().toString().trim()+"') order by 2",null);
 
                 while ( cursorlogSuc.moveToNext())
                 {   controles.arrSucursales.add(cursorlogSuc.getString(0));
@@ -339,9 +341,26 @@ public class login extends AppCompatActivity
                     arrayIdSucursal.add(cursorlogSuc.getString(1));
                     arrayDescSucursal.add(cursorlogSuc.getString(0));
                 }
+                builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
-
-
+                builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int posicion)
+                    {
+                        variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
+                        variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
+                        Intent is=new Intent(login.this,menu_principal.class);
+                        startActivity(is);
+                        finish();
+                    }
+                });
+                builderSingle.show();
             }
             catch (Exception e)
             {
@@ -350,27 +369,7 @@ public class login extends AppCompatActivity
                         .setMessage(e.toString())
                         .setNegativeButton("CERRAR", null).show();
             }
-            builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
 
-            builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int posicion)
-                {
-                    variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
-                    variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
-
-                    Intent is=new Intent(login.this,menu_principal.class);
-                    startActivity(is);
-                    finish();
-                }
-            });
-            builderSingle.show();
         }
 
 
