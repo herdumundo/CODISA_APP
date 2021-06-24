@@ -1,6 +1,10 @@
 package com.example.codisa_app;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -8,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +26,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     private static List<Stkw002Item> listaStkw002;
- //   private List<Stkw002Item> listaStkw002Full;
+    public static int CodigoRegistro;
+    public static String MensajeRegistro;
 
-    class ExampleViewHolder extends ViewHolder {
+     class ExampleViewHolder extends ViewHolder {
         TextView textProducto;
         TextView textCantidad;
         TextView textLote;
@@ -102,11 +110,14 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                         " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_secu="+secuencia);
                 // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }
+            CodigoRegistro= 0;
+            MensajeRegistro="REGISTRADO CON EXITO.";
    }catch(Exception e)
         {
-            // Toast.makeText(context, e.toString() ,Toast.LENGTH_LONG).show();
-            String eas=e.toString();
-        }
+            CodigoRegistro= 1;
+            MensajeRegistro=e.getMessage();
+         }
 
     }
+
 }

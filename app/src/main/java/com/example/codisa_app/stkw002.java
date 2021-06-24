@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 public class stkw002 extends AppCompatActivity {
     Button btnEliminar;
     public static TextView txtTotalArt;
+    public static ProgressDialog ProDialog;
+
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
     }
@@ -111,7 +115,7 @@ public class stkw002 extends AppCompatActivity {
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
             for (Stkw002Item item : controles.ListArrayInventarioArticulos )
             {
-                if(item.getProducto().toLowerCase().contains(text))
+                if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text))
                 {
                     filteredList.add(item);
                 }
@@ -139,27 +143,8 @@ public class stkw002 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        try
-                        {
-                            Stkw002Adapter.registrar_inventario();
-                            new AlertDialog.Builder( stkw002.this)
-                                    .setTitle("INFORME!!!")
-                                    .setCancelable(false)
-                                    .setMessage("REGISTRADO CON EXITO")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            Intent i=new Intent(stkw002.this,menu_principal.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    }).show();
-                        }
-                        catch (Exception e)
-                        {
-                            new AlertDialog.Builder(stkw002.this)
-                                    .setTitle("ATENCION!!!")
-                                    .setMessage(e.toString()).show();
-                        }
+                        final AsyncRegistrarStkw002 task = new AsyncRegistrarStkw002();
+                        task.execute();
                     }
 
                 })
@@ -211,4 +196,45 @@ public class stkw002 extends AppCompatActivity {
                 .show();
     }
 
+      private class AsyncRegistrarStkw002 extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProDialog = ProgressDialog.show(stkw002.this, "PROCESANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            Stkw002Adapter.registrar_inventario();
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            ProDialog.dismiss();
+
+            if(Stkw002Adapter.CodigoRegistro==0){
+                new AlertDialog.Builder( stkw002.this)
+                        .setTitle("INFORME!!!")
+                        .setCancelable(false)
+                        .setMessage(Stkw002Adapter.MensajeRegistro)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent i=new Intent( stkw002.this,menu_principal.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }).show();
+            }
+            else {
+                new AlertDialog.Builder( stkw002.this)
+                        .setTitle("INFORME!!!")
+                        .setCancelable(false)
+                        .setMessage(Stkw002Adapter.MensajeRegistro).show();
+            }
+
+
+
+        }
+    }
 }

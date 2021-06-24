@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -62,6 +63,8 @@ public class menu_principal extends AppCompatActivity {
         controles.ConsultarPendientesExportar();
         controles.context_menuPrincipal=this;
         tomasGen=findViewById(R.id.tomasGen);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         String[] array_opciones=variables.contenedor_menu.split(",");
 
         for(int i=0; i<array_opciones.length; i++)

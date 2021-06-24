@@ -16,6 +16,7 @@
 
 
     <application
+        android:hardwareAccelerated="true"
 
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,7 +41,7 @@
             android:name=".menu_principal"
             android:screenOrientation = "portrait"
 
-            android:noHistory="true" />
+             />
         <activity
             android:name=".stkw001"
             android:screenOrientation = "portrait"

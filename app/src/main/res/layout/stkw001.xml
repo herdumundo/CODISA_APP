@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:background="#8AFF6F"
+        android:visibility="gone"
 
         android:textStyle="normal|bold"
         app:layout_constraintStart_toEndOf="@+id/txt_lbl_articulo"
@@ -25,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
+        android:visibility="gone"
         android:textColor="#000000"
         android:background="#8AFF6F"
         android:textStyle="normal|bold"
