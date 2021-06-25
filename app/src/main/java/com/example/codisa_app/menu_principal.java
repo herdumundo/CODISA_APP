@@ -1,5 +1,7 @@
 package com.example.codisa_app;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -10,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -37,6 +40,7 @@ import Utilidades.controles;
 import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
@@ -50,15 +54,35 @@ public class menu_principal extends AppCompatActivity {
     public void onBackPressed()  {
         Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"DESEA SALIR DE LA APLICACION?",3);
     }
+    @SuppressLint("WrongConstant")
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
-         txt_total=findViewById(R.id.txttotalpendiente);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
-        getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>SUCURSAL:"+ variables.DESCRIPCION_SUCURSAL_LOGIN+" </font>"));
+        txt_total=findViewById(R.id.txttotalpendiente);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
+        getSupportActionBar().setCustomView(R.layout.customactionbar);
+        TextView txt1 = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
+        TextView txt2 = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title2);
+        txt2.setVisibility(View.VISIBLE);
+        txt1.setText("USUARIO:"+variables.NOMBRE_LOGIN);
+        txt2.setText("SUCURSAL:"+variables.DESCRIPCION_SUCURSAL_LOGIN);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
+     /*   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
+        this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+*/
+
+
+
+
+
+
+
         controles.conexion_sqlite(this);
         controles.ConsultarPendientesExportar();
         controles.context_menuPrincipal=this;

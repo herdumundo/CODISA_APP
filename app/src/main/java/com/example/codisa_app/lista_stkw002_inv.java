@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 public class lista_stkw002_inv extends AppCompatActivity
 {
     ArrayList<Stkw002List> listaStkw002;
-    public static TextView txtSinresultado;
+    public static TextView txtSinresultado,actionbar;
     ListView listView;
     public static Button btn_buscar;
 
@@ -55,6 +57,7 @@ public class lista_stkw002_inv extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +67,17 @@ public class lista_stkw002_inv extends AppCompatActivity
         txtSinresultado=findViewById(R.id.txtSinresultado);
         btn_buscar =(Button)findViewById(R.id.btn_pendientes_exportacion);
         consultar_tomas_generadas("A");
-    //    btn_buscar.setBackgroundColor(Color.GREEN);
 
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>PENDIENTES A INVENTARIAR </font>"));
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
-
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
+        getSupportActionBar().setCustomView(R.layout.customactionbar);
+          actionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
+        actionbar.setText("PENDIENTES A INVENTARIAR");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
         this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -169,7 +174,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
          //   btn_buscar.setBackgroundColor(Color.RED);
            // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>TOMAS INVENTARIADAS </font>"));
+             actionbar.setText("TOMAS INVENTARIADAS");
 
 
         }
@@ -181,7 +186,8 @@ public class lista_stkw002_inv extends AppCompatActivity
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
            // btn_buscar.setBackgroundColor(Color.GREEN);
          //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>PENDIENTES A INVENTARIAR </font>"));
+             actionbar.setText("PENDIENTES A INVENTARIAR");
+
 
 
         }

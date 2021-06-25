@@ -12,11 +12,13 @@
         android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="108dp"
+        android:background="@color/azul3"
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints"
+
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
@@ -25,7 +27,7 @@
             android:layout_height="32dp"
             android:layout_weight="1"
             android:text="COD"
-            android:textColor="#000000"></TextView>
+            android:textColor="@color/white"></TextView>
 
         <TextView
             android:id="@+id/TextView02"
@@ -34,7 +36,7 @@
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
             android:text="ARTICULO"
-            android:textColor="#000000"></TextView>
+            android:textColor="@color/white"></TextView>
 
         <TextView
             android:id="@+id/TextView03"
@@ -43,7 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_weight="1"
             android:text="LOTE"
-            android:textColor="#000000"></TextView>
+            android:textColor="@color/white"></TextView>
 
         <TextView
             android:id="@+id/textView12"
@@ -51,40 +53,38 @@
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
-            android:text="VEN"
-            android:textColor="#000000"></TextView>
+            android:text="VTO."
+            android:textColor="@color/white"></TextView>
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtTotalArticuloGrilla"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="#8A8A8A"
+        android:layout_marginTop="8dp"
+        android:background="@color/azul3"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
-        android:textColor="#000000"
-
-
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
         app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
-        app:layout_constraintVertical_bias="0.029"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/border"
+        android:layout_width="278dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/colorlogin"
 
         android:drawableLeft="@drawable/ic_registrar"
         android:onClick="registrarToma"
         android:text="Generar Toma"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTotalArticuloGrilla" />
 
     <ListView
         android:id="@+id/listViewDet_art"
@@ -122,6 +122,7 @@
             android:layout_alignStart="@+id/radioGrupoLote"
             android:text="SI"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -138,6 +139,7 @@
             android:layout_alignBottom="@+id/radioGrupoLote"
             android:text="NO"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -145,12 +147,13 @@
 
     <RadioGroup
         android:id="@+id/radioGrupoArticulo"
-        android:layout_width="112dp"
-        android:layout_height="34dp"
+        android:layout_width="143dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
         android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp">
+        tools:ignore="MissingConstraints">
 
         <!-- In RadioGroup create the 1 Radio Button-->
         <!-- like this we will add some more Radio Button-->
@@ -162,6 +165,7 @@
             android:layout_alignStart="@+id/radioGrupoArticulo"
             android:text="SI"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -173,6 +177,7 @@
             android:layout_alignBottom="@+id/radioGrupoArticulo"
             android:text="NO"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -197,6 +202,7 @@
             android:layout_alignStart="@+id/radioGrupoExistencia"
             android:text="SI"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -208,6 +214,7 @@
             android:layout_alignBottom="@+id/radioGrupoExistencia"
             android:text="NO"
             android:textSize="15dp"
+            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -228,11 +235,11 @@
 
     <Utilidades.MultiSpinnerSearch
         android:id="@+id/spinerArticulos"
-        android:layout_width="215dp"
-        android:layout_height="25dp"
+        android:layout_width="217dp"
+        android:layout_height="29dp"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="20dp"
-        app:hintText="Seleccione Articulos"
+        android:layout_marginTop="14dp"
+        app:hintText="Seleccione"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGrupoArticulo"
         tools:ignore="MissingConstraints" />
@@ -451,7 +458,7 @@
         android:layout_marginTop="12dp"
 
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione area"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_deposito"
@@ -465,7 +472,7 @@
         android:layout_marginTop="12dp"
 
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione departamento"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_area"
@@ -479,7 +486,7 @@
         android:layout_marginTop="12dp"
 
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione grupo"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_familia"
@@ -493,7 +500,7 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="12dp"
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione familia"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_seccion"
@@ -507,7 +514,7 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="12dp"
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione seccion"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_departamento"
@@ -521,7 +528,7 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="12dp"
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione deposito"
+        android:hint="Seleccione "
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
@@ -537,7 +544,7 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="28dp"
         android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione sucursal"
+        android:hint="Seleccione"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -571,11 +578,19 @@
     <Utilidades.MultiSpinnerSearch
 
         android:id="@+id/spinerSubGrupo"
-        android:layout_width="172dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="12dp"
-        app:hintText="Seleccione Sub-Grupo"
+        android:layout_width="191dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="8dp"
+        android:drawableEnd="@drawable/ic_action_spinner"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:hintText="Seleccione"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_grupo"
         tools:ignore="MissingConstraints" />

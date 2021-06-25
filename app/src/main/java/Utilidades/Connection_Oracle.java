@@ -25,6 +25,7 @@ public class Connection_Oracle {
 
         try {
             Class.forName(driver);
+            DriverManager.setLoginTimeout(5);
             connection= DriverManager.getConnection(url, user, passwd);
         }
         catch (SQLException se) {

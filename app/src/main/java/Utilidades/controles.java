@@ -714,7 +714,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("COMPLETE LOS DATOS REQUERIDOS.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else if (controles.ids_subgrupos.equals("")){
@@ -722,7 +722,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("SELECCIONE SUB-GRUPO.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else if (controles.ids_subgrupos.equals("")){
@@ -730,7 +730,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("SELECCIONE SUB-GRUPO.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else if (controles.listInsertArticulos.size()==0){
@@ -738,7 +738,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("SELECCIONE ARTICULOS.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else {
@@ -772,7 +772,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("COMPLETE LOS DATOS REQUERIDOS.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else if (ids_subgrupos.equals("")){
@@ -780,7 +780,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("SELECCIONE SUB-GRUPO.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else if (listArrayArticulos.size()==0){ //SI EL FILTRO PARA LA SELECCION AUTOMATICA ES CERO, ES PORQUE NO ARROJO NINGUN ARTICULO PARA EL REGISTRO.
@@ -788,7 +788,7 @@ public class controles {
                         .setTitle("ATENCION!")
                         .setText("LA COMBINACION DE FILTROS, NO CONTIENEN ARTICULOS PARA GENERAR LA TOMA.")
                         .setDuration(10000)
-                        .setBackgroundColor(R.color.design_default_color_error)
+                        .setBackgroundColor(R.color.azul)
                         .show();
             }
             else {

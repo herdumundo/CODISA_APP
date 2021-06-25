@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,6 +46,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +54,13 @@ public class lista_stkw001_inv extends AppCompatActivity {
         listView =(ListView)findViewById(R.id.listViewInvStkw001);
         controles.contextListaStkw001=this;
         controles.ConsultarTomasServer( this);
-         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CANCELACIÓN DE TOMAS </font>"));
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
 
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
+        getSupportActionBar().setCustomView(R.layout.customactionbar);
+        TextView txtActionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
+        txtActionbar.setText("CANCELACIÓN DE TOMAS");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);

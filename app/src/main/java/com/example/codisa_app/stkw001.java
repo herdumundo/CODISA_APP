@@ -1,5 +1,7 @@
 package com.example.codisa_app;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,13 +11,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.sql.ResultSet;
@@ -35,7 +40,7 @@ public class stkw001 extends AppCompatActivity {
     public static   SpinnerDialog       sp_sucursal,sp_deposito,sp_area,sp_departamento,sp_seccion,sp_familia,sp_grupo;
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,
                                         txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
-                                        txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos, txt_lv_cod,txt_lv_articulo,
+                                        txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos,
                                         txt_lv_lote,txt_lv_vencimiento,txtTotalArticuloGrilla;
 
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos;
@@ -46,6 +51,8 @@ public class stkw001 extends AppCompatActivity {
     public static ProgressDialog progress;
     public static   Boolean             BolLote=true,Bolexistencia=false,BolDescontinuados=false;
     public static ListView LvArticulosStkw001;
+
+
     @Override
     public void onBackPressed()
     {
@@ -63,27 +70,28 @@ public class stkw001 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     //tipo_stkw001 1 = MANUAL, 2= AUTOMATICO
+    @SuppressLint({"WrongConstant", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scrollstkw0012);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ variables.titulo_stkw001+" </font>"));
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
+        getSupportActionBar().setCustomView(R.layout.customactionbar);
+        TextView search = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
+        search.setText("REGISTRO DE "+variables.titulo_stkw001);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
         this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
        // txt_total=findViewById(R.id.txt_totalArticulos);
         txtTotalArticuloGrilla    = findViewById(R.id.txtTotalArticuloGrilla) ;
-       // txt_lv_cod          = findViewById(R.id.txt_lv_cod) ;
-       // txt_lv_articulo     = findViewById(R.id.txt_lv_articulo) ;
-       // txt_lv_lote         = findViewById(R.id.txt_lv_lote) ;
-       // txt_lv_vencimiento  = findViewById(R.id.txt_lv_vencimiento) ;
+
         txt_sucursal        = findViewById(R.id.txt_desc_sucursal) ;
         txt_id_sucursal     = findViewById(R.id.txt_id_sucursal) ;
         txt_deposito        = findViewById(R.id.txt_deposito) ;
@@ -129,11 +137,14 @@ public class stkw001 extends AppCompatActivity {
             lbl_articulos.setVisibility(View.VISIBLE);
             txtTotalArticuloGrilla.setVisibility(View.VISIBLE);
         }
-        else {
-            txt_lv_cod.setVisibility(View.GONE);
-            txt_lv_articulo.setVisibility(View.GONE);
-            txt_lv_lote .setVisibility(View.GONE);
-            txt_lv_vencimiento    .setVisibility(View.GONE);
+        else
+            {
+                LinearLayout relative=(LinearLayout)findViewById(R.id.relative);
+               relative.setVisibility(View.GONE);
+                txtTotalArticuloGrilla.setVisibility(View.GONE);
+                lbl_articulos.setVisibility(View.GONE);
+                spinerArticulos.setVisibility(View.GONE);
+
         }
 
         radioGrupoLote.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

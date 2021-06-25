@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:background="@color/azul_claro2"
     android:id="@+id/mainView"
     android:orientation="vertical">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="15dp"
@@ -19,7 +20,9 @@
             android:layout_height="wrap_content"
             android:text="Select or Search Items"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:hint="FILTRO"
+                android:hint="BUSQUEDA"
                 android:background="#ffffff"
                 android:inputType="text" />
 
@@ -60,7 +63,9 @@
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Close" />
+            android:text="Close"
+            android:textColor="@color/white"
+            />
 
     </LinearLayout>
 

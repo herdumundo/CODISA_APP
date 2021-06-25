@@ -97,6 +97,8 @@ public class login extends AppCompatActivity
                     else
                     {
                         Class.forName(driver);
+                        DriverManager.setLoginTimeout(5);
+
                         connection= DriverManager.getConnection(url,user ,passwd );
                         // Toast.makeText(login.this,"REGISTRO EXITOSO",Toast.LENGTH_LONG).show();
                         mensaje="1";

@@ -1,5 +1,6 @@
 package com.example.codisa_app;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -96,26 +97,27 @@ public class SpinnerDialog {
         ColorDrawable sage = new ColorDrawable(itemDividerColor);
         listView.setDivider(sage);
         listView.setDividerHeight(1);
-
-        final EditText searchBox = (EditText) v.findViewById(R.id.searchBox);
+         final EditText searchBox = (EditText) v.findViewById(R.id.searchBox);
         if (isShowKeyboard()) {
             showKeyboard(searchBox);
         }
 
-        title.setTextColor(titleColor);
-        searchBox.setTextColor(searchTextColor);
-        rippleViewClose.setTextColor(closeColor);
-      //  searchIcon.setColorFilter(searchIconColor);
+       // title.setTextColor(titleColor);
+      //  searchBox.setTextColor(searchTextColor);
+       // rippleViewClose.setTextColor(closeColor);
 
 
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.items_view, items);
         final ArrayAdapterWithContainsFilter <String> adapter = new ArrayAdapterWithContainsFilter<String>(context, R.layout.items_view, items) {
+            @SuppressLint("ResourceAsColor")
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1=view.findViewById(R.id.text1);
-                text1.setTextColor(itemColor);
+
+            //    text1.setBackgroundColor(R.color.azul_claro2);
+
                 return view;
             }
         };

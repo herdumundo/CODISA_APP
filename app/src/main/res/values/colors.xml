@@ -20,6 +20,9 @@
     <color name="azul_claro">#082168</color>
     <color name="azul_claro2">#0F2C80</color>
     <color name="cel">#436DE8</color>
+    <color name="colorlogin">#383a97</color>
+    <color name="colorlogin2">#fb9c1f</color>
+
     <color name="azul3">#021C67</color>
     <color name="celeste">#0998AA</color>
     <color name="whiteTextColor">#fff</color>
@@ -28,8 +31,8 @@
 
     <color name="gray">#D1D0CE</color>
 
-    <color name="list_even">#A0A5AF</color>
-    <color name="list_odd">#F3FFFF</color>
+    <color name="list_even">#0D5BF6</color>
+    <color name="list_odd">#1731B3</color>
     <color name="list_selected">#7BFFF3</color>
 
     <color name="stroke_border">#D7D7D7</color>

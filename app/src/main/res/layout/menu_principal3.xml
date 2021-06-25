@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".menu_principal"
-
+    android:background="@drawable/bg_design2"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_height="22dp"
             android:layout_marginTop="24dp"
             android:text="PENDIENTES DE ENVIO"
-            android:textColor="@color/azul3"
+            android:textColor="#FFFFFF"
             android:textAlignment="center"
 
             android:textSize="20sp"
@@ -52,14 +52,11 @@
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
 
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:textColor="@color/white"
-
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -78,7 +75,7 @@
                         android:layout_height="70dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="13sp"
-                        app:srcCompat="@drawable/ic_toma" />
+                        app:srcCompat="@mipmap/ic_inventario" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -89,12 +86,12 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="OnclickIrStkw002"
-
+                android:visibility="gone"
 
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -106,8 +103,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:text="REGISTRO DE INVENTARIO"
-                        android:textColor="@color/white"
-
                         android:textAlignment="center"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -118,13 +113,12 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="13sp"
-                        app:srcCompat="@drawable/ic_reginventario" />
+                        app:srcCompat="@mipmap/ic_reginv" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <LinearLayout
-
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="175dp"
@@ -141,13 +135,12 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:id="@+id/tomasGen"
+                android:visibility="gone"
                 android:onClick="OnclickIrStkw001Cancelacion"
 
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
-
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
@@ -160,8 +153,6 @@
                         android:layout_marginTop="10dp"
                         android:text="CANCELACIONES TOMAS"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-
 
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -172,7 +163,7 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="13sp"
-                        app:srcCompat="@drawable/ic_eliminar" />
+                        app:srcCompat="@mipmap/ic_cancelar" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -188,9 +179,7 @@
                 <RelativeLayout
 
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/azul3"
-                    >
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -200,21 +189,18 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:text="EXPORTAR DATOS"
-                        android:textColor="@color/white"
-
                         android:textAlignment="center"
 
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:background="@color/azul3"
                         android:id="@+id/train"
                         android:layout_width="match_parent"
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="13sp"
-                        app:srcCompat="@drawable/ic_exportar2" />
+                        app:srcCompat="@mipmap/ic_exportar" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -241,8 +227,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/azul3"
-
                     >
 
                     <TextView
@@ -254,14 +238,12 @@
                         android:layout_marginTop="10dp"
                         android:text="SINCRONIZAR DATOS"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
 
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
 
                     <ImageView
-                        android:background="@color/azul3"
 
                         android:id="@+id/cycle"
                         android:layout_width="match_parent"

@@ -38,17 +38,17 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 	public static AlertDialog.Builder builder;
 	public static AlertDialog ad;
- 	private boolean highlightSelected = false;
+	private boolean highlightSelected = false;
 	private int highlightColor = ContextCompat.getColor(getContext(), R.color.list_selected);
 	private int textColor = Color.BLACK;
- 	private int selected = 0;
+	private int selected = 0;
 	private String defaultText = "";
 	private String spinnerTitle = "";
 	private String emptyTitle = "Not Found!";
-	private String searchHint = "FILTRO";
+	private String searchHint = "BUSQUEDA";
 	private String clearText = "Clear All";
 	private boolean colorSeparation = false;
- 	private boolean isShowSelectAllButton = true;
+	private boolean isShowSelectAllButton = true;
 	private MultiSpinnerListener listener;
 	private MyAdapter adapter;
 	private List<ArrayListContenedor> items;
@@ -112,7 +112,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		ArrayList<ArrayListContenedor> selectedData = new ArrayList<>();
 		for (int i = 0; i < items.size(); i++) {
-			 ArrayListContenedor currentData = items.get(i);
+			ArrayListContenedor currentData = items.get(i);
 			if (currentData.isSelected()) {
 				selectedData.add(currentData);
 				spinnerBuffer.append(currentData.getName());
@@ -162,9 +162,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		listView.setFastScrollEnabled(true);
 
- 		adapter = new MyAdapter(getContext(), items);
+		adapter = new MyAdapter(getContext(), items);
 
- 		listView.setAdapter(adapter);
+		listView.setAdapter(adapter);
 
 		final TextView emptyText = view.findViewById(R.id.empty);
 		emptyText.setText(emptyTitle);
@@ -213,7 +213,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				}
 				adapter.notifyDataSetChanged();
 				// To call onCancel listner and set title of selected items.
-				 dialog.cancel();
+				dialog.cancel();
 			});
 		}
 
@@ -229,7 +229,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				adapter.arrayList.get(i).setSelected(false);
 			}
 			adapter.notifyDataSetChanged();
-			 dialog.cancel();
+			dialog.cancel();
 		});
 
 		builder.setOnCancelListener(this);
@@ -293,6 +293,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			return position;
 		}
 
+		@SuppressLint("ResourceAsColor")
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 //            //Log.i(TAG, "getView() enter");
@@ -311,16 +312,16 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			int background = R.color.white;
+			int background = R.color.azul;
 			if (colorSeparation) {
-				final int backgroundColor = (position % 2 == 0) ? R.color.list_even : R.color.list_odd;
+				final int backgroundColor = (position % 2 == 0) ? R.color.colorlogin : R.color.azul3;
 				background = backgroundColor;
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColor));
 			}
 
 			final ArrayListContenedor data = arrayList.get(position);
- 			if(data.getLote().equals("")) {
- 				holder.textView.setText(data.getName());
+			if(data.getLote().equals("")) {
+				holder.textView.setText(data.getName());
 				holder.textView2.setVisibility(View.GONE);
 				holder.textView3.setVisibility(View.GONE);
 			}
@@ -329,7 +330,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				holder.textView.setText(data.getName());
 				holder.textView2.setText("Lote: "+data.getLote());
 				holder.textView3.setText("Stock: "+data.getCantidad());
- 			}
+			}
 
 
 
@@ -362,11 +363,15 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 					holder.textView.setTypeface(null, Typeface.BOLD);
 					convertView.setBackgroundColor(highlightColor);
 				} else {
-					convertView.setBackgroundColor(Color.WHITE);
+					convertView.setBackgroundColor(R.color.primaryTextColor);
+					holder.textView.setTextColor(Color.WHITE);
+
 				}
 			} else {
 				holder.textView.setTypeface(null, Typeface.NORMAL);
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), background));
+				holder.textView.setTextColor(Color.WHITE);
+
 			}
 			holder.checkBox.setTag(holder);
 

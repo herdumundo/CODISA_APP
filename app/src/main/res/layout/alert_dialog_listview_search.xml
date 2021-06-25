@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:background="@color/azul_claro2"
+	>
 
 	<EditText
 		android:id="@+id/alertSearchEditText"
@@ -10,8 +12,9 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="5dp"
 		android:autofillHints="@string/type_to_search"
-		android:background="@drawable/default_border"
-		android:hint="@string/type_to_search"
+ 		android:hint="@string/type_to_search"
+		android:background="#ffffff"
+
 		android:inputType="text"
 		android:padding="5dp">
 
@@ -24,7 +27,7 @@
 		android:gravity="center_horizontal">
 
 		<ListView
-			android:id="@+id/alertSearchListView"
+ 			android:id="@+id/alertSearchListView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="5dp"

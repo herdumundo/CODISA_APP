@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +57,7 @@ public class stkw002 extends AppCompatActivity {
     private  Stkw002Adapter adapter;
     RecyclerView recyclerView ;
 
+     @SuppressLint("WrongConstant")
      public void onCreate(Bundle savedInstanceState)
      {
         super.onCreate(savedInstanceState);
@@ -62,8 +65,11 @@ public class stkw002 extends AppCompatActivity {
          recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
          btnEliminar=  findViewById( R.id.btn_eliminar);
          txtTotalArt=  findViewById( R.id.txtTotalArt);
-         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>REGISTRO INVENTARIO </font>"));
-         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
+         getSupportActionBar().setCustomView(R.layout.customactionbar);
+         TextView search = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
+         search.setText("REGISTRO INVENTARIO");
+         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
          final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
          upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);

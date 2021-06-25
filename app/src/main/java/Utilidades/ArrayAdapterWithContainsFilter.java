@@ -40,7 +40,8 @@ public class ArrayAdapterWithContainsFilter<S> extends ArrayAdapter {
         {
             for (String item : arraylist)
             {
-                if (item.toLowerCase(Locale.getDefault()).contains(charText))
+            //    if (item.toLowerCase(Locale.getDefault()).contains(charText))
+                    if (item.contains(charText))
                 {
                     items.add(item);
                 }
