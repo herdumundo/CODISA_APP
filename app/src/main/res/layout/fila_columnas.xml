@@ -8,7 +8,7 @@
     android:orientation="vertical">
     <LinearLayout
         android:id="@+id/relative"
-        android:layout_width="362dp"
+        android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_marginTop="84dp"
         android:orientation="horizontal"
@@ -19,38 +19,68 @@
 
         <TextView
             android:id="@+id/txt_nro"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:text="COD"
-            android:textColor="#f00"></TextView>
+            android:textColor="#000000"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+
+
+            ></TextView>
 
         <TextView
             android:id="@+id/txt_producto"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:text="ARTICULO"
-            android:textColor="#f00"></TextView>
+
+            android:textColor="#000000"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="5sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+
+            ></TextView>
 
         <TextView
             android:id="@+id/txt_lote"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:text="LOTE"
-            android:textColor="#f00"></TextView>
+            android:textColor="#000000"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"></TextView>
 
         <TextView
             android:id="@+id/txt_vto"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:text="VEN"
-            android:textColor="#f00"></TextView>
+            android:textColor="#000000"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"></TextView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

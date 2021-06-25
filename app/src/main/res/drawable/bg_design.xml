@@ -26,7 +26,7 @@
             android:pivotY="0%"
             android:toDegrees="45">
             <shape android:shape="rectangle">
-                <solid android:color="@color/azul3" />
+                <solid android:color="#2e3094" />
             </shape>
         </rotate>
     </item>
@@ -37,7 +37,7 @@
             android:pivotY="45%"
             android:toDegrees="45">
             <shape android:shape="rectangle">
-                <solid android:color="@color/colorPrimary" />
+                <solid android:color="#2e3094" />
             </shape>
         </rotate>
     </item>
@@ -48,7 +48,7 @@
             android:pivotY="45%"
             android:toDegrees="45">
             <shape android:shape="rectangle">
-                <solid android:color="@color/colorDarkGray" />
+                <solid android:color="@color/azul_claro" />
             </shape>
         </rotate>
     </item>
@@ -70,7 +70,7 @@
             android:pivotY="0%"
             android:toDegrees="45">
             <shape android:shape="rectangle">
-                <solid android:color="#615E5E" />
+                <solid android:color="#011130" />
             </shape>
         </rotate>
     </item>

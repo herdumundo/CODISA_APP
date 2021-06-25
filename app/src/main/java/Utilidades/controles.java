@@ -153,7 +153,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_deposito.add(rs.getString("dep_codigo"));
-                arr_deposito.add(rs.getString("dep_desc"));
+                arr_deposito.add(rs.getString("dep_codigo")+"-"+rs.getString("dep_desc"));
             }
             stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
             Stkw001DepositoOnclick();
@@ -177,7 +177,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
-                arr_area.add(rs.getString("area_desc"));
+                arr_area.add(rs.getString("area_codigo")+"-"+rs.getString("area_desc"));
             }
             stkw001.sp_area = new SpinnerDialog(activity,arr_area,"Listado de areas");
             Stkw001AreaOnclick(activity,context,tipo_toma);
@@ -200,7 +200,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_departamento.add(rs.getString("dpto_codigo"));
-                arr_departamento.add(rs.getString("dpto_desc"));
+                arr_departamento.add(rs.getString("dpto_codigo")+"-"+rs.getString("dpto_desc"));
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
@@ -225,7 +225,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_seccion.add(rs.getString("secc_codigo"));
-                arr_seccion.add(rs.getString("secc_desc"));
+                arr_seccion.add(rs.getString("secc_codigo")+"-"+rs.getString("secc_desc"));
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
             Stkw001SeccionOnclick(activity,context,  tipo_toma);
@@ -252,7 +252,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_familia.add(rs.getString("flia_codigo"));
-                arr_familia.add(rs.getString("flia_desc"));
+                arr_familia.add(rs.getString("flia_codigo")+"-"+rs.getString("flia_desc"));
             }
             stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
             Stkw001FamiliaOnclick(activity, context, tipo_toma);
@@ -282,7 +282,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_grupo.add(rs.getString("grup_codigo"));
-                arr_grupo.add(rs.getString("grup_desc"));
+                arr_grupo.add(rs.getString("grup_codigo")+"-"+rs.getString("grup_desc"));
             }
             stkw001.sp_grupo = new SpinnerDialog(activity,arr_grupo,"Listado de grupos");
             Stkw001GrupoOnclick(activity,context,  tipo_toma);
@@ -930,7 +930,7 @@ public class controles {
          ListArrayInventarioArticulos = new ArrayList();
         if (cursor.moveToNext())
         {
-            menu_principal.txt_total.setText(cursor.getString(0));
+            menu_principal.txt_total.setText("PENDIENTES DE ENVIO :"+cursor.getString(0));
         }
         db_consulta.close();
 

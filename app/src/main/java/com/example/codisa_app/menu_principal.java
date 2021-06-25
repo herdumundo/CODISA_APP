@@ -40,7 +40,7 @@ import androidx.cardview.widget.CardView;
 
 public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
-    public  static TextView txt_total;
+   public  static TextView txt_total;
     CardView tomasGen;
     int error_importador=1;
 //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 TOKEN
@@ -55,7 +55,7 @@ public class menu_principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_principal);
-        txt_total=findViewById(R.id.txt_total);
+         txt_total=findViewById(R.id.txttotalpendiente);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>USUARIO:"+ variables.NOMBRE_LOGIN+" </font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
         getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>SUCURSAL:"+ variables.DESCRIPCION_SUCURSAL_LOGIN+" </font>"));

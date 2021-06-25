@@ -14,7 +14,7 @@
 
         android:layout_height="70dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/et_cust"
+        android:background="@android:drawable/dialog_holo_light_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
@@ -37,9 +37,9 @@
         android:layout_width="241dp"
         android:layout_height="59dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/et_cust"
-        android:drawableLeft="@drawable/ic_login"
+         android:drawableLeft="@drawable/ic_login"
         android:onClick="login"
+        android:background="@android:drawable/dialog_holo_light_frame"
 
         android:text="Ingresar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,10 +60,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="288dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
 
         android:layout_height="70dp"
-        android:background="@drawable/et_cust"
-        app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:ignore="MissingConstraints">
