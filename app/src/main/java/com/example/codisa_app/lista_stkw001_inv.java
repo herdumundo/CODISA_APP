@@ -40,7 +40,9 @@ import Utilidades.variables;
 
 public class lista_stkw001_inv extends AppCompatActivity {
    public static ListView listView,listView2;
-   public static ProgressDialog pgDialog;
+    public static TextView txtSinresultado;
+
+    public static ProgressDialog pgDialog;
     public void onBackPressed()
     {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
@@ -52,6 +54,8 @@ public class lista_stkw001_inv extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_stkw001_inv);
         listView =(ListView)findViewById(R.id.listViewInvStkw001);
+        txtSinresultado=findViewById(R.id.txtSinresultado);
+
         controles.contextListaStkw001=this;
         controles.ConsultarTomasServer( this);
 
@@ -76,6 +80,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
 
             }
         });
+        controles.VerificarRed(this);
 
     }
 

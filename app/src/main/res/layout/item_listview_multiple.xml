@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:padding="15dp">
+    android:padding="5dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -13,7 +12,7 @@
         android:layout_marginTop="0dp">
 
         <TextView
-            android:id="@+id/alertTextView"
+            android:id="@+id/txt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -27,7 +26,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="5sp"
+            app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform" />
 
@@ -41,39 +40,42 @@
             android:clickable="false" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/txt2"
             android:layout_width="305dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alertTextView"
+            android:layout_below="@+id/txt1"
             android:layout_alignParentStart="true"
             android:layout_marginStart="32dp"
             android:layout_marginTop="1dp"
-            android:layout_marginEnd="13dp"
+             android:layout_marginEnd="13dp"
             android:layout_toStartOf="@+id/alertCheckbox"
             android:text="TextView"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="7sp"
+            app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
 
             app:autoSizeTextType="uniform" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txt3"
             android:layout_width="305dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/txt2"
             android:layout_alignParentStart="true"
             android:layout_marginStart="32dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="13dp"
             android:layout_toStartOf="@+id/alertCheckbox"
             android:text="TextView"
+            android:visibility="gone"
+
             android:textColor="@color/white"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="7sp"
+            app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform" />
 

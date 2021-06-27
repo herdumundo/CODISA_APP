@@ -302,9 +302,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.item_listview_multiple, parent, false);
-				holder.textView = convertView.findViewById(R.id.alertTextView);
-				holder.textView2 = convertView.findViewById(R.id.textView2);
-				holder.textView3 = convertView.findViewById(R.id.textView3);
+				holder.textView = convertView.findViewById(R.id.txt1);
+				holder.textView2 = convertView.findViewById(R.id.txt2);
+				holder.textView3 = convertView.findViewById(R.id.txt3);
 				holder.checkBox = convertView.findViewById(R.id.alertCheckbox);
 
 				convertView.setTag(holder);
@@ -322,14 +322,15 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			final ArrayListContenedor data = arrayList.get(position);
 			if(data.getLote().equals("")) {
 				holder.textView.setText(data.getName());
-				holder.textView2.setVisibility(View.GONE);
-				holder.textView3.setVisibility(View.GONE);
+
 			}
 
 			else {
 				holder.textView.setText(data.getName());
 				holder.textView2.setText("Lote: "+data.getLote());
 				holder.textView3.setText("Stock: "+data.getCantidad());
+				holder.textView2.setVisibility(View.VISIBLE);
+				holder.textView3.setVisibility(View.VISIBLE);
 			}
 
 

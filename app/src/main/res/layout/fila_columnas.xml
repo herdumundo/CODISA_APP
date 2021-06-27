@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="30dp"
         android:background="@color/colorlogin"
 
-        android:layout_marginTop="84dp"
         android:orientation="horizontal"
         android:padding="5dp"
 
@@ -22,14 +22,14 @@
         <TextView
             android:id="@+id/txt_nro"
 
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="25dp"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="COD"
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="12sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="5sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
 
@@ -47,7 +47,7 @@
             android:text="ARTICULO"
 
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="5sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
@@ -57,30 +57,30 @@
         <TextView
             android:id="@+id/txt_lote"
 
-            android:layout_width="match_parent"
+            android:layout_width="193dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="LOTE"
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="12sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="5sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"></TextView>
 
         <TextView
             android:id="@+id/txt_vto"
 
-            android:layout_width="match_parent"
+            android:layout_width="204dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="VEN"
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="12sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="5sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"></TextView>
     </LinearLayout>

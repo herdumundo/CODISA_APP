@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="0dp"
     android:background="@drawable/border4"
+    android:fillViewport="true"
 
     >
 

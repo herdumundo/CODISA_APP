@@ -53,6 +53,7 @@ public class controles {
     public static   ArrayList<String> arr_familia         =   new ArrayList<>();
     public static   ArrayList<String> arr_id_grupo        =   new ArrayList<>();
     public static   ArrayList<String> arr_grupo           =   new ArrayList<>();
+    public static int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
     public static int nroTomaCancelacion;
     public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
@@ -138,6 +139,17 @@ public class controles {
         stkw001.sp_sucursal = new SpinnerDialog(activity,arrSucursales,"Listado de Sucursales");
         stkw001_txt_sucursalOnclick(activity);
 
+
+    }
+    public static void VerificarRed(Context context){
+        if (verificadorRed==0){
+            new AlertDialog.Builder(context)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("ATENCION!!!")
+                    .setMessage("APLICACION NO DISPONIBLE, ERROR DE CONEXIÓN A LA RED.")
+                    .setNegativeButton("CERRAR", null)
+                     .show();
+        }
 
     }
 
@@ -978,7 +990,7 @@ public class controles {
 
     public static void ConsultarTomasServer(Context context) {
         try {
-
+            int cont=0;
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
 
@@ -997,6 +1009,10 @@ public class controles {
                 Stkw001List.setFamilia(rs.getString("flia_desc"));
                 Stkw001List.setGrupo(rs.getString("grup_desc"));
                 listaStkw001.add(Stkw001List);
+                cont++;
+            }
+            if(cont==0){
+                lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
             }
             ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem_card, R.id.text1, listaStkw001) {
                 @Override

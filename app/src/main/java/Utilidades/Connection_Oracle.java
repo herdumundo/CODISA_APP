@@ -25,8 +25,10 @@ public class Connection_Oracle {
 
         try {
             Class.forName(driver);
+            controles.verificadorRed=0;
             DriverManager.setLoginTimeout(5);
             connection= DriverManager.getConnection(url, user, passwd);
+            controles.verificadorRed=1;
         }
         catch (SQLException se) {
             Log.e("error here 1 : ", se.getMessage());

@@ -131,6 +131,7 @@ public class stkw001 extends AppCompatActivity {
         radioExistenciaNo   .setChecked(true);
         radioArticuloNo     .setChecked(true);
         controles.limpiarSubGrupo();
+        LvArticulosStkw001.setNestedScrollingEnabled(true);
         if(variables.tipo_stkw001==1)
         {
             spinerArticulos.setVisibility(View.VISIBLE);
@@ -239,6 +240,7 @@ public class stkw001 extends AppCompatActivity {
 
         controles.listar_sucursales(this);
         controles.listar_areas(this,this,variables.tipo_stkw001);
+        controles.VerificarRed(this);
     }
 
     public void registrarToma( View view)
