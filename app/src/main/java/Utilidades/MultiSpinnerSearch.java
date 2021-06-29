@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,12 +40,13 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 	public static AlertDialog.Builder builder;
 	public static AlertDialog ad;
 	private boolean highlightSelected = false;
-	private int highlightColor = ContextCompat.getColor(getContext(), R.color.list_selected);
+//	private int highlightColor = ContextCompat.getColor(getContext(), R.color.list_selected);
 	private int textColor = Color.BLACK;
 	private int selected = 0;
 	private String defaultText = "";
 	private String spinnerTitle = "";
 	private String emptyTitle = "Not Found!";
+	//private String spinnerTitle = "Not Found!";
 	private String searchHint = "BUSQUEDA";
 	private String clearText = "Clear All";
 	private boolean colorSeparation = false;
@@ -71,7 +73,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			} else if (attr == R.styleable.MultiSpinnerSearch_highlightSelected) {
 				highlightSelected = a.getBoolean(attr, false);
 			} else if (attr == R.styleable.MultiSpinnerSearch_highlightColor) {
-				highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), R.color.naranja));
+			//	highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), R.color.naranja));
 			} else if (attr == R.styleable.MultiSpinnerSearch_textColor) {
 				textColor = a.getColor(attr, Color.BLACK);
 			}else if (attr == R.styleable.MultiSpinnerSearch_clearText){
@@ -144,12 +146,13 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		}).start();
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public boolean performClick() {
 
 		super.performClick();
 		builder = new AlertDialog.Builder(getContext());
-		builder.setTitle(spinnerTitle);
+		//builder.setTitle(spinnerTitle);
 
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -158,16 +161,13 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		final ListView listView = view.findViewById(R.id.alertSearchListView);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-
 		listView.setFastScrollEnabled(true);
-
 		adapter = new MyAdapter(getContext(), items);
-
 		listView.setAdapter(adapter);
-
 		final TextView emptyText = view.findViewById(R.id.empty);
+		final TextView spinerTitle = view.findViewById(R.id.spinerTitle);
 		emptyText.setText(emptyTitle);
+		spinerTitle.setText(spinnerTitle);
 		listView.setEmptyView(emptyText);
 
 		final EditText editText = view.findViewById(R.id.alertSearchEditText);
@@ -207,7 +207,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
          */
 		if (isShowSelectAllButton// && limit == -1
 		) {
-			builder.setNeutralButton("TODO", (dialog, which) -> {
+			builder.setNeutralButton(R.string.todos, (dialog, which) -> {
 				for (int i = 0; i < adapter.arrayList.size(); i++) {
 					adapter.arrayList.get(i).setSelected(true);
 				}
@@ -217,13 +217,12 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			});
 		}
 
-		builder.setPositiveButton("Aceptar", (dialog, which) -> {
-			//Log.i(TAG, " ITEMS : " + items.size());
-
-			dialog.cancel();
+		builder.setPositiveButton(R.string.Aceptar, (dialog, which) -> {
+			 dialog.cancel();
 		});
 
-		builder.setNegativeButton(clearText, (dialog, which) -> {
+
+		builder.setNegativeButton(R.string.ninguno, (dialog, which) -> {
 			//Log.i(TAG, " ITEMS : " + items.size());
 			for (int i = 0; i < adapter.arrayList.size(); i++) {
 				adapter.arrayList.get(i).setSelected(false);
@@ -234,7 +233,20 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		builder.setOnCancelListener(this);
 		ad = builder.show();
+		ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+		ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+		ad.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.azul_claro));
+		ad.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+		ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+		ad.getButton(AlertDialog.BUTTON_NEUTRAL).setAllCaps(false);
+		ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
+		ad.getButton(AlertDialog.BUTTON_NEUTRAL).setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
+		ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
+
+
 		Objects.requireNonNull(ad.getWindow()).setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+
 		return true;
 	}
 
@@ -263,7 +275,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 	}
 
 	public void setSearchHint(String searchHint) {
-		this.searchHint = "FILTRO";
+		this.searchHint = searchHint;
 	}
 
 	public class MyAdapter extends BaseAdapter implements Filterable {
@@ -312,21 +324,23 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			int background = R.color.colorPrimary;
+			//int background = R.color.colorPrimary;
 			if (colorSeparation) {
 				final int backgroundColor = (position % 2 == 0) ? R.color.colorDarkGray : R.color.colorGray;
-				background = backgroundColor;
+			//	background = backgroundColor;
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColor));
 			}
 
 			final ArrayListContenedor data = arrayList.get(position);
 			if(data.getLote().equals("")) {
 				holder.textView.setText(data.getName());
-
+				holder.textView.setTextColor(getResources().getColor(R.color.azul_claro));
 			}
 
 			else {
 				holder.textView.setText(data.getName());
+				holder.textView.setTextColor(getResources().getColor(R.color.azul_claro));
+
 				holder.textView2.setText("Lote: "+data.getLote());
 				holder.textView3.setText("Stock: "+data.getCantidad());
 				holder.textView2.setVisibility(View.VISIBLE);
@@ -340,14 +354,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			convertView.setOnClickListener(v -> {
 				if (data.isSelected()) { // deselect
 					selected--;
-				} else { // selected
+				} else {
 					selected++;
-					/*if (selected > limit && limit > 0) {
-						--selected;// select with limit
-						if (limitListener != null)
-							limitListener.onLimitListener(data);
-						return;
-					}*/
+
 				}
 
 
@@ -359,21 +368,35 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			});
 
 			if (data.isSelected()) {
-				holder.textView.setTextColor(textColor);
+				holder.textView.setTextColor(getResources().getColor(R.color.celeste));
+				holder.textView2.setTextColor(getResources().getColor(R.color.celeste));
+				holder.textView3.setTextColor(getResources().getColor(R.color.celeste));
 				if (highlightSelected) {
 					holder.textView.setTypeface(null, Typeface.BOLD);
-					convertView.setBackgroundColor(highlightColor);
+					holder.textView2.setTypeface(null, Typeface.BOLD);
+					holder.textView3.setTypeface(null, Typeface.BOLD);
+
+					holder.textView.setTextColor(getResources().getColor(R.color.celeste));
+					holder.textView2.setTextColor(getResources().getColor(R.color.celeste));
+					holder.textView3.setTextColor(getResources().getColor(R.color.celeste));
 				} else {
 			//		convertView.setBackgroundColor(android.R.color.darker_gray);
 					holder.textView.setTypeface(null, Typeface.BOLD);
+					holder.textView2.setTypeface(null, Typeface.BOLD);
+					holder.textView3.setTypeface(null, Typeface.BOLD);
 
-					holder.textView.setTextColor(Color.BLUE);
+					holder.textView.setTextColor(getResources().getColor(R.color.celeste));
+					holder.textView2.setTextColor(getResources().getColor(R.color.celeste));
+					holder.textView3.setTextColor(getResources().getColor(R.color.celeste));
 
 				}
 			} else {
 				holder.textView.setTypeface(null, Typeface.NORMAL);
-			//	convertView.setBackgroundColor(ContextCompat.getColor(getContext(), background));
-			 	holder.textView.setTextColor(Color.BLUE);
+				holder.textView2.setTypeface(null, Typeface.NORMAL);
+				holder.textView3.setTypeface(null, Typeface.NORMAL);
+				holder.textView2.setTextColor(getResources().getColor(R.color.azul_claro));
+				holder.textView3.setTextColor(getResources().getColor(R.color.azul_claro));
+				holder.textView.setTextColor(getResources().getColor(R.color.azul_claro));
 
 			}
 			holder.checkBox.setTag(holder);
@@ -399,13 +422,6 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 					FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
 					List<ArrayListContenedor> FilteredArrList = new ArrayList<>();
 
-
-					/*
-					 *
-					 *  If constraint(CharSequence that is received) is null returns the mOriginalValues(Original) values
-					 *  else does the Filtering and returns FilteredArrList(Filtered)
-					 *
-					 **/
 					if (constraint == null || constraint.length() == 0) {
 
 						// set the Original result to return

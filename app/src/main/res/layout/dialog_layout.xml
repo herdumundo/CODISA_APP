@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="0dp"
-                android:hint="BUSQUEDA"
+                android:hint="Busqueda"
                 android:divider="#071CCF"
                 android:inputType="text" />
 
@@ -59,8 +59,12 @@
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="17sp"
+
             android:text="Close"
-            android:divider="#071CCF"
+            android:textColor="@color/azul_claro"
+            android:textStyle="bold"
+
             />
 
     </LinearLayout>

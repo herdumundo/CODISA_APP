@@ -29,7 +29,7 @@ import androidx.annotation.Nullable;
 public class SpinnerDialog {
     ArrayList<String> items;
     Activity context;
-    String dTitle, closeTitle = "CERRAR";
+    String dTitle, closeTitle = "Cerrar";
     OnSpinerItemClick onSpinerItemClick;
     AlertDialog alertDialog;
     int pos;

@@ -26,6 +26,7 @@ import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import Utilidades.Connection_Oracle;
+import Utilidades.OnSpinerItemClick;
 import Utilidades.controles;
 import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class login extends AppCompatActivity
         Connection connection=null;
         Connection connect;
         Connection_Oracle conexion = new Connection_Oracle();
-
+        SpinnerDialog       sp_sucursal;
         TextView txt_usuario,txt_pass;
         String mensaje,passwd,user="";
         ProgressDialog pdLoading;
@@ -53,7 +54,6 @@ public class login extends AppCompatActivity
             //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
            // /getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
             controles.conexion_sqlite(this);
-
            // Multi t1=new Multi();
             //t1.start();
         }
@@ -184,7 +184,7 @@ public class login extends AppCompatActivity
                                     "from v_web_operador_rol_prog where  formulario in ('STKW001','STKW002') and login_o='"+user.toUpperCase()+"'");
                             while ( rs2.next())
                             {
-                                SQLiteDatabase dblogin=controles.conSqlite.getReadableDatabase();
+                                 SQLiteDatabase dblogin=controles.conSqlite.getReadableDatabase();
                                 dblogin.execSQL(" INSERT INTO  USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO,NOMBRE,LOGIN_O,LOGIN_PASS,SUCURSAL_DESCRIPCION,ROL_SUCURSAL) " +
                                         "VALUES ('"+rs2.getString("formulario")+"','"+rs2.getString("nombre")+"','"+rs2.getString("LOGIN_O")+"'," +
                                         "upper('"+txt_pass.getText().toString().trim()+"'),'"+rs2.getString("SUCURSAL_DESCRIPCION")+"'," +
@@ -286,6 +286,18 @@ public class login extends AppCompatActivity
                     arrayDescSucursal.add(rs.getString("SUCURSAL_DESCRIPCION"));
                 }
 
+                sp_sucursal = new SpinnerDialog(this,controles.arrSucursales,"Seleccione Sucursal");
+                sp_sucursal.showSpinerDialog();
+                sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
+                    @Override
+                    public void onClick(String s, int posicion) {
+                        variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
+                        variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
+                        Intent is=new Intent(login.this,menu_principal.class);
+                        startActivity(is);
+                        finish();
+                    }
+                });
                 builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -293,7 +305,7 @@ public class login extends AppCompatActivity
                     }
                 });
 
-                builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
+              /*  builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int posicion)
@@ -307,7 +319,7 @@ public class login extends AppCompatActivity
                     }
                 });
                 builderSingle.show();
-
+            */
             }
             catch (Exception e)
             {
@@ -343,18 +355,11 @@ public class login extends AppCompatActivity
                     arrayIdSucursal.add(cursorlogSuc.getString(1));
                     arrayDescSucursal.add(cursorlogSuc.getString(0));
                 }
-                builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                sp_sucursal = new SpinnerDialog(this,controles.arrSucursales,"Seleccione Sucursal");
+                sp_sucursal.showSpinerDialog();
+                sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builderSingle.setAdapter(arrayDescSucursal, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int posicion)
-                    {
+                    public void onClick(String s, int posicion) {
                         variables.DESCRIPCION_SUCURSAL_LOGIN= arrayDescSucursal.getItem(posicion);
                         variables.ID_SUCURSAL_LOGIN         =arrayIdSucursal.get(posicion);
                         Intent is=new Intent(login.this,menu_principal.class);
@@ -362,7 +367,13 @@ public class login extends AppCompatActivity
                         finish();
                     }
                 });
-                builderSingle.show();
+                builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
             }
             catch (Exception e)
             {

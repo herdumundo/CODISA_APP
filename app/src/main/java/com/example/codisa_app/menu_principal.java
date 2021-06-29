@@ -67,8 +67,8 @@ public class menu_principal extends AppCompatActivity {
         TextView txt1 = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
         TextView txt2 = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title2);
         txt2.setVisibility(View.VISIBLE);
-        txt1.setText("USUARIO:"+variables.NOMBRE_LOGIN);
-        txt2.setText("SUCURSAL:"+variables.DESCRIPCION_SUCURSAL_LOGIN);
+        txt1.setText("Usuario:       "+variables.NOMBRE_LOGIN);
+        txt2.setText("Sucursal:     "+variables.DESCRIPCION_SUCURSAL_LOGIN);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
      /*   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -395,7 +395,8 @@ public class menu_principal extends AppCompatActivity {
                     "   SELECT " +
                     "       a.ARDE_SUC, b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
                     "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec," +
-                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu  " +
+                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu," +
+                    "   case c.winve_tipo_toma when 'C' then 'POR CRITERIO DE SELECCION' ELSE 'POR SELECCION MANUAL' END AS tipo_toma,c.winve_login " +
                     "   FROM   " +
                     "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
                     "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
@@ -446,7 +447,7 @@ public class menu_principal extends AppCompatActivity {
                 "winvd_cant_inv," +
                 "winvd_subgr," +
                 "winvd_secu," +
-                "estado) VALUES ('"+
+                "estado,tipo_toma, winve_login) VALUES ('"+
                 rs.getInt("ARDE_SUC")               +"','"+
                 rs.getInt("winvd_nro_inv")          +"','"+
                 rs.getString("winvd_art")           +"','"+
@@ -468,7 +469,7 @@ public class menu_principal extends AppCompatActivity {
                 "0','" +
                 rs.getString("sugr_codigo")         +"','" +
                 rs.getString("winvd_secu")          +"','" +
-                "A') "); //ESTADO PENDIENTE A INVENTARIAR.
+                "A','"+rs.getString("tipo_toma")   +"','"+rs.getString("winve_login")   +"') "); //ESTADO PENDIENTE A INVENTARIAR.
                 dbdbSTKW002INV.close();
             }
             db_consulta.close();

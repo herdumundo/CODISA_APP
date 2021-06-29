@@ -35,6 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class controles {
     static int      ContExportStkw002;
 
     public static void conexion_sqlite(Context context) {
-        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,2);
+        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,4);
      }
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
@@ -141,6 +142,7 @@ public class controles {
 
 
     }
+
     public static void VerificarRed(Context context){
         if (verificadorRed==0){
             new AlertDialog.Builder(context)
@@ -336,7 +338,7 @@ public class controles {
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                  //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     ids_subgrupos="";
-                    stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
+                    stkw001.spinerArticulos.setSearchHint("Busqueda");
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
                             if(i==0){
@@ -485,8 +487,8 @@ public class controles {
         listArrayArticulos.clear();
         listInsertArticulos.clear();
         limpiarListaViewArticulosSTKW001();
-        stkw001.spinerSubGrupo.setSearchHint("Busqueda de Sub-Grupo");
-        stkw001.spinerArticulos.setSearchHint("Busqueda de Articulos");
+        stkw001.spinerSubGrupo.setSearchHint("Busqueda");
+        stkw001.spinerArticulos.setSearchHint("Busqueda");
         stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
         {
             @Override
@@ -722,36 +724,50 @@ public class controles {
                     ||stkw001.txt_id_seccion.getText().toString().equals("")
                     ||stkw001.txt_id_familia.getText().toString().equals("")
                     ||stkw001.txt_id_grupo.getText().toString().equals("")) {
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("COMPLETE LOS DATOS REQUERIDOS.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("COMPLETE LOS DATOS REQUERIDOS.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
             }
+            /*else if (controles.ids_subgrupos.equals("")){
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("SELECCIONE SUB-GRUPO.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+
+            } */
             else if (controles.ids_subgrupos.equals("")){
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("SELECCIONE SUB-GRUPO.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
-            }
-            else if (controles.ids_subgrupos.equals("")){
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("SELECCIONE SUB-GRUPO.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("SELECCIONE SUB-GRUPO.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+
             }
             else if (controles.listInsertArticulos.size()==0){
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("SELECCIONE ARTICULOS.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("SELECCIONE ARTICULOS.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
             }
             else {
                 new androidx.appcompat.app.AlertDialog.Builder(context)
@@ -780,28 +796,41 @@ public class controles {
                     ||stkw001.txt_id_seccion.getText().toString().equals("")
                     ||stkw001.txt_id_familia.getText().toString().equals("")
                     ||stkw001.txt_id_grupo.getText().toString().equals("")) {
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("COMPLETE LOS DATOS REQUERIDOS.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("COMPLETE LOS DATOS REQUERIDOS.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+
             }
             else if (ids_subgrupos.equals("")){
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("SELECCIONE SUB-GRUPO.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("SELECCIONE SUB-GRUPO.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+
             }
             else if (listArrayArticulos.size()==0){ //SI EL FILTRO PARA LA SELECCION AUTOMATICA ES CERO, ES PORQUE NO ARROJO NINGUN ARTICULO PARA EL REGISTRO.
-                Alerter.create(activity)
-                        .setTitle("ATENCION!")
-                        .setText("LA COMBINACION DE FILTROS, NO CONTIENEN ARTICULOS PARA GENERAR LA TOMA.")
-                        .setDuration(10000)
-                        .setBackgroundColor(R.color.azul)
-                        .show();
+
+
+                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
+                        .setTitle("ATENCION!!!")
+                        .setCancelable(false)
+                        .setMessage("LA COMBINACION DE FILTROS, NO CONTIENEN ARTICULOS PARA GENERAR LA TOMA.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).show();
+
             }
             else {
                 new androidx.appcompat.app.AlertDialog.Builder(context)
@@ -835,7 +864,7 @@ public class controles {
                     "ART_DESC," +//1
                     "winvd_lote," +//2
                     "winvd_art ," +//3
-                    "date(winvd_fec_vto) as  winvd_fec_vto," +//4
+                    "strftime('%d/%m/%Y',date(winvd_fec_vto)) as  winvd_fec_vto," +//4
                     "winvd_area," +//5
                     "winvd_dpto," +//6
                     "winvd_secc," +//7
@@ -850,8 +879,11 @@ public class controles {
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
             {
+
                 contador_stkw002++;
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(12)));
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
+                        cursor.getString(2),cursor.getString(3),cursor.getString(4),
+                        cursor.getString(12),cursor.getString(5)));
                 cont++;
             }
             stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
@@ -994,20 +1026,38 @@ public class controles {
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT winve_numero,winve_fec,flia_desc,grup_desc " +
-                    "FROM WEB_INVENTARIO inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
-                    "inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  " +
-                    "V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA WHERE WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') " );
+            ResultSet rs = stmt.executeQuery("" +
+                    "   SELECT    " +
+                    "      to_char(WEB_INVENTARIO.Winve_Fec,'DD/MM/YYYY HH:SS') AS FECHAFORM, WEB_INVENTARIO.*,V_WEB_GRUPO.*,V_WEB_area.*,V_WEB_SECC.*,V_WEB_DPTO.*,V_WEB_FLIA.*," +
+                    "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'POR CRITERIO DE SELECCION' " +
+                    "       ELSE 'POR SELECCION MANUAL' END AS tipo_toma" +
+                    "   FROM " +
+                    "       WEB_INVENTARIO " +
+                    "       inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
+                    "       inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA " +
+                    "       inner join V_WEB_area on V_WEB_area.AREA_CODIGO=WEB_INVENTARIO.Winve_Area" +
+                    "       inner join V_WEB_SECC on V_WEB_SECC.SECC_CODIGO =WEB_INVENTARIO.winve_secc" +
+                    "       inner join V_WEB_DPTO on V_WEB_DPTO.DPTO_CODIGO =WEB_INVENTARIO.winve_DPTO" +
+                     "   WHERE " +
+                    "       WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') " );
 
             Stkw002List Stkw001List=null;
             listaStkw001=new ArrayList<Stkw002List>();
             while (rs.next())
             {
                 Stkw001List=new Stkw002List();
+
                 Stkw001List.setNroToma(rs.getString("WINVE_NUMERO"));
-                Stkw001List.setFechaToma(rs.getString("WINVE_FEC"));
+                Stkw001List.setFechaToma(rs.getString("FECHAFORM"));
                 Stkw001List.setFamilia(rs.getString("flia_desc"));
                 Stkw001List.setGrupo(rs.getString("grup_desc"));
+                Stkw001List.setArea(rs.getString("area_desc"));
+                Stkw001List.setDpto(rs.getString("DPTO_DESC"));
+                Stkw001List.setTipoToma(rs.getString("tipo_toma"));
+                Stkw001List.setSeccion(rs.getString("SECC_DESC"));
+
+
+
                 listaStkw001.add(Stkw001List);
                 cont++;
             }
@@ -1022,12 +1072,21 @@ public class controles {
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
                     TextView text4 = (TextView) view.findViewById(R.id.text4);
-                    ImageView txtimagen =   view.findViewById(R.id.txtimagen);
+                    TextView text5 = (TextView) view.findViewById(R.id.text5);
+                    TextView text6 = (TextView) view.findViewById(R.id.text6);
+                    TextView text7 = (TextView) view.findViewById(R.id.text7);
+                    TextView text8 = (TextView) view.findViewById(R.id.text8);
+                    ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
+                    text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
+                    text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
+                    text3.setText("AREA:                                  "+listaStkw001.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:           "+listaStkw001.get(position).getDpto());
+                    text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
+                    text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
+                    text7.setText("GRUPO:                               "+listaStkw001.get(position).getGrupo());
+                    text8.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
 
-                    text1.setText("NRO. DE TOMA: "+listaStkw001.get(position).getNroToma());
-                    text2.setText("FECHA: "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("FAMILIA:"+listaStkw001.get(position).getFamilia());
-                    text4.setText("GRUPO:"+listaStkw001.get(position).getGrupo());
+
                     txtimagen.setImageResource(R.drawable.ic_consulta);
 
                     return view;
@@ -1036,7 +1095,8 @@ public class controles {
             lista_stkw001_inv.listView.setAdapter(adapter);
         }
         catch (Exception e){
-            String err=e.toString();
+             lista_stkw001_inv.txtSinresultado.setText(e.getMessage()) ;
+            lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1308,7 +1368,8 @@ public class controles {
             ResultSet rs = stmt.executeQuery("SELECT  " +
                     " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
                     "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
-                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,  dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
+                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec, " +
+                    " dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
                     " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
                     " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
                     " and a.ART_CODIGO=b.winvd_art    " +

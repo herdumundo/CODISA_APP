@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="260dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         card_view:cardBackgroundColor="@color/azul3"
@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="363dp"
-            android:layout_height="119dp"
+            android:layout_height="237dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -62,6 +62,43 @@
 
                 <TextView
                     android:id="@+id/text4"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    />
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text6"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text7"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/text8"
                     android:layout_width="match_parent"
 
                     android:layout_height="wrap_content"

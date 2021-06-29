@@ -1,50 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:background="@color/azul_claro2"
-	>
+	android:layout_height="wrap_content"
+	android:id="@+id/mainView"
+	android:background="#FFFFFF"
 
-	<EditText
-		android:id="@+id/alertSearchEditText"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dp"
-		android:autofillHints="@string/type_to_search"
- 		android:hint="@string/type_to_search"
-		android:background="#ffffff"
+	android:orientation="vertical">
 
-		android:inputType="text"
-		android:padding="5dp">
+	<LinearLayout
 
-		<requestFocus />
-	</EditText>
-
-	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal">
+		android:layout_height="match_parent"
+		android:layout_margin="15dp"
+		android:orientation="vertical">
 
-		<ListView
- 			android:id="@+id/alertSearchListView"
+		<TextView
+			android:id="@+id/spinerTitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="5dp"
-			android:cacheColorHint="@null"
-			android:fadeScrollbars="true"
-			android:fastScrollEnabled="true"
-			android:textFilterEnabled="true" />
+			android:text="Select or Search Items"
+			android:textSize="17sp"
+			android:textStyle="bold"
+			android:textColor="@color/azul_claro"
+			/>
+
+
+
+		<EditText
+			android:drawableLeft="@drawable/ic_search_black_24"
+			android:id="@+id/alertSearchEditText"
+			android:layout_width="match_parent"
+			android:layout_height="40dp"
+			android:layout_marginLeft="0dp"
+			android:hint="Busqueda"
+			android:textColor="@color/azul_claro"
+			android:inputType="text" />
+
+
+		<View
+			android:id="@+id/viewLine"
+			android:layout_width="wrap_content"
+			android:layout_height="0.1dp"
+			android:textColor="@color/azul_claro"
+			/>
+
+		<ListView
+			android:id="@+id/alertSearchListView"
+			android:layout_width="match_parent"
+			android:layout_height="300dp"
+			android:textColor="@color/azul_claro"
+			android:dividerHeight="0.1dp"/>
 
 		<TextView
 			android:id="@+id/empty"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_centerVertical="true"
-			android:gravity="center"
-			android:text="@string/not_found"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:textColor="@color/red" />
-	</RelativeLayout>
+			android:layout_width="358dp"
+			android:layout_height="34dp"
+			android:layout_gravity="right"
+			android:clickable="true"
+			android:padding="5dp"
+			android:text="Close"
+			android:textAlignment="center"
+			android:textColor="@color/azul_claro"
+			android:textSize="17sp"
+			android:textStyle="bold"
+
+			tools:ignore="RtlCompat" />
+
+	</LinearLayout>
+
 </LinearLayout>

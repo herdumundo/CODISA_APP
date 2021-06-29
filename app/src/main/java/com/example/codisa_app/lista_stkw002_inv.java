@@ -103,10 +103,10 @@ public class lista_stkw002_inv extends AppCompatActivity
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
             String sql="";
             if(estado.equals("A")){
-                sql="select  distinct winvd_nro_inv,winve_fec,flia_desc,grup_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) ,flia_desc,grup_desc,area_desc,dpto_desc,tipo_toma,secc_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1";
             }else {
-                sql="select  distinct winvd_nro_inv,winve_fec,flia_desc,grup_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc,tipo_toma,secc_desc from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1";
             }
             Cursor cursor=db_consulta.rawQuery(sql ,null);
@@ -120,6 +120,10 @@ public class lista_stkw002_inv extends AppCompatActivity
                 Stkw002List.setFechaToma(cursor.getString(1));
                 Stkw002List.setFamilia(cursor.getString(2));
                 Stkw002List.setGrupo(cursor.getString(3));
+                Stkw002List.setArea(cursor.getString(4));
+                Stkw002List.setDpto(cursor.getString(5));
+                Stkw002List.setTipoToma(cursor.getString(6));
+                Stkw002List.setSeccion(cursor.getString(7));
                 listaStkw002.add(Stkw002List);
                 cont++;
             }
@@ -130,10 +134,24 @@ public class lista_stkw002_inv extends AppCompatActivity
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
+                    TextView text4 = (TextView) view.findViewById(R.id.text4);
+                    TextView text5 = (TextView) view.findViewById(R.id.text5);
+                    TextView text6 = (TextView) view.findViewById(R.id.text6);
+                    TextView text7 = (TextView) view.findViewById(R.id.text7);
+                    TextView text8 = (TextView) view.findViewById(R.id.text8);
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
-                    text1.setText("NRO. DE TOMA: "+listaStkw002.get(position).getNroToma());
-                    text2.setText("FAMILIA: "+listaStkw002.get(position).getFamilia());
-                    text3.setText("GRUPO: "+listaStkw002.get(position).getGrupo());
+                    text1.setText("NRO. DE TOMA:               "+listaStkw002.get(position).getNroToma());
+                    text2.setText("FECHA TOMA:                  "+listaStkw002.get(position).getFechaToma());
+                    text3.setText("AREA:                                  "+listaStkw002.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:           "+listaStkw002.get(position).getDpto());
+                    text5.setText("SECCION:                           "+listaStkw002.get(position).getSeccion());
+                    text6.setText("FAMILIA:                             "+listaStkw002.get(position).getFamilia());
+                    text7.setText("GRUPO:                               "+listaStkw002.get(position).getGrupo());
+                    text8.setText("TOMA:                                 "+listaStkw002.get(position).getTipoToma());
+
+
+
+                  //  text4.setText();
                     if(variables.tipoListaStkw002==1){
                       //  view.setBackgroundColor(Color.RED);
                         txtimagen.setImageResource(R.drawable.ic_list);

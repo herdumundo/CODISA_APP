@@ -32,13 +32,15 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
      class ExampleViewHolder extends ViewHolder {
         TextView textProducto;
         TextView textCantidad;
-        TextView textLote;
+         TextView textLote;
+     //    TextView textArea;
 
         ExampleViewHolder(View itemView) {
             super(itemView);
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
             this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
+       //     this.textArea = (TextView) itemView.findViewById(R.id.txt_area);
         }
     }
 
@@ -55,6 +57,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
         holder.textCantidad.setText(currentItem.getCantidad());
+    //    holder.textArea.setText(currentItem.getArea());
         holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
  //ESTA SENTENCIA SE UTILIZA PARA QUE AL CAMBIAR EL TEXT, YA EJECUTE LA ACTUALIZACION DEL ARRAYLIST
      /*   holder.textCantidad.addTextChangedListener(new TextWatcher()

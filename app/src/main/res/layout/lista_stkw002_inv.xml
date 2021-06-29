@@ -17,7 +17,10 @@
         android:layout_marginStart="29dp"
         android:layout_marginTop="45dp"
         android:layout_marginEnd="34dp"
-        android:background="@android:drawable/dialog_holo_light_frame"
+        android:textColor="@color/white"
+        android:textAlignment="textStart"
+
+        android:background="@drawable/bordercolor"
         android:drawableLeft="@drawable/ic_export"
         android:onClick="cambio_consulta"
 

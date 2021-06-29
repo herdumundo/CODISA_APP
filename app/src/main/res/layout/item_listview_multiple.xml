@@ -23,15 +23,15 @@
             android:layout_toStartOf="@+id/alertCheckbox"
             android:text="@string/string_item_name"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/azul_claro2"
+            android:textColor="@color/azul_claro"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMaxTextSize="15sp"
             app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform" />
 
         <CheckBox
-            android:textColor="@color/azul_claro2"
+            android:textColor="@color/azul_claro"
 
             android:id="@+id/alertCheckbox"
             android:layout_width="wrap_content"
@@ -52,9 +52,8 @@
             android:layout_toStartOf="@+id/alertCheckbox"
             android:text="TextView"
             android:visibility="gone"
-            android:textColor="@color/azul_claro2"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="100sp"
+            android:textColor="@color/azul_claro"
+             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
 
@@ -73,9 +72,8 @@
             android:text="TextView"
             android:visibility="gone"
 
-            android:textColor="@color/azul_claro2"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="100sp"
+            android:textColor="@color/azul_claro"
+             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="3sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform" />
