@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/azul_claro2"
-    android:id="@+id/mainView"
+     android:id="@+id/mainView"
+    android:background="#FFFFFF"
+
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,7 +22,7 @@
             android:text="Select or Search Items"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/azul_claro"
             />
 
 
@@ -33,7 +34,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="0dp"
                 android:hint="BUSQUEDA"
-                android:background="#ffffff"
+                android:divider="#071CCF"
                 android:inputType="text" />
 
 
@@ -41,13 +42,14 @@
             android:id="@+id/viewLine"
             android:layout_width="wrap_content"
             android:layout_height="0.1dp"
-            android:background="#d1d1d1" />
+            android:divider="#071CCF"
+            />
 
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:divider="#d1d1d1"
+            android:divider="#071CCF"
             android:dividerHeight="0.1dp"/>
 
         <TextView
@@ -58,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Close"
-            android:textColor="@color/white"
+            android:divider="#071CCF"
             />
 
     </LinearLayout>

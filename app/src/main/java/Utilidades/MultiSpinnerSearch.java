@@ -71,7 +71,7 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 			} else if (attr == R.styleable.MultiSpinnerSearch_highlightSelected) {
 				highlightSelected = a.getBoolean(attr, false);
 			} else if (attr == R.styleable.MultiSpinnerSearch_highlightColor) {
-				highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), R.color.list_selected));
+				highlightColor = a.getColor(attr, ContextCompat.getColor(getContext(), R.color.naranja));
 			} else if (attr == R.styleable.MultiSpinnerSearch_textColor) {
 				textColor = a.getColor(attr, Color.BLACK);
 			}else if (attr == R.styleable.MultiSpinnerSearch_clearText){
@@ -312,9 +312,9 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			int background = R.color.azul;
+			int background = R.color.colorPrimary;
 			if (colorSeparation) {
-				final int backgroundColor = (position % 2 == 0) ? R.color.colorlogin : R.color.azul3;
+				final int backgroundColor = (position % 2 == 0) ? R.color.colorDarkGray : R.color.colorGray;
 				background = backgroundColor;
 				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColor));
 			}
@@ -364,14 +364,16 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 					holder.textView.setTypeface(null, Typeface.BOLD);
 					convertView.setBackgroundColor(highlightColor);
 				} else {
-					convertView.setBackgroundColor(R.color.primaryTextColor);
-					holder.textView.setTextColor(Color.WHITE);
+			//		convertView.setBackgroundColor(android.R.color.darker_gray);
+					holder.textView.setTypeface(null, Typeface.BOLD);
+
+					holder.textView.setTextColor(Color.BLUE);
 
 				}
 			} else {
 				holder.textView.setTypeface(null, Typeface.NORMAL);
-				convertView.setBackgroundColor(ContextCompat.getColor(getContext(), background));
-				holder.textView.setTextColor(Color.WHITE);
+			//	convertView.setBackgroundColor(ContextCompat.getColor(getContext(), background));
+			 	holder.textView.setTextColor(Color.BLUE);
 
 			}
 			holder.checkBox.setTag(holder);

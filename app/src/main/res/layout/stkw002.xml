@@ -11,18 +11,18 @@
     <Button
         android:id="@+id/button"
         android:layout_width="285dp"
-        android:background="@color/colorlogin"
-        android:gravity="center|center_vertical"
         android:layout_height="37dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bordercolor"
 
-        android:layout_marginTop="8dp"
-         android:drawableRight="@drawable/ic_registrar"
+        android:drawableRight="@drawable/ic_registrar"
+        android:gravity="left|center_vertical"
         android:onClick="RegistrarSTKW002"
         android:text="REGISTRAR"
         android:textColor="@color/colorPrimary"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_layout"
         tools:ignore="MissingConstraints" />
@@ -32,10 +32,10 @@
         android:layout_width="285dp"
         android:layout_height="37dp"
         android:layout_marginTop="4dp"
-        android:gravity="center|center_vertical"
+        android:gravity="left|center_vertical"
         android:drawableRight="@drawable/ic_delete"
         android:onClick="EliminarSTKW002"
-        android:background="@color/azul_claro2"
+        android:background="@drawable/bordercolor"
         android:textColor="@color/colorPrimary"
 
         android:text="ELIMINAR INVENTARIO"

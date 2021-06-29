@@ -14,12 +14,12 @@
 
         <TextView
             android:id="@+id/txttotalpendiente"
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="259dp"
+            android:layout_height="27dp"
             android:text="PENDIENTES DE ENVIO"
+            android:textAlignment="textStart"
+
             android:textColor="@color/azul3"
-            android:textAlignment="center"
 
             android:textSize="20sp"
             android:textStyle="bold"
@@ -27,19 +27,22 @@
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.129"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
             tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="175dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txttotalpendiente">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/STKW001"
@@ -52,23 +55,25 @@
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
-
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bordercolor">
 
                     <TextView
-                        android:textColor="@color/white"
-
                         android:id="@+id/textView3"
-                        android:layout_width="match_parent"
+
+                        android:layout_width="119dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bus"
+                        android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginStart="0dp"
                         android:layout_marginTop="9dp"
                         android:layout_marginEnd="0dp"
                         android:text="REGISTRO DE TOMAS"
                         android:textAlignment="center"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -94,9 +99,9 @@
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bordercolor">
 
                     <TextView
                         android:id="@+id/textView4"
@@ -106,9 +111,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:text="REGISTRO DE INVENTARIO"
-                        android:textColor="@color/white"
-
                         android:textAlignment="center"
+
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -136,20 +141,20 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/tomasGen"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:id="@+id/tomasGen"
                 android:onClick="OnclickIrStkw001Cancelacion"
 
                 >
 
                 <RelativeLayout
-                    android:background="@color/azul3"
-
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bordercolor">
 
                     <TextView
 
@@ -177,20 +182,18 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/OPC_EXPORT"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:id="@+id/OPC_EXPORT"
-                android:onClick="OnclickExportar"
-                >
+                android:onClick="OnclickExportar">
 
                 <RelativeLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/azul3"
-                    >
+                    android:background="@drawable/bordercolor">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -200,15 +203,14 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:text="EXPORTAR DATOS"
-                        android:textColor="@color/white"
-
                         android:textAlignment="center"
+
+                        android:textColor="@color/white"
 
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:background="@color/azul3"
                         android:id="@+id/train"
                         android:layout_width="match_parent"
                         android:layout_height="75dp"
@@ -220,6 +222,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="0dp"
             android:layout_height="175dp"
             android:orientation="horizontal"
@@ -230,18 +233,17 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/OPC_SINC"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:id="@+id/OPC_SINC"
-                android:onClick="OnclickSincronizarDatos"
-                >
+                android:onClick="OnclickSincronizarDatos">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/azul3"
+                    android:background="@drawable/bordercolor"
 
                     >
 
@@ -261,7 +263,6 @@
 
 
                     <ImageView
-                        android:background="@color/azul3"
 
                         android:id="@+id/cycle"
                         android:layout_width="match_parent"
