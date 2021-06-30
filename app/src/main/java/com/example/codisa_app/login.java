@@ -51,6 +51,7 @@ public class login extends AppCompatActivity
             txt_usuario=(TextView)findViewById(R.id.txt_usuario);
             txt_pass=(TextView)findViewById(R.id.txt_pass);
             getSupportActionBar().hide();
+            txt_usuario.requestFocus();
             //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
            // /getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>CODISA APP V.1.0 </font>"));
             controles.conexion_sqlite(this);
