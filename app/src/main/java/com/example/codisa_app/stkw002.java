@@ -36,9 +36,10 @@ public class stkw002 extends AppCompatActivity {
     Button btnEliminar;
     public static TextView txtTotalArt;
     public static ProgressDialog ProDialog;
-
+    android.app.AlertDialog.Builder builder;
+    android.app.AlertDialog ad;
     public void onBackPressed()  {
-        Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"DESEA SALIR DEL REGISTRO DE INVENTARIO'?",1);
+        Utilidades.controles.volver_atras(this,this,  lista_stkw002_inv.class,"¿Desea salir del registro de inventario?",1);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -140,66 +141,77 @@ public class stkw002 extends AppCompatActivity {
     public void RegistrarSTKW002(View v){
         Searchtext.requestFocus();
         Searchtext.setText("");
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("ATENCION!!!.")
-                .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
-                .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        final AsyncRegistrarStkw002 task = new AsyncRegistrarStkw002();
-                        task.execute();
-                    }
 
-                })
-                .setNegativeButton("NO", null)
-                .show();
+        builder = new android.app.AlertDialog.Builder(this);
+        builder.setIcon(getResources().getDrawable(R.drawable.ic_danger));
+        builder.setTitle("¡Atención!");
+        builder.setMessage("¿Desea registrar las cantidades ingresadas?.");
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final AsyncRegistrarStkw002 task = new AsyncRegistrarStkw002();
+                task.execute();
+
+            }
+        });
+        builder.setNegativeButton("No",null);
+        ad = builder.show();
+        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+        ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+        ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
     }
 
 
     public void EliminarSTKW002(View v){
         Searchtext.requestFocus();
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("ATENCION!!!.")
-                .setMessage("DESEA ELIMINAR EL INVENTARIO REALIZADO?")
-                .setPositiveButton("SI, ELIMINAR", new DialogInterface.OnClickListener()
+
+        builder = new android.app.AlertDialog.Builder(this);
+        builder.setIcon(getResources().getDrawable(R.drawable.ic_danger));
+        builder.setTitle("¡Atención!");
+        builder.setMessage("¿Desea eliminar el inventario realizado?.");
+        builder.setPositiveButton("Si, eliminar", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        try
-                        {
-                            SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
-                            db_UPDATE.execSQL(" update STKW002INV set  estado ='E'   where winvd_nro_inv="+ variables.nro_registro_toma+" ");
+                    SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
+                    db_UPDATE.execSQL(" update STKW002INV set  estado ='E'   where winvd_nro_inv="+ variables.nro_registro_toma+" ");
 
-                                     new AlertDialog.Builder( stkw002.this)
-                                    .setTitle("INFORME!!!")
-                                    .setCancelable(false)
-                                    .setMessage("REGISTRO ELIMINADO CON EXITO.")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            variables.tipoListaStkw002=1;
+                    new AlertDialog.Builder( stkw002.this)
+                            .setTitle("¡INFORME!")
+                            .setCancelable(false)
+                            .setMessage("Registro eliminado con éxito.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    variables.tipoListaStkw002=1;
 
-                                            Intent i=new Intent(stkw002.this,lista_stkw002_inv.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    }).show();
-                        }
-                        catch (Exception e)
-                        {
-                            new AlertDialog.Builder(stkw002.this)
-                                    .setTitle("ATENCION!!!")
-                                    .setMessage(e.toString()).show();
-                        }
-                    }
+                                    Intent i=new Intent(stkw002.this,lista_stkw002_inv.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            }).show();
+                }
+                catch (Exception e)
+                {
+                    new AlertDialog.Builder(stkw002.this)
+                            .setTitle("ATENCION!!!")
+                            .setMessage(e.toString()).show();
+                }
 
-                })
-                .setNegativeButton("NO", null)
-                .show();
+            }
+        });
+        builder.setNegativeButton("No",null);
+        ad = builder.show();
+        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+        ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+        ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+
     }
 
       private class AsyncRegistrarStkw002 extends AsyncTask<Void, Void, Void>
@@ -234,7 +246,7 @@ public class stkw002 extends AppCompatActivity {
             }
             else {
                 new AlertDialog.Builder( stkw002.this)
-                        .setTitle("INFORME!!!")
+                        .setTitle("¡Informe!")
                         .setCancelable(false)
                         .setMessage(Stkw002Adapter.MensajeRegistro).show();
             }

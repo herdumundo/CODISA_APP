@@ -15,10 +15,10 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/bordercolor"
 
-        android:drawableRight="@drawable/ic_registrar"
+        android:drawableLeft="@drawable/ic_registrar"
         android:gravity="left|center_vertical"
         android:onClick="RegistrarSTKW002"
-        android:text="REGISTRAR"
+        android:text="  REGISTRAR"
         android:textColor="@color/colorPrimary"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +33,12 @@
         android:layout_height="37dp"
         android:layout_marginTop="4dp"
         android:gravity="left|center_vertical"
-        android:drawableRight="@drawable/ic_delete"
+        android:drawableLeft="@drawable/ic_delete"
         android:onClick="EliminarSTKW002"
         android:background="@drawable/bordercolor"
         android:textColor="@color/colorPrimary"
 
-        android:text="ELIMINAR INVENTARIO"
+        android:text="  ELIMINAR INVENTARIO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,8 +131,8 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/txtTotalArt"
-        android:layout_width="356dp"
+        android:id="@+id/txtTotalArt2"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
         android:gravity="left|center_vertical"
         android:text="INGRESE LAS CANTIDADES"
@@ -146,8 +146,8 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/txtTotalArt2"
-        android:layout_width="356dp"
+        android:id="@+id/txtTotalArt"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
         android:gravity="left|center_vertical"
         android:text="TextView"
@@ -155,8 +155,11 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/RecyclerView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="DuplicateIds" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

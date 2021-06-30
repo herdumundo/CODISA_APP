@@ -56,14 +56,14 @@ public class stkw001 extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        controles.volver_atras(this,this,menu_principal.class,"¿DESEA VOLVER AL MENU PRINCIPAL?",1);
+        controles.volver_atras(this,this,menu_principal.class,"¿Desea volver al menu principal?",1);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                controles.volver_atras(this,this,menu_principal.class,"¿DESEA VOLVER AL MENU PRINCIPAL?",1);
+                controles.volver_atras(this,this,menu_principal.class,"¿Desea volver al menu principal?",1);
 
                 return true;
         }
@@ -147,7 +147,7 @@ public class stkw001 extends AppCompatActivity {
                 txtTotalArticuloGrilla.setVisibility(View.GONE);
                 lbl_articulos.setVisibility(View.GONE);
                 spinerArticulos.setVisibility(View.GONE);
-
+                LvArticulosStkw001.setVisibility(View.GONE);
         }
 
         radioGrupoLote.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

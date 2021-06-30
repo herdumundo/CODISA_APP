@@ -71,7 +71,7 @@ public class lista_stkw002_inv extends AppCompatActivity
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
         getSupportActionBar().setCustomView(R.layout.customactionbar);
           actionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
-        actionbar.setText("PENDIENTES A INVENTARIAR");
+        actionbar.setText("  PENDIENTES A INVENTARIAR");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -104,10 +104,10 @@ public class lista_stkw002_inv extends AppCompatActivity
             String sql="";
             if(estado.equals("A")){
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) ,flia_desc,grup_desc,area_desc,dpto_desc,tipo_toma,secc_desc  from STKW002INV WHERE ESTADO='"+estado+"'  " +
-                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1";
+                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1 desc";
             }else {
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc,tipo_toma,secc_desc from STKW002INV WHERE ESTADO='"+estado+"'  " +
-                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1";
+                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1 desc";
             }
             Cursor cursor=db_consulta.rawQuery(sql ,null);
             int cont=0;
@@ -188,7 +188,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             consultar_tomas_generadas("P");
             variables.tipoStkw002=1;
             variables.tipoListaStkw002=2;
-            btn_buscar.setText("VER PENDIENTES A INVENTARIAR");
+            btn_buscar.setText("  VER PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
          //   btn_buscar.setBackgroundColor(Color.RED);
            // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
@@ -200,7 +200,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             consultar_tomas_generadas("A");
             variables.tipoStkw002=2;
             variables.tipoListaStkw002=1;
-            btn_buscar.setText("VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
+            btn_buscar.setText("  VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
            // btn_buscar.setBackgroundColor(Color.GREEN);
          //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));

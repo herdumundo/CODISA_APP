@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/TextView03"
-            android:layout_width="193dp"
+            android:layout_width="210dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="204dp"
+            android:layout_width="190dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
@@ -235,9 +235,9 @@
 
     <Utilidades.MultiSpinnerSearch
         android:id="@+id/spinerArticulos"
-        android:layout_width="217dp"
+        android:layout_width="191dp"
         android:layout_height="29dp"
-        android:layout_marginStart="84dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="14dp"
         app:hintText="Seleccione"
         app:layout_constraintStart_toStartOf="parent"

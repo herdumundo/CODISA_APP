@@ -10,26 +10,32 @@
     <LinearLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:background="@color/colorlogin"
 
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:padding="0dp"
 
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+        android:divider="@drawable/divider"
+        android:dividerPadding="0dip"
+
+        android:showDividers="middle"
+
+        >
 
         <TextView
             android:id="@+id/txt_nro"
 
             android:layout_width="180dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="COD"
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="5sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="7sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
 
@@ -40,16 +46,16 @@
             android:id="@+id/txt_producto"
 
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="29dp"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="ARTICULO"
 
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="5sp"
-            app:autoSizeStepGranularity="2sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="9sp"
+            app:autoSizeStepGranularity="1sp"
             app:autoSizeTextType="uniform"
 
             ></TextView>
@@ -57,30 +63,29 @@
         <TextView
             android:id="@+id/txt_lote"
 
-            android:layout_width="193dp"
-            android:layout_height="25dp"
+            android:layout_width="210dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="LOTE"
             android:textColor="@color/white"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="5sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="7sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"></TextView>
 
         <TextView
             android:id="@+id/txt_vto"
-
-            android:layout_width="204dp"
-            android:layout_height="25dp"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
             android:background="@color/colorlogin"
             android:text="VEN"
-            android:textColor="@color/white"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="5sp"
+             android:textColor="@color/white"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="7sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"></TextView>
     </LinearLayout>

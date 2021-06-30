@@ -25,43 +25,56 @@
 
         <EditText
             android:id="@+id/txt_cantidad"
-            android:layout_width="60dp"
+            android:layout_width="102dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/txt_producto"
             android:ems="10"
             android:hint="Ingrese cantidad"
             android:inputType="number"
             android:selectAllOnFocus="true"
             android:text="0"
+            android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txt_lote_inv"
-            android:layout_width="192dp"
-            android:layout_height="38dp"
+            android:layout_width="225dp"
+            android:layout_height="37dp"
             android:layout_below="@+id/txt_producto"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="2dp"
+            android:layout_toStartOf="@+id/txt_cantidad"
             android:ems="10"
             android:text="lote"
+
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="5sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txt_producto"
-            android:layout_width="193dp"
-            android:layout_height="wrap_content"
+            android:layout_width="225dp"
+            android:layout_height="31dp"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="5sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
 
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
+            android:layout_marginEnd="2dp"
+            android:layout_toStartOf="@+id/txt_cantidad"
             android:fontFamily="sans-serif-medium"
             android:textColor="#ff000000" />
 

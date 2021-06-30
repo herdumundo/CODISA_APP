@@ -114,7 +114,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }
             CodigoRegistro= 0;
-            MensajeRegistro="REGISTRADO CON EXITO.";
+            MensajeRegistro="Registrado con éxito.";
    }catch(Exception e)
         {
             CodigoRegistro= 1;

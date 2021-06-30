@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.lista_stkw001_inv;
+import com.example.codisa_app.lista_stkw002_inv;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
 import com.example.codisa_app.stkw002;
@@ -76,7 +77,8 @@ public class controles {
     static String   mensajeRespuestaStkw001;
     static String   mensajeRespuestaExportStkw002;
     static int      ContExportStkw002;
-
+    public static   AlertDialog.Builder builder;
+    public static   AlertDialog ad;
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,4);
      }
@@ -85,43 +87,58 @@ public class controles {
         if(tipo==1){
             variables.tipoListaStkw002=1;
             variables.tipoStkw002=2;
-            new AlertDialog.Builder(context)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("ATENCION!!!.")
-                    .setMessage(texto)
-                    .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(context, clase_destino);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            context.startActivity(intent);
-                            activity.finish();
-                        }
-                    })
-                    .setNegativeButton("NO", null)
-                    .show();
+            builder = new android.app.AlertDialog.Builder(context);
+            builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("¡Atención!");
+            builder.setMessage(texto);
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Intent intent = new Intent(context, clase_destino);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    context.startActivity(intent);
+                    activity.finish();
+                }
+            });
+            builder.setNegativeButton("No",null);
+            ad = builder.show();
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
         }
-        else if(tipo==3){
-            new AlertDialog.Builder(context)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("ATENCION!!!.")
-                    .setMessage(texto)
-                    .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            Intent intent = new Intent(context, clase_destino);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            context.startActivity(intent);
-                            activity.finish();
-                        }
-                    })
-                    .setNegativeButton("NO", null)
-                    .show();
+
+        else if(tipo==3){
+
+            builder = new android.app.AlertDialog.Builder(context);
+            builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("¡Atención!");
+            builder.setMessage(texto);
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Intent intent = new Intent(context, clase_destino);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    context.startActivity(intent);
+                    activity.finish();
+                }
+            });
+            builder.setNegativeButton("No",null);
+            ad = builder.show();
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
         }
         else if(tipo==5){
             activity.finish();
@@ -725,67 +742,86 @@ public class controles {
                     ||stkw001.txt_id_familia.getText().toString().equals("")
                     ||stkw001.txt_id_grupo.getText().toString().equals("")) {
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("COMPLETE LOS DATOS REQUERIDOS.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("Complete los datos requeridos.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
+
             }
-            /*else if (controles.ids_subgrupos.equals("")){
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("SELECCIONE SUB-GRUPO.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
-
-            } */
             else if (controles.ids_subgrupos.equals("")){
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("SELECCIONE SUB-GRUPO.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("Seleccione sub-grupo.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
+
 
             }
             else if (controles.listInsertArticulos.size()==0){
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("Seleccione articulos.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("SELECCIONE ARTICULOS.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
             }
             else {
-                new androidx.appcompat.app.AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("ATENCION!!!.")
-                        .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
-                        .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {  final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
-                                task.execute();
 
-                            }
-                        })
-                        .setNegativeButton("NO", null)
-                        .show();
-                }
+
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("¿Desea registrar los datos ingresado?.");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
+                        task.execute();
+                    }
+                });
+                builder.setNegativeButton("No",null);
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+
+
+            }
         }
 
         else if (variables.tipo_stkw001==2) {
@@ -797,58 +833,91 @@ public class controles {
                     ||stkw001.txt_id_familia.getText().toString().equals("")
                     ||stkw001.txt_id_grupo.getText().toString().equals("")) {
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("COMPLETE LOS DATOS REQUERIDOS.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("Complete los datos requeridos.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
+
 
             }
             else if (ids_subgrupos.equals("")){
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("SELECCIONE SUB-GRUPO.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("Seleccione sub-grupo.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
 
             }
             else if (listArrayArticulos.size()==0){ //SI EL FILTRO PARA LA SELECCION AUTOMATICA ES CERO, ES PORQUE NO ARROJO NINGUN ARTICULO PARA EL REGISTRO.
 
 
-                new androidx.appcompat.app.AlertDialog.Builder(context_stkw001)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage("LA COMBINACION DE FILTROS, NO CONTIENEN ARTICULOS PARA GENERAR LA TOMA.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        }).show();
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("La combinación de filtros no contienen articulos para generar la toma.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
+
 
             }
             else {
-                new androidx.appcompat.app.AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("ATENCION!!!.")
-                        .setMessage("DESEA REGISTRAR LOS DATOS INGRESADOS?")
-                        .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
-                                task.execute();
 
-                            }
-                        })
-                        .setNegativeButton("NO", null)
-                        .show();
+
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage("¿Desea registrar los datos ingresados?.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final  AsyncInsertStkw001 task = new  AsyncInsertStkw001();
+                        task.execute();
+                    }
+                });
+                builder.setNegativeButton("No",null);
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
+
+
+
             }
         }
     }
@@ -908,43 +977,48 @@ public class controles {
                 ContExportStkw002=cursorCont.getInt(0);
             }
 
-            new AlertDialog.Builder(context_menuPrincipal)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("EXPORTACION.")
-                    .setMessage("¿DESEA ENVIAR LOS INVETARIOS REALIZADOS?")
-                    .setPositiveButton("SI", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            menu_principal.ProDialogExport =  new ProgressDialog(context_menuPrincipal);
-                            menu_principal.ProDialogExport.setMax(ContExportStkw002);
-                            LayerDrawable progressBarDrawable = new LayerDrawable(
+            builder = new AlertDialog.Builder(context_menuPrincipal);
+            builder.setIcon(context_menuPrincipal.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("Exportación de inventarios.");
+            builder.setMessage("¿Desea enviar los inventarios realizados?");
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    menu_principal.ProDialogExport =  new ProgressDialog(context_menuPrincipal);
+                    menu_principal.ProDialogExport.setMax(ContExportStkw002);
+                    LayerDrawable progressBarDrawable = new LayerDrawable(
                             new Drawable[]{
-                            new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                            new int[]{Color.parseColor("black"),Color.parseColor("black")}),
-                            new ClipDrawable(
-                            new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                            new int[]{Color.parseColor("red"),Color.parseColor("red")}),
-                            Gravity.START,  ClipDrawable.HORIZONTAL),
-                            new ClipDrawable(   new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                            new int[]{Color.parseColor("red"),Color.parseColor("red")}),
-                            Gravity.START,  ClipDrawable.HORIZONTAL)    });
-                            progressBarDrawable.setId(0,android.R.id.background);
-                            progressBarDrawable.setId(1,android.R.id.secondaryProgress);
-                            progressBarDrawable.setId(2,android.R.id.progress);
-                            menu_principal.ProDialogExport.setTitle("INVENTARIOS REGISTRADOS.");
-                            menu_principal.ProDialogExport.setMessage("ENVIANDO...");
-                            menu_principal.ProDialogExport.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                            menu_principal.ProDialogExport.setProgressDrawable(progressBarDrawable);
-                            menu_principal.ProDialogExport.show();
-                            menu_principal.ProDialogExport.setCanceledOnTouchOutside(false);
-                            menu_principal.ProDialogExport.setCancelable(false);
-                            final AsyncExportStkw002 task = new AsyncExportStkw002();
-                            task.execute();
-                        }
-                    })
-                    .setNegativeButton("NO", null)
-                    .show();
+                                    new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                            new int[]{Color.parseColor("black"),Color.parseColor("black")}),
+                                    new ClipDrawable(
+                                            new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                                    new int[]{Color.parseColor("red"),Color.parseColor("red")}),
+                                            Gravity.START,  ClipDrawable.HORIZONTAL),
+                                    new ClipDrawable(   new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                                            new int[]{Color.parseColor("red"),Color.parseColor("red")}),
+                                            Gravity.START,  ClipDrawable.HORIZONTAL)    });
+                    progressBarDrawable.setId(0,android.R.id.background);
+                    progressBarDrawable.setId(1,android.R.id.secondaryProgress);
+                    progressBarDrawable.setId(2,android.R.id.progress);
+                    menu_principal.ProDialogExport.setTitle("INVENTARIOS REGISTRADOS.");
+                    menu_principal.ProDialogExport.setMessage("ENVIANDO...");
+                    menu_principal.ProDialogExport.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    menu_principal.ProDialogExport.setProgressDrawable(progressBarDrawable);
+                    menu_principal.ProDialogExport.show();
+                    menu_principal.ProDialogExport.setCanceledOnTouchOutside(false);
+                    menu_principal.ProDialogExport.setCancelable(false);
+                    final AsyncExportStkw002 task = new AsyncExportStkw002();
+                    task.execute();
+                }
+            });
+            builder.setNegativeButton("No",null);
+            ad = builder.show();
+            ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context_menuPrincipal.getResources().getColor(R.color.azul_claro));
+            ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context_menuPrincipal.getResources().getColor(R.color.azul_claro));
+            ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+            ad.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+
 
         }
         catch (Exception e){
@@ -1029,8 +1103,8 @@ public class controles {
             ResultSet rs = stmt.executeQuery("" +
                     "   SELECT    " +
                     "      to_char(WEB_INVENTARIO.Winve_Fec,'DD/MM/YYYY HH:SS') AS FECHAFORM, WEB_INVENTARIO.*,V_WEB_GRUPO.*,V_WEB_area.*,V_WEB_SECC.*,V_WEB_DPTO.*,V_WEB_FLIA.*," +
-                    "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'POR CRITERIO DE SELECCION' " +
-                    "       ELSE 'POR SELECCION MANUAL' END AS tipo_toma" +
+                    "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'CRITERIO' " +
+                    "       ELSE 'MANUAL' END AS tipo_toma" +
                     "   FROM " +
                     "       WEB_INVENTARIO " +
                     "       inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
@@ -1039,7 +1113,7 @@ public class controles {
                     "       inner join V_WEB_SECC on V_WEB_SECC.SECC_CODIGO =WEB_INVENTARIO.winve_secc" +
                     "       inner join V_WEB_DPTO on V_WEB_DPTO.DPTO_CODIGO =WEB_INVENTARIO.winve_DPTO" +
                      "   WHERE " +
-                    "       WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') " );
+                    "       WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') order by WINVE_NUMERO desc                                                                                                                                                                                                                                                                   " );
 
             Stkw002List Stkw001List=null;
             listaStkw001=new ArrayList<Stkw002List>();
@@ -1055,8 +1129,6 @@ public class controles {
                 Stkw001List.setDpto(rs.getString("DPTO_DESC"));
                 Stkw001List.setTipoToma(rs.getString("tipo_toma"));
                 Stkw001List.setSeccion(rs.getString("SECC_DESC"));
-
-
 
                 listaStkw001.add(Stkw001List);
                 cont++;
@@ -1079,8 +1151,8 @@ public class controles {
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
                     text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
                     text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("AREA:                                  "+listaStkw001.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:           "+listaStkw001.get(position).getDpto());
+                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
                     text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
                     text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
                     text7.setText("GRUPO:                               "+listaStkw001.get(position).getGrupo());
@@ -1246,7 +1318,10 @@ public class controles {
                         ps2.close();
                         secuencia++;
                         con++;
-                    }}
+                    }
+
+
+                }
                 connect.commit();
                 tipoRespuestaStkw001=1;
                 mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
@@ -1502,10 +1577,10 @@ public class controles {
                 }//FIN DEL CURSOR CABECERA
 
                 if(contadorMensaje==0){
-                    mensajeRespuestaExportStkw002="NO SE ENCONTRARON REGISTROS POR EXPORTAR.";
+                    mensajeRespuestaExportStkw002="No se encontraron registros por exportar.";
                 }
                 else {
-                    mensajeRespuestaExportStkw002="DATOS EXPORTADOS CON EXITO.";
+                    mensajeRespuestaExportStkw002="Datos exportados con exito.";
 
                 }
                 db_consulta.close();
@@ -1563,16 +1638,22 @@ public class controles {
                         }).show();
             }
             else {
-                new androidx.appcompat.app.AlertDialog.Builder(context_menuPrincipal)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage(mensajeRespuestaExportStkw002)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
 
-                            }
-                        }).show();
-            }
+              builder = new AlertDialog.Builder(context_menuPrincipal);
+                builder.setIcon(context_menuPrincipal.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage(mensajeRespuestaExportStkw002);
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                 ad = builder.show();
+                ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context_menuPrincipal.getResources().getColor(R.color.azul_claro));
+                ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+             }
 
         }
     }
