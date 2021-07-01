@@ -57,7 +57,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
         txtSinresultado=findViewById(R.id.txtSinresultado);
 
         controles.contextListaStkw001=this;
-        controles.ConsultarTomasServer( this);
+        controles.ListarTomasServer(this);
 
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);

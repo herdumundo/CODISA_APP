@@ -89,6 +89,7 @@ public class stkw001 extends AppCompatActivity {
 
         controles.context_stkw001=this;
         controles.activity_stkw001=this;
+
        // txt_total=findViewById(R.id.txt_totalArticulos);
         txtTotalArticuloGrilla    = findViewById(R.id.txtTotalArticuloGrilla) ;
 
@@ -241,7 +242,6 @@ public class stkw001 extends AppCompatActivity {
         });
 
         controles.listar_sucursales(this);
-        controles.listar_areas(this,this,variables.tipo_stkw001);
         controles.VerificarRed(this);
     }
 

@@ -115,12 +115,15 @@ public class login extends AppCompatActivity
                     else if (se.getErrorCode()==17002)
                     {
                         mensaje="2";//  mensaje="ERROR DE CONEXION, VERIFIQUE LA RED1.";
+                        variables.userdb=user;
+                        variables.passdb=passwd;
                     }
                     else if (se.getErrorCode()==20)
                     {
                         // mensaje="ERROR DE CONEXION, VERIFIQUE LA RED2.";
                           mensaje="2";
-
+                        variables.userdb=user;
+                        variables.passdb=passwd;
 
 
 

@@ -160,17 +160,6 @@ public class controles {
 
     }
 
-    public static void VerificarRed(Context context){
-        if (verificadorRed==0){
-            new AlertDialog.Builder(context)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("ATENCION!!!")
-                    .setMessage("APLICACION NO DISPONIBLE, ERROR DE CONEXIÓN A LA RED.")
-                    .setNegativeButton("CERRAR", null)
-                     .show();
-        }
-
-    }
 
     public static void listar_depositos(Activity activity, String id_sucursal) {
         try {
@@ -191,7 +180,7 @@ public class controles {
 
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -212,9 +201,11 @@ public class controles {
             }
             stkw001.sp_area = new SpinnerDialog(activity,arr_area,"Listado de areas");
             Stkw001AreaOnclick(activity,context,tipo_toma);
+
+
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -235,9 +226,11 @@ public class controles {
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
+
+
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -260,10 +253,10 @@ public class controles {
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
             Stkw001SeccionOnclick(activity,context,  tipo_toma);
-          //  limpiarSubGrupo();
+
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -290,7 +283,7 @@ public class controles {
 
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -318,11 +311,9 @@ public class controles {
             stkw001.sp_grupo = new SpinnerDialog(activity,arr_grupo,"Listado de grupos");
             Stkw001GrupoOnclick(activity,context,  tipo_toma);
 
-
-
         }
         catch (Exception e){
-
+            VerificarRed(context_stkw001);
         }
 
     }
@@ -385,6 +376,8 @@ public class controles {
 
                 }
             });
+            VerificarRed(context_stkw001);
+
         }
         catch (Exception e){
 
@@ -492,33 +485,190 @@ public class controles {
                     stkw001.LvArticulosStkw001.setAdapter(adapter);
                 }
             });
+            VerificarRed(context_stkw001);
+
         }
         catch (Exception E){
             String error= E.toString();
         }
     }
 
-    public static  void limpiarSubGrupo(){
+    public static void listarStkw002(){
 
-        listArraySubgrupo.clear();
-        listArrayArticulos.clear();
-        listInsertArticulos.clear();
-        limpiarListaViewArticulosSTKW001();
-        stkw001.spinerSubGrupo.setSearchHint("Busqueda");
-        stkw001.spinerArticulos.setSearchHint("Busqueda");
-        stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
-        {
-            @Override
-            public void onItemsSelected(List<ArrayListContenedor> items) {
+        try {
+            int contador_stkw002=0;
+            SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+            Cursor cursor=db_consulta.rawQuery("select " +
+                    "winvd_nro_inv," + //0
+                    "ART_DESC," +//1
+                    "winvd_lote," +//2
+                    "winvd_art ," +//3
+                    "strftime('%d/%m/%Y',date(winvd_fec_vto)) as  winvd_fec_vto," +//4
+                    "winvd_area," +//5
+                    "winvd_dpto," +//6
+                    "winvd_secc," +//7
+                    "winvd_flia," +//8
+                    "winvd_grupo," +//9
+                    "winvd_cant_act," +//10
+                    "winvd_cant_inv," +//11
+                    "winvd_secu" +//12
+                    " from stkw002inv" +
+                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
+            int cont=0;
+            ListArrayInventarioArticulos = new ArrayList();
+            while (cursor.moveToNext())
+            {
+
+                contador_stkw002++;
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
+                        cursor.getString(2),cursor.getString(3),cursor.getString(4),
+                        cursor.getString(12),cursor.getString(5)));
+                cont++;
             }
-        });
-        stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
-        {
-            @Override
-            public void onItemsSelected(List<ArrayListContenedor> items) {
-            }
-        });
+            stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
+
+
+
+
+        }
+        catch (Exception e){
+            String err=e.toString();
+        }
+
     }
+
+    public static void listarWebViewStkw001Cancelacion(int nroToma) {
+        try {
+            String html="";
+            table="";
+            connect =  conexion.Connections();
+            Statement stmt =  connect.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT  " +
+                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
+                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
+                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec, " +
+                    " dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
+                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
+                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
+                    " and a.ART_CODIGO=b.winvd_art    " +
+                    "  and a.SECC_CODIGO=b.winvd_secc   " +
+                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
+                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
+                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
+                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
+                    "  where C.WINVE_NUMERO="+nroToma );
+            int cont=0;
+            while (rs.next()){
+                cont++;
+                html=html+  "<tr>" +
+                        "<td>"+rs.getString("winvd_art")+"</td>" +
+                        "<td>"+rs.getString("ART_DESC")+"</td>" +
+                        "<td>"+rs.getString("winvd_lote")+"</td>" +
+                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
+                        "</tr>";
+
+            }
+            rs.close();
+
+            table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                    "<thead> " +
+                    "<tr>" +
+                    "<td>COD</td>" +
+                    "<td>ARTICULO</td>" +
+                    "<td>LOTE</td>" +
+                    "<td>FECHA VENCIMIENTO</td>" +
+                    "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
+
+
+        }
+        catch (Exception e){
+            String mens=e.toString();
+
+        }
+
+
+    }
+
+    public static void ListarTomasServer(Context context) {
+        try {
+            int cont=0;
+            controles.connect = controles.conexion.Connections();
+            Statement stmt = controles.connect.createStatement();
+
+            ResultSet rs = stmt.executeQuery("" +
+                    "   SELECT    " +
+                    "      to_char(WEB_INVENTARIO.Winve_Fec,'DD/MM/YYYY HH:SS') AS FECHAFORM, WEB_INVENTARIO.*,V_WEB_GRUPO.*,V_WEB_area.*,V_WEB_SECC.*,V_WEB_DPTO.*,V_WEB_FLIA.*," +
+                    "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'CRITERIO' " +
+                    "       ELSE 'MANUAL' END AS tipo_toma" +
+                    "   FROM " +
+                    "       WEB_INVENTARIO " +
+                    "       inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
+                    "       inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA " +
+                    "       inner join V_WEB_area on V_WEB_area.AREA_CODIGO=WEB_INVENTARIO.Winve_Area" +
+                    "       inner join V_WEB_SECC on V_WEB_SECC.SECC_CODIGO =WEB_INVENTARIO.winve_secc" +
+                    "       inner join V_WEB_DPTO on V_WEB_DPTO.DPTO_CODIGO =WEB_INVENTARIO.winve_DPTO" +
+                    "   WHERE " +
+                    "       WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') order by WINVE_NUMERO desc                                                                                                                                                                                                                                                                   " );
+
+            Stkw002List Stkw001List=null;
+            listaStkw001=new ArrayList<Stkw002List>();
+            while (rs.next())
+            {
+                Stkw001List=new Stkw002List();
+
+                Stkw001List.setNroToma(rs.getString("WINVE_NUMERO"));
+                Stkw001List.setFechaToma(rs.getString("FECHAFORM"));
+                Stkw001List.setFamilia(rs.getString("flia_desc"));
+                Stkw001List.setGrupo(rs.getString("grup_desc"));
+                Stkw001List.setArea(rs.getString("area_desc"));
+                Stkw001List.setDpto(rs.getString("DPTO_DESC"));
+                Stkw001List.setTipoToma(rs.getString("tipo_toma"));
+                Stkw001List.setSeccion(rs.getString("SECC_DESC"));
+
+                listaStkw001.add(Stkw001List);
+                cont++;
+            }
+            if(cont==0){
+                lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
+            }
+            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem_card, R.id.text1, listaStkw001) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    TextView text1 = (TextView) view.findViewById(R.id.text1);
+                    TextView text2 = (TextView) view.findViewById(R.id.text2);
+                    TextView text3 = (TextView) view.findViewById(R.id.text3);
+                    TextView text4 = (TextView) view.findViewById(R.id.text4);
+                    TextView text5 = (TextView) view.findViewById(R.id.text5);
+                    TextView text6 = (TextView) view.findViewById(R.id.text6);
+                    TextView text7 = (TextView) view.findViewById(R.id.text7);
+                    TextView text8 = (TextView) view.findViewById(R.id.text8);
+                    ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
+                    text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
+                    text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
+                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
+                    text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
+                    text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
+                    text7.setText("GRUPO:                               "+listaStkw001.get(position).getGrupo());
+                    text8.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
+
+
+                    txtimagen.setImageResource(R.drawable.ic_consulta);
+
+                    return view;
+                }
+            };
+            lista_stkw001_inv.listView.setAdapter(adapter);
+        }
+        catch (Exception e){
+            lista_stkw001_inv.txtSinresultado.setText(e.getMessage()) ;
+            lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
 
@@ -583,7 +733,10 @@ public class controles {
                 limpiarSubGrupo();
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
-             }
+
+                controles.listar_areas(activity_stkw001,context_stkw001,variables.tipo_stkw001);
+
+            }
         });
     }
 
@@ -923,49 +1076,6 @@ public class controles {
     }
 
 
-    public static void listarStkw002(){
-
-        try {
-                int contador_stkw002=0;
-            SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
-            Cursor cursor=db_consulta.rawQuery("select " +
-                    "winvd_nro_inv," + //0
-                    "ART_DESC," +//1
-                    "winvd_lote," +//2
-                    "winvd_art ," +//3
-                    "strftime('%d/%m/%Y',date(winvd_fec_vto)) as  winvd_fec_vto," +//4
-                    "winvd_area," +//5
-                    "winvd_dpto," +//6
-                    "winvd_secc," +//7
-                    "winvd_flia," +//8
-                    "winvd_grupo," +//9
-                    "winvd_cant_act," +//10
-                    "winvd_cant_inv," +//11
-                    "winvd_secu" +//12
-                    " from stkw002inv" +
-                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
-            int cont=0;
-            ListArrayInventarioArticulos = new ArrayList();
-            while (cursor.moveToNext())
-            {
-
-                contador_stkw002++;
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
-                        cursor.getString(2),cursor.getString(3),cursor.getString(4),
-                        cursor.getString(12),cursor.getString(5)));
-                cont++;
-            }
-            stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
-
-
-
-
-        }
-        catch (Exception e){
-            String err=e.toString();
-        }
-
-    }
 
     public static void ExportarStkw002(){
         try {
@@ -1064,7 +1174,7 @@ public class controles {
             ps.executeUpdate();
             ps.close();
             connect.commit();
-            ConsultarTomasServer(context);
+            ListarTomasServer(context);
 
             AlertDialog.Builder alert3 = new AlertDialog.Builder(context);
             alert3.setTitle("REGISTRO CANCELADO CON EXITO.");
@@ -1094,83 +1204,6 @@ public class controles {
     }
 
 
-    public static void ConsultarTomasServer(Context context) {
-        try {
-            int cont=0;
-            controles.connect = controles.conexion.Connections();
-            Statement stmt = controles.connect.createStatement();
-
-            ResultSet rs = stmt.executeQuery("" +
-                    "   SELECT    " +
-                    "      to_char(WEB_INVENTARIO.Winve_Fec,'DD/MM/YYYY HH:SS') AS FECHAFORM, WEB_INVENTARIO.*,V_WEB_GRUPO.*,V_WEB_area.*,V_WEB_SECC.*,V_WEB_DPTO.*,V_WEB_FLIA.*," +
-                    "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'CRITERIO' " +
-                    "       ELSE 'MANUAL' END AS tipo_toma" +
-                    "   FROM " +
-                    "       WEB_INVENTARIO " +
-                    "       inner join V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
-                    "       inner join V_WEB_GRUPO on WEB_INVENTARIO.WINVE_GRUPO=V_WEB_GRUPO.GRUP_CODIGO AND  V_WEB_FLIA.FLIA_CODIGO=V_WEB_GRUPO.GRUP_FAMILIA " +
-                    "       inner join V_WEB_area on V_WEB_area.AREA_CODIGO=WEB_INVENTARIO.Winve_Area" +
-                    "       inner join V_WEB_SECC on V_WEB_SECC.SECC_CODIGO =WEB_INVENTARIO.winve_secc" +
-                    "       inner join V_WEB_DPTO on V_WEB_DPTO.DPTO_CODIGO =WEB_INVENTARIO.winve_DPTO" +
-                     "   WHERE " +
-                    "       WINVE_ESTADO_WEB='A' AND WEB_INVENTARIO.WINVE_LOGIN=UPPER('"+variables.userdb+"') order by WINVE_NUMERO desc                                                                                                                                                                                                                                                                   " );
-
-            Stkw002List Stkw001List=null;
-            listaStkw001=new ArrayList<Stkw002List>();
-            while (rs.next())
-            {
-                Stkw001List=new Stkw002List();
-
-                Stkw001List.setNroToma(rs.getString("WINVE_NUMERO"));
-                Stkw001List.setFechaToma(rs.getString("FECHAFORM"));
-                Stkw001List.setFamilia(rs.getString("flia_desc"));
-                Stkw001List.setGrupo(rs.getString("grup_desc"));
-                Stkw001List.setArea(rs.getString("area_desc"));
-                Stkw001List.setDpto(rs.getString("DPTO_DESC"));
-                Stkw001List.setTipoToma(rs.getString("tipo_toma"));
-                Stkw001List.setSeccion(rs.getString("SECC_DESC"));
-
-                listaStkw001.add(Stkw001List);
-                cont++;
-            }
-            if(cont==0){
-                lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
-            }
-            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.listitem_card, R.id.text1, listaStkw001) {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View view = super.getView(position, convertView, parent);
-                    TextView text1 = (TextView) view.findViewById(R.id.text1);
-                    TextView text2 = (TextView) view.findViewById(R.id.text2);
-                    TextView text3 = (TextView) view.findViewById(R.id.text3);
-                    TextView text4 = (TextView) view.findViewById(R.id.text4);
-                    TextView text5 = (TextView) view.findViewById(R.id.text5);
-                    TextView text6 = (TextView) view.findViewById(R.id.text6);
-                    TextView text7 = (TextView) view.findViewById(R.id.text7);
-                    TextView text8 = (TextView) view.findViewById(R.id.text8);
-                    ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
-                    text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
-                    text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
-                    text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
-                    text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
-                    text7.setText("GRUPO:                               "+listaStkw001.get(position).getGrupo());
-                    text8.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
-
-
-                    txtimagen.setImageResource(R.drawable.ic_consulta);
-
-                    return view;
-                }
-            };
-            lista_stkw001_inv.listView.setAdapter(adapter);
-        }
-        catch (Exception e){
-             lista_stkw001_inv.txtSinresultado.setText(e.getMessage()) ;
-            lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
-        }
-    }
 
 
 ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
@@ -1433,58 +1466,6 @@ public class controles {
         }
     }
 
-    public static void listarWebViewStkw001Cancelacion(int nroToma) {
-        try {
-            String html="";
-            table="";
-            connect =  conexion.Connections();
-            Statement stmt =  connect.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT  " +
-                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
-                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
-                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec, " +
-                    " dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
-                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
-                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
-                    " and a.ART_CODIGO=b.winvd_art    " +
-                    "  and a.SECC_CODIGO=b.winvd_secc   " +
-                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
-                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
-                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
-                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
-                    "  where C.WINVE_NUMERO="+nroToma );
-            int cont=0;
-            while (rs.next()){
-                cont++;
-                html=html+  "<tr>" +
-                        "<td>"+rs.getString("winvd_art")+"</td>" +
-                        "<td>"+rs.getString("ART_DESC")+"</td>" +
-                        "<td>"+rs.getString("winvd_lote")+"</td>" +
-                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
-                        "</tr>";
-
-            }
-            rs.close();
-
-            table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
-                    "<thead> " +
-                    "<tr>" +
-                    "<td>COD</td>" +
-                    "<td>ARTICULO</td>" +
-                    "<td>LOTE</td>" +
-                    "<td>FECHA VENCIMIENTO</td>" +
-                    "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
-
-
-        }
-        catch (Exception e){
-            String mens=e.toString();
-
-        }
-
-
-    }
 
     public static class AsyncExportStkw002 extends AsyncTask<Void, Void, Void>
     {
@@ -1658,7 +1639,7 @@ public class controles {
         }
     }
 
-    public static void limpiarListaViewArticulosSTKW001(){
+    public static   void limpiarListaViewArticulosSTKW001(){
         ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -1679,4 +1660,51 @@ public class controles {
         stkw001.LvArticulosStkw001.setAdapter(adapter);
         stkw001.txtTotalArticuloGrilla.setText("TOTAL ARTICULOS SELECCIONADOS: 0");
     }
+
+    public static   void limpiarSubGrupo(){
+
+        listArraySubgrupo.clear();
+        listArrayArticulos.clear();
+        listInsertArticulos.clear();
+        limpiarListaViewArticulosSTKW001();
+        stkw001.spinerSubGrupo.setSearchHint("Busqueda");
+        stkw001.spinerArticulos.setSearchHint("Busqueda");
+        stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener()
+        {
+            @Override
+            public void onItemsSelected(List<ArrayListContenedor> items) {
+            }
+        });
+        stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener()
+        {
+            @Override
+            public void onItemsSelected(List<ArrayListContenedor> items) {
+            }
+        });
+    }
+
+    public static   void VerificarRed(Context context){
+        if (verificadorRed==0){
+
+            builder = new android.app.AlertDialog.Builder(context);
+            builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("¡Atención!");
+            builder.setMessage("Se perdió la comunicación con el servidor, intente de nuevo.");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            ad = builder.show();
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
+        }
+
+    }
+
+
+
 }

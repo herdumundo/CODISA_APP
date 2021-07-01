@@ -71,7 +71,7 @@ public class lista_stkw002_inv extends AppCompatActivity
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
         getSupportActionBar().setCustomView(R.layout.customactionbar);
           actionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
-        actionbar.setText("  PENDIENTES A INVENTARIAR");
+        actionbar.setText("PENDIENTES A INVENTARIAR");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -188,11 +188,9 @@ public class lista_stkw002_inv extends AppCompatActivity
             consultar_tomas_generadas("P");
             variables.tipoStkw002=1;
             variables.tipoListaStkw002=2;
-            btn_buscar.setText("  VER PENDIENTES A INVENTARIAR");
-            btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gen, 0, 0, 0);
-         //   btn_buscar.setBackgroundColor(Color.RED);
-           // getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
-             actionbar.setText("TOMAS INVENTARIADAS");
+            btn_buscar.setText("   IR PENDIENTES A INVENTARIAR");
+            btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pending, 0, 0, 0);
+            actionbar.setText("TOMAS INVENTARIADAS");
 
 
         }
@@ -200,7 +198,7 @@ public class lista_stkw002_inv extends AppCompatActivity
             consultar_tomas_generadas("A");
             variables.tipoStkw002=2;
             variables.tipoListaStkw002=1;
-            btn_buscar.setText("  VER REGISTROS REALIZADOS PENDIENTES A EXPORTAR");
+            btn_buscar.setText("   IR PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
            // btn_buscar.setBackgroundColor(Color.GREEN);
          //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
