@@ -59,20 +59,8 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         holder.textCantidad.setText(currentItem.getCantidad());
     //    holder.textArea.setText(currentItem.getArea());
         holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
- //ESTA SENTENCIA SE UTILIZA PARA QUE AL CAMBIAR EL TEXT, YA EJECUTE LA ACTUALIZACION DEL ARRAYLIST
-     /*   holder.textCantidad.addTextChangedListener(new TextWatcher()
-        {
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
 
-            }
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
-            }
-            public void afterTextChanged(Editable editable) {
-             }
-        } );
-*/ holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+  holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)

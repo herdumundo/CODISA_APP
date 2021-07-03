@@ -217,10 +217,10 @@ public class stkw001 extends AppCompatActivity {
                         // num=1;
                         controles.INVE_ART_EST="S";
                         BolDescontinuados=true;
-                        if (variables.tipo_stkw001==1){
+                        if (variables.tipo_stkw001==1)
+                        {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
-
                         }
                       //  Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
                         break;
@@ -229,11 +229,11 @@ public class stkw001 extends AppCompatActivity {
                         controles.INVE_ART_EST="N";
 
                         //    num=2;
-                        if (variables.tipo_stkw001==1){
+                        if (variables.tipo_stkw001==1)
+                        {
 
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
-
                         }
                       //  Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
                         break;
@@ -242,7 +242,7 @@ public class stkw001 extends AppCompatActivity {
         });
 
         controles.listar_sucursales(this);
-        controles.VerificarRed(this);
+        //controles.VerificarRed(this);
     }
 
     public void registrarToma( View view)

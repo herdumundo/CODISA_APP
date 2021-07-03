@@ -48,7 +48,7 @@ public class menu_principal extends AppCompatActivity {
     CardView tomasGen;
     AlertDialog.Builder builder;
     AlertDialog ad;
-
+    String mensajeRespuesta="";
     int error_importador=1;
 
     static int   ContProgressBarImportador=0;
@@ -330,9 +330,11 @@ public class menu_principal extends AppCompatActivity {
                     "       c.winve_empr=1 " +
                     "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
             int i=1;
+            int contadorMensaje=0;
         while (rs.next())
         {// SI SE QUIERE VOLVER A IMPORTAR UNA TOMA, QUE YA SE ENCUENTRA INVENTARIADO PERO CON PENDIENTE DE EXPORTACION,
             // ENTONCES NO HACE INSERT AL SQLITE.
+            contadorMensaje++;
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
             Cursor cursor=db_consulta.rawQuery("select * from STKW002INV where  winvd_nro_inv ='"+rs.getInt("winvd_nro_inv")+"' and estado='P'" ,null);
             if (cursor.moveToNext())
@@ -394,12 +396,20 @@ public class menu_principal extends AppCompatActivity {
             prodialog.setProgress(i);
             i++;
         }
+            if(contadorMensaje==0){
+                mensajeRespuesta="No se encontraron registros por importar.";
+            }
+            else {
+                mensajeRespuesta="Datos sincronizados correctamente.";
+
+            }
+
         rs.close();
         prodialog.dismiss();
         }
         catch (Exception e)
         {
-            String asd=e.toString();
+            mensajeRespuesta=e.toString();
            // Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
             prodialog.dismiss();
         }
@@ -418,6 +428,23 @@ public class menu_principal extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
+
+
+                    builder = new AlertDialog.Builder(menu_principal.this);
+            builder.setIcon(getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("¡Atención!");
+            builder.setMessage(mensajeRespuesta);
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            ad = builder.show();
+            ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.azul_claro));
+            ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+
             super.onPostExecute(result);
         }
     }

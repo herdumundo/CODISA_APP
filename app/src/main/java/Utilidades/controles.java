@@ -647,8 +647,8 @@ public class controles {
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
                     text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
                     text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
+                    text3.setText("AREA:                                  "+listaStkw001.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:            "+listaStkw001.get(position).getDpto());
                     text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
                     text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
                     text7.setText("GRUPO:                               "+listaStkw001.get(position).getGrupo());
