@@ -40,10 +40,11 @@ public class stkw001 extends AppCompatActivity {
     public static   SpinnerDialog       sp_sucursal,sp_deposito,sp_area,sp_departamento,sp_seccion,sp_familia,sp_grupo;
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,
                                         txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
-                                        txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos,
-                                        txt_lv_lote,txt_lv_vencimiento,txtTotalArticuloGrilla;
+                                        txt_id_familia,//txt_grupo,
+                                        txt_id_grupo, lbl_articulos,
+                                         txtTotalArticuloGrilla;
 
-    public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos;
+    public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos,spinerGrupo;
 
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,
                                         radioExistenciaNo,radioArticuloSi,radioArticuloNo;
@@ -106,16 +107,19 @@ public class stkw001 extends AppCompatActivity {
         txt_familia         = findViewById(R.id.txt_familia) ;
         txt_id_familia      = findViewById(R.id.txt_id_familia) ;
         txt_id_grupo        = findViewById(R.id.txt_id_grupo) ;
-        txt_grupo           = findViewById(R.id.txt_grupo) ;
+        //txt_grupo           = findViewById(R.id.txt_grupo) ;
+
         LvArticulosStkw001  = findViewById(R.id.listViewDet_art);
         lbl_articulos       = findViewById(R.id.lbl_articulos) ;
         spinerSubGrupo      = findViewById(R.id.spinerSubGrupo);
+        spinerGrupo   = findViewById(R.id.spinerGrupo);
         spinerArticulos     = findViewById(R.id.spinerArticulos);
         spinerSubGrupo.setSearchHint("Busqueda");
         spinerSubGrupo.setEmptyTitle("No se encontraron resultados");
         spinerSubGrupo.setClearText("Ninguno");
         spinerSubGrupo.setColorSeparation(true);
         spinerSubGrupo.setHintText("Listado de sub-grupos");
+        spinerGrupo.setHintText("Listado de grupos");
         spinerArticulos.setHintText("Listado de articulos");
         spinerArticulos.setSearchHint("Busqueda");
         spinerArticulos.setEmptyTitle("No se encontraron resultados");
@@ -212,7 +216,8 @@ public class stkw001 extends AppCompatActivity {
         radioGrupoArticulo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch(i) {
+                switch(i)
+                {
                     case R.id.radioArticuloSi:
                         // num=1;
                         controles.INVE_ART_EST="S";
@@ -222,16 +227,16 @@ public class stkw001 extends AppCompatActivity {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
                         }
-                      //  Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),BolDescontinuados.toString(),Toast.LENGTH_LONG).show();
                         break;
-                    case R.id.radioArticuloNo:
+
+                        case R.id.radioArticuloNo:
                         BolDescontinuados=false;
                         controles.INVE_ART_EST="N";
 
                         //    num=2;
                         if (variables.tipo_stkw001==1)
                         {
-
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
                         }

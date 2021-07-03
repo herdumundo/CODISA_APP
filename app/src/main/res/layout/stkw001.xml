@@ -479,20 +479,6 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/txt_grupo"
-        android:layout_width="173dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="12dp"
-
-        android:drawableEnd="@drawable/ic_action_spinner"
-        android:hint="Seleccione "
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_familia"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
         android:id="@+id/txt_familia"
         android:layout_width="173dp"
         android:layout_height="19dp"
@@ -581,9 +567,9 @@
         android:layout_width="191dp"
         android:layout_height="29dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="8dp"
-        android:drawableEnd="@drawable/ic_action_spinner"
+        android:layout_marginTop="4dp"
 
+        android:drawableEnd="@drawable/ic_action_spinner"
         android:textSize="20sp"
         android:textStyle="bold"
         app:autoSizeMaxTextSize="100sp"
@@ -592,7 +578,27 @@
         app:autoSizeTextType="uniform"
         app:hintText="Seleccione"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_grupo"
+        app:layout_constraintTop_toBottomOf="@+id/spinerGrupo"
+        tools:ignore="MissingConstraints" />
+
+    <Utilidades.MultiSpinnerSearch
+
+        android:id="@+id/spinerGrupo"
+        android:layout_width="191dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="8dp"
+
+        android:drawableEnd="@drawable/ic_action_spinner"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:hintText="Seleccione"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_familia"
         tools:ignore="MissingConstraints" />
 
 

@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
@@ -58,7 +59,10 @@ public class controles {
     public static int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
     public static int nroTomaCancelacion;
-    public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
+    public static   String  ids_subgrupos="",idsGrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
+    static          List<ArrayListContenedor>   listArrayGrupoNew   = new ArrayList<>();
+
+
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
     static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
@@ -288,7 +292,7 @@ public class controles {
 
     }
 
-    public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
+  /*  public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
         try {
 
             connect = conexion.Connections();
@@ -316,6 +320,58 @@ public class controles {
             VerificarRed(context_stkw001);
         }
 
+    }*/
+
+    public static void listarGrupo(Activity activity, String id_familia, Context context,int tipo_toma) {
+        try
+        {
+            connect = conexion.Connections();
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from V_WEB_GRUPO  " +
+                    " where " +
+                    "       grup_familia='"+id_familia+"'" +
+                    " and   grup_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
+                    " and   grup_seccion='"+stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
+                    " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
+
+            listArrayGrupoNew.clear();
+            //ids_subgrupos="";
+            while ( rs.next())
+            {
+                ArrayListContenedor h = new ArrayListContenedor();
+                h.setId(Integer.parseInt(rs.getString("grup_codigo")));
+                h.setName(rs.getString("grup_codigo")+"-"+rs.getString("grup_desc"));
+                h.setLote("");
+                listArrayGrupoNew.add(h);
+            }
+
+            stkw001.spinerGrupo.setItems(listArrayGrupoNew, new MultiSpinnerListener() {
+                @Override
+                public void onItemsSelected(List<ArrayListContenedor> itemGrupo) {
+                   //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
+                    idsGrupos="";
+                    stkw001.spinerGrupo.setSearchHint("Busqueda");
+                    for (int i = 0; i < itemGrupo.size(); i++)
+                    {
+                        if (itemGrupo.get(i).isSelected()) {
+                            if(i==0){
+                                idsGrupos=idsGrupos+itemGrupo.get(i).getId();
+                            }
+                            else {
+                                idsGrupos=idsGrupos+","+itemGrupo.get(i).getId();
+                            }
+                        }
+                    }
+                     listar_SubGrupo(activity,idsGrupos,context,tipo_toma);
+                  }
+            });
+            VerificarRed(context_stkw001);
+
+        }
+        catch (Exception e){
+            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
@@ -325,7 +381,7 @@ public class controles {
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUBGRUPO  " +
                     " where " +
-                    "       sugr_grupo='"   +id_grupo+"'" +
+                    "       sugr_grupo in ("+id_grupo+")" +
                     " and   sugr_area='"    +stkw001.txt_id_area.getText().toString().trim()+"'  " +
                     " and   sugr_seccion='" +stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
                     " and   sugr_flia='"    +stkw001.txt_id_familia.getText().toString().trim()+"'  " +
@@ -380,6 +436,7 @@ public class controles {
 
         }
         catch (Exception e){
+            Toast.makeText(context,e.getMessage()+"   1",Toast.LENGTH_LONG).show();
 
         }
 
@@ -418,7 +475,8 @@ public class controles {
                     "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
                     "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
                     "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
-                    "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
+                  //  "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
+                    "   grup_codigo in ("+idsGrupos+") and " +
                     "   sugr_codigo in ("+ids_subgrupos+") "+TotalJoin);
             listArrayArticulos.clear();
             listInsertArticulos.clear();
@@ -488,8 +546,8 @@ public class controles {
             VerificarRed(context_stkw001);
 
         }
-        catch (Exception E){
-            String error= E.toString();
+        catch (Exception e){
+            Toast.makeText(context_stkw001,e.getMessage()+"   2",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -697,8 +755,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+             //   stkw001.txt_id_grupo.setText("");
+               // stkw001.txt_grupo.setText("");
                 limpiarSubGrupo();
                // stkw001.txt_deposito.setText(arr_deposito.get(i));
               //  stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
@@ -728,8 +786,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+              //  stkw001.txt_id_grupo.setText("");
+            //    stkw001.txt_grupo.setText("");
                 limpiarSubGrupo();
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
@@ -768,8 +826,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+              //  stkw001.txt_id_grupo.setText("");
+              //  stkw001.txt_grupo.setText("");
 
 
                 listar_departamentos(activity,arr_id_area.get(i),context,  tipo_toma);
@@ -800,8 +858,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+              //  stkw001.txt_id_grupo.setText("");
+            //    stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_departamento.setText(arr_departamento.get(i));
@@ -831,8 +889,8 @@ public class controles {
 
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+               // stkw001.txt_id_grupo.setText("");
+               // stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_seccion.setText(arr_seccion.get(i));
@@ -855,18 +913,19 @@ public class controles {
                 limpiarSubGrupo();
                 arr_id_grupo.clear();
                 arr_grupo.clear();
-                stkw001.txt_id_grupo.setText("");
-                stkw001.txt_grupo.setText("");
+            //    stkw001.txt_id_grupo.setText("");
+             //   stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_familia.setText(arr_familia.get(i));
                 stkw001.txt_id_familia.setText(arr_id_familia.get(i));
-                listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
+                //listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
+                listarGrupo(activity,arr_id_familia.get(i),context, tipo_toma);
             }
         });
     }
 
-    public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
+  /*  public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.sp_grupo.showSpinerDialog();
         stkw001.txt_grupo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -877,12 +936,12 @@ public class controles {
             @Override
             public void onClick(String s, int i) {
                 limpiarSubGrupo();
-                stkw001.txt_grupo.setText(arr_grupo.get(i));
-                stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
+             //   stkw001.txt_grupo.setText(arr_grupo.get(i));
+               // stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
                 listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
             }
         });
-    }
+    }*/
 
 
     public static void ValidarStkw001(Activity activity,Context context){
@@ -893,7 +952,7 @@ public class controles {
                     ||stkw001.txt_id_departamento.getText().toString().equals("")
                     ||stkw001.txt_id_seccion.getText().toString().equals("")
                     ||stkw001.txt_id_familia.getText().toString().equals("")
-                    ||stkw001.txt_id_grupo.getText().toString().equals("")) {
+                    ||ids_subgrupos.equals("")) {
 
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
@@ -913,7 +972,7 @@ public class controles {
 
             }
 
-            else if (controles.ids_subgrupos.equals("")){
+            else if (ids_subgrupos.equals("")){
 
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
@@ -1046,7 +1105,7 @@ public class controles {
 
 
             }
-            else {
+            else  {
 
 
                 builder = new android.app.AlertDialog.Builder(context);

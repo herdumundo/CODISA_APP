@@ -256,13 +256,16 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 		this.listener = listener;
 
 		StringBuilder spinnerBuffer = new StringBuilder();
-
+		int contador=0;
 		for (int i = 0; i < items.size(); i++) {
 			if (items.get(i).isSelected()) {
 				spinnerBuffer.append(items.get(i).getName());
 				spinnerBuffer.append(", ");
+				contador++;
 			}
+
 		}
+
 		if (spinnerBuffer.length() > 2)
 			defaultText = spinnerBuffer.toString().substring(0, spinnerBuffer.toString().length() - 2);
 
