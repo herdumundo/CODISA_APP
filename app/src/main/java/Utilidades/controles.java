@@ -21,8 +21,6 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.lista_stkw001_inv;
@@ -59,10 +57,7 @@ public class controles {
     public static int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
     public static int nroTomaCancelacion;
-    public static   String  ids_subgrupos="",idsGrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
-    static          List<ArrayListContenedor>   listArrayGrupoNew   = new ArrayList<>();
-
-
+    public static   String  ids_subgrupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
     static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
@@ -85,7 +80,7 @@ public class controles {
     public static   AlertDialog ad;
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,4);
-     }
+    }
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
         if(tipo==1){
@@ -197,7 +192,7 @@ public class controles {
             ResultSet rs = stmt.executeQuery("select * from V_WEB_AREA  ");
             arr_id_area.clear();
             arr_area.clear();
-           // listArraySubgrupo.clear();
+            // listArraySubgrupo.clear();
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
@@ -248,7 +243,7 @@ public class controles {
                     " and secc_area='"+stkw001.txt_id_area.getText().toString().trim()+"'");
             arr_id_seccion.clear();
             arr_seccion.clear();
-         //   listArraySubgrupo.clear();
+            //   listArraySubgrupo.clear();
 
             while ( rs.next())
             {
@@ -277,6 +272,8 @@ public class controles {
             arr_familia.clear();
             //listArraySubgrupo.clear();
 
+            arr_id_familia.add("-");
+            arr_familia.add("TODOS");
             while ( rs.next())
             {
                 arr_id_familia.add(rs.getString("flia_codigo"));
@@ -292,21 +289,29 @@ public class controles {
 
     }
 
-  /*  public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
+    public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
         try {
 
+            String sqlFamilia="";
+            if(id_familia.equals("-")){
+                sqlFamilia="";
+            }
+            else {
+                sqlFamilia= "grup_familia='"+id_familia+"' and  ";
+            }
             connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_GRUPO  " +
                     " where " +
-                    "       grup_familia='"+id_familia+"'" +
-                    " and   grup_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
+                        sqlFamilia +
+                    " grup_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
                     " and   grup_seccion='"+stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
                     " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
             arr_id_grupo.clear();
             arr_grupo.clear();
 
-
+            arr_id_grupo.add("-");
+            arr_grupo.add("TODOS");
             while ( rs.next())
             {
                 arr_id_grupo.add(rs.getString("grup_codigo"));
@@ -320,58 +325,6 @@ public class controles {
             VerificarRed(context_stkw001);
         }
 
-    }*/
-
-    public static void listarGrupo(Activity activity, String id_familia, Context context,int tipo_toma) {
-        try
-        {
-            connect = conexion.Connections();
-            Statement stmt = connect.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from V_WEB_GRUPO  " +
-                    " where " +
-                    "       grup_familia='"+id_familia+"'" +
-                    " and   grup_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
-                    " and   grup_seccion='"+stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
-                    " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
-
-            listArrayGrupoNew.clear();
-            //ids_subgrupos="";
-            while ( rs.next())
-            {
-                ArrayListContenedor h = new ArrayListContenedor();
-                h.setId(Integer.parseInt(rs.getString("grup_codigo")));
-                h.setName(rs.getString("grup_codigo")+"-"+rs.getString("grup_desc"));
-                h.setLote("");
-                listArrayGrupoNew.add(h);
-            }
-
-            stkw001.spinerGrupo.setItems(listArrayGrupoNew, new MultiSpinnerListener() {
-                @Override
-                public void onItemsSelected(List<ArrayListContenedor> itemGrupo) {
-                   //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
-                    idsGrupos="";
-                    stkw001.spinerGrupo.setSearchHint("Busqueda");
-                    for (int i = 0; i < itemGrupo.size(); i++)
-                    {
-                        if (itemGrupo.get(i).isSelected()) {
-                            if(i==0){
-                                idsGrupos=idsGrupos+itemGrupo.get(i).getId();
-                            }
-                            else {
-                                idsGrupos=idsGrupos+","+itemGrupo.get(i).getId();
-                            }
-                        }
-                    }
-                     listar_SubGrupo(activity,idsGrupos,context,tipo_toma);
-                  }
-            });
-            VerificarRed(context_stkw001);
-
-        }
-        catch (Exception e){
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
-        }
-
     }
 
     public static void listar_SubGrupo(Activity activity, String id_grupo, Context context,int tipo_toma) {
@@ -381,7 +334,7 @@ public class controles {
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUBGRUPO  " +
                     " where " +
-                    "       sugr_grupo in ("+id_grupo+")" +
+                    "       sugr_grupo='"   +id_grupo+"'" +
                     " and   sugr_area='"    +stkw001.txt_id_area.getText().toString().trim()+"'  " +
                     " and   sugr_seccion='" +stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
                     " and   sugr_flia='"    +stkw001.txt_id_familia.getText().toString().trim()+"'  " +
@@ -400,7 +353,7 @@ public class controles {
             stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
-                 //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
+                    //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     ids_subgrupos="";
                     stkw001.spinerArticulos.setSearchHint("Busqueda");
                     for (int i = 0; i < items.size(); i++) {
@@ -411,7 +364,7 @@ public class controles {
                             else {
                                 ids_subgrupos=ids_subgrupos+","+items.get(i).getId();
                             }
-                         }
+                        }
                     }
 
                     if(tipo_toma==1){
@@ -436,7 +389,6 @@ public class controles {
 
         }
         catch (Exception e){
-            Toast.makeText(context,e.getMessage()+"   1",Toast.LENGTH_LONG).show();
 
         }
 
@@ -463,36 +415,35 @@ public class controles {
             limpiarListaViewArticulosSTKW001();
             if(ids_subgrupos.length()>0){
 
-            ResultSet rs2 = stmt2.executeQuery("" +
-                    "select " +
-                    "   TO_NUMBER (arde_cant_act) as cantidad  ,TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento,v_web_articulos_clasificacion.* " +
-                    "from " +
-                    "   v_web_articulos_clasificacion " +
-                    "where " +
-                    "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
-                    "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
-                    "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
-                    "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
-                    "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
-                    "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
-                  //  "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
-                    "   grup_codigo in ("+idsGrupos+") and " +
-                    "   sugr_codigo in ("+ids_subgrupos+") "+TotalJoin);
-            listArrayArticulos.clear();
-            listInsertArticulos.clear();
-            while ( rs2.next())
-            {
-                String vencimiento=rs2.getString("vencimiento");
-                ArrayListContenedor contenedor = new ArrayListContenedor();
-                contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
-                contenedor.setName(rs2.getString("art_desc"));
-                contenedor.setLote(rs2.getString("arde_lote"));
-                contenedor.setCantidad(rs2.getString("cantidad"));
-                contenedor.setFechaVencimiento(rs2.getString("ARDE_FEC_VTO_LOTE"));
-                contenedor.setFecha_vencimientoParseado(vencimiento);
-                contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
-                listArrayArticulos.add(contenedor);
-            }
+                ResultSet rs2 = stmt2.executeQuery("" +
+                        "select " +
+                        "   TO_NUMBER (arde_cant_act) as cantidad  ,TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento,v_web_articulos_clasificacion.* " +
+                        "from " +
+                        "   v_web_articulos_clasificacion " +
+                        "where " +
+                        "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
+                        "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
+                        "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
+                        "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
+                        "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()+"   and " +
+                        "   flia_codigo="+stkw001.txt_id_familia.getText().toString()+"   and " +
+                        "   grup_codigo="+stkw001.txt_id_grupo.getText().toString()+" and " +
+                        "   sugr_codigo in ("+ids_subgrupos+") "+TotalJoin);
+                listArrayArticulos.clear();
+                listInsertArticulos.clear();
+                while ( rs2.next())
+                {
+                    String vencimiento=rs2.getString("vencimiento");
+                    ArrayListContenedor contenedor = new ArrayListContenedor();
+                    contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
+                    contenedor.setName(rs2.getString("art_desc"));
+                    contenedor.setLote(rs2.getString("arde_lote"));
+                    contenedor.setCantidad(rs2.getString("cantidad"));
+                    contenedor.setFechaVencimiento(rs2.getString("ARDE_FEC_VTO_LOTE"));
+                    contenedor.setFecha_vencimientoParseado(vencimiento);
+                    contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
+                    listArrayArticulos.add(contenedor);
+                }
             }
             else {
                 //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
@@ -546,8 +497,8 @@ public class controles {
             VerificarRed(context_stkw001);
 
         }
-        catch (Exception e){
-            Toast.makeText(context_stkw001,e.getMessage()+"   2",Toast.LENGTH_LONG).show();
+        catch (Exception E){
+            String error= E.toString();
         }
     }
 
@@ -732,10 +683,10 @@ public class controles {
 
         stkw001.txt_sucursal.setOnClickListener(new View.OnClickListener() {
             @Override
-        public void onClick(View v)
-        {
-            stkw001.sp_sucursal.showSpinerDialog();
-        } } );
+            public void onClick(View v)
+            {
+                stkw001.sp_sucursal.showSpinerDialog();
+            } } );
 
         stkw001.sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
@@ -755,11 +706,11 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-             //   stkw001.txt_id_grupo.setText("");
-               // stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
                 limpiarSubGrupo();
-               // stkw001.txt_deposito.setText(arr_deposito.get(i));
-              //  stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
+                // stkw001.txt_deposito.setText(arr_deposito.get(i));
+                //  stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
 
                 listar_depositos(activity,arrIdSucursales.get(i));
             }
@@ -786,8 +737,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-              //  stkw001.txt_id_grupo.setText("");
-            //    stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
                 limpiarSubGrupo();
                 stkw001.txt_deposito.setText(arr_deposito.get(i));
                 stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
@@ -826,8 +777,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-              //  stkw001.txt_id_grupo.setText("");
-              //  stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
 
 
                 listar_departamentos(activity,arr_id_area.get(i),context,  tipo_toma);
@@ -858,8 +809,8 @@ public class controles {
                 stkw001.txt_seccion.setText("");
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-              //  stkw001.txt_id_grupo.setText("");
-            //    stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_departamento.setText(arr_departamento.get(i));
@@ -889,8 +840,8 @@ public class controles {
 
                 stkw001.txt_id_familia.setText("");
                 stkw001.txt_familia.setText("");
-               // stkw001.txt_id_grupo.setText("");
-               // stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_seccion.setText(arr_seccion.get(i));
@@ -913,19 +864,18 @@ public class controles {
                 limpiarSubGrupo();
                 arr_id_grupo.clear();
                 arr_grupo.clear();
-            //    stkw001.txt_id_grupo.setText("");
-             //   stkw001.txt_grupo.setText("");
+                stkw001.txt_id_grupo.setText("");
+                stkw001.txt_grupo.setText("");
 
 
                 stkw001.txt_familia.setText(arr_familia.get(i));
                 stkw001.txt_id_familia.setText(arr_id_familia.get(i));
-                //listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
-                listarGrupo(activity,arr_id_familia.get(i),context, tipo_toma);
+                listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
             }
         });
     }
 
-  /*  public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
+    public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
         stkw001.sp_grupo.showSpinerDialog();
         stkw001.txt_grupo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -936,12 +886,12 @@ public class controles {
             @Override
             public void onClick(String s, int i) {
                 limpiarSubGrupo();
-             //   stkw001.txt_grupo.setText(arr_grupo.get(i));
-               // stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
+                stkw001.txt_grupo.setText(arr_grupo.get(i));
+                stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
                 listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
             }
         });
-    }*/
+    }
 
 
     public static void ValidarStkw001(Activity activity,Context context){
@@ -952,7 +902,7 @@ public class controles {
                     ||stkw001.txt_id_departamento.getText().toString().equals("")
                     ||stkw001.txt_id_seccion.getText().toString().equals("")
                     ||stkw001.txt_id_familia.getText().toString().equals("")
-                    ||ids_subgrupos.equals("")) {
+                    ||stkw001.txt_id_grupo.getText().toString().equals("")) {
 
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
@@ -972,7 +922,7 @@ public class controles {
 
             }
 
-            else if (ids_subgrupos.equals("")){
+            else if (controles.ids_subgrupos.equals("")){
 
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
@@ -1105,7 +1055,7 @@ public class controles {
 
 
             }
-            else  {
+            else {
 
 
                 builder = new android.app.AlertDialog.Builder(context);
@@ -1214,7 +1164,7 @@ public class controles {
         Cursor cursor=db_consulta.rawQuery("select  count(distinct winvd_nro_inv)" +
                 " from stkw002inv" +
                 " WHERE estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')" ,null);
-         ListArrayInventarioArticulos = new ArrayList();
+        ListArrayInventarioArticulos = new ArrayList();
         if (cursor.moveToNext())
         {
             menu_principal.txt_total.setText("PENDIENTES DE ENVIO :"+cursor.getString(0));
@@ -1250,9 +1200,9 @@ public class controles {
         }
         catch (Exception error){
             new AlertDialog.Builder(context)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle("ATENCIÓN!!!.")
-            .setMessage(error.getMessage()).show();
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("ATENCIÓN!!!.")
+                    .setMessage(error.getMessage()).show();
 
             try {
                 connect.rollback();
@@ -1265,7 +1215,7 @@ public class controles {
 
 
 
-////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
         int con=0;
@@ -1466,7 +1416,7 @@ public class controles {
 
     public static class AsyncListarCancelaciones extends AsyncTask<Void, Void, Void>
     {
-         @Override
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
             lista_stkw001_inv.pgDialog = ProgressDialog.show(contextListaStkw001, "CONSULTANDO", "ESPERE...", true);
@@ -1531,7 +1481,7 @@ public class controles {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-           // menu_principal.ProDialogExport = ProgressDialog.show(context_menuPrincipal, "PROCESANDO", "ESPERE...", true);
+            // menu_principal.ProDialogExport = ProgressDialog.show(context_menuPrincipal, "PROCESANDO", "ESPERE...", true);
         }
         @Override
         protected Void doInBackground(Void... params) {
@@ -1539,81 +1489,81 @@ public class controles {
             SQLiteDatabase dbAnularSqliteCab= conSqlite.getReadableDatabase();
 
             int tipoRegistro=0;
-           try {
-               SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
-               SQLiteDatabase db_consultaCab= conSqlite.getReadableDatabase();
+            try {
+                SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
+                SQLiteDatabase db_consultaCab= conSqlite.getReadableDatabase();
 
                 Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB from stkw002inv " +
-                "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
-               connect = conexion.Connections();
-               connect.setAutoCommit(false);
-               int contadorMensaje=0; // EN EL CASO DE QUE QUEDE EN CERO, ENTONCES EL MENSAJE SERA, DE QUE NO HAY DATOS PARA EXPORTAR
-               while (cursorCab.moveToNext())
-               {
-                   int nroCabecera=cursorCab.getInt(0);
+                        "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
+                connect = conexion.Connections();
+                connect.setAutoCommit(false);
+                int contadorMensaje=0; // EN EL CASO DE QUE QUEDE EN CERO, ENTONCES EL MENSAJE SERA, DE QUE NO HAY DATOS PARA EXPORTAR
+                while (cursorCab.moveToNext())
+                {
+                    int nroCabecera=cursorCab.getInt(0);
 
-                   contadorMensaje++;
-                   String WINVE_LOGIN_CERRADO_WEB=cursorCab.getString(1);
-                   Cursor cursor=db_consulta.rawQuery("select " +
-                           "winvd_nro_inv," +  //0
-                           "winvd_lote," +     //1
-                           "winvd_art ," +     //2
-                           "strftime('%d/%m/%Y',winvd_fec_vto)," +  //3
-                           "winvd_area," +     //4
-                           "winvd_dpto," +     //5
-                           "winvd_secc," +     //6
-                           "winvd_flia," +     //7
-                           "winvd_grupo," +    //8
-                           "winvd_cant_act," + //9
-                           "winvd_cant_inv," +//10
-                           "winvd_secu" +  //11
-                           " from stkw002inv" +
-                           " WHERE " +
-                           "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+nroCabecera+
-                           " and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')"  ,null);
+                    contadorMensaje++;
+                    String WINVE_LOGIN_CERRADO_WEB=cursorCab.getString(1);
+                    Cursor cursor=db_consulta.rawQuery("select " +
+                            "winvd_nro_inv," +  //0
+                            "winvd_lote," +     //1
+                            "winvd_art ," +     //2
+                            "strftime('%d/%m/%Y',winvd_fec_vto)," +  //3
+                            "winvd_area," +     //4
+                            "winvd_dpto," +     //5
+                            "winvd_secc," +     //6
+                            "winvd_flia," +     //7
+                            "winvd_grupo," +    //8
+                            "winvd_cant_act," + //9
+                            "winvd_cant_inv," +//10
+                            "winvd_secu" +  //11
+                            " from stkw002inv" +
+                            " WHERE " +
+                            "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+nroCabecera+
+                            " and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')"  ,null);
 
-                   //PRIMERO CONSULTA SI EL NRO DE TOMA A EXPORTAR, NO SE ENCUENTRA ANULADO EN EL SERVER
-                   Statement stmtAnulados =  connect.createStatement();
+                    //PRIMERO CONSULTA SI EL NRO DE TOMA A EXPORTAR, NO SE ENCUENTRA ANULADO EN EL SERVER
+                    Statement stmtAnulados =  connect.createStatement();
 
-                   ResultSet rsAnulados = stmtAnulados.executeQuery("SELECT WINVE_estado_web FROM  web_inventario WHERE WINVE_NUMERO="+nroCabecera+" " );
-                   String anulado="";
-                   while (rsAnulados.next()){
-                       anulado=rsAnulados.getString("WINVE_estado_web");
+                    ResultSet rsAnulados = stmtAnulados.executeQuery("SELECT WINVE_estado_web FROM  web_inventario WHERE WINVE_NUMERO="+nroCabecera+" " );
+                    String anulado="";
+                    while (rsAnulados.next()){
+                        anulado=rsAnulados.getString("WINVE_estado_web");
                     }
-                   //SI SE ENCUENTRA ANULADO, VA AL SQLITE Y ACTUALIZA EL ESTADO A "E"
+                    //SI SE ENCUENTRA ANULADO, VA AL SQLITE Y ACTUALIZA EL ESTADO A "E"
                     if(anulado.trim().equals("E"))
                     { //
                         dbAnularSqliteCab.execSQL(" update stkw002inv set estado='E' where winvd_nro_inv="  +nroCabecera+" "   );
                     }
-                   //SI NO ESTA ANULADO, ENTONCES EXPORTA
-                   else {
-                            db_UPDATE.beginTransaction();
-                            int i=1;
-                            // ESTE CURSOR RECORRE EL DETALLE DEL SQLITE, PARA ACTUALIZAR,
-                            // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
-                            while (cursor.moveToNext())
-                            {
-                                // SE ACTUALIZAR EL DETALLE DEL SERVIDOR.
-                                PreparedStatement ps = connect.prepareStatement(" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " + "" +
-                                       " where winvd_nro_inv="  +cursor.getString(0)+"   and winvd_secu="+ cursor.getString(11)+"");
-                                ps.executeUpdate();
-                                ps.close();
-                               //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C
-                               db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+"  and winvd_secu="+ cursor.getString(11)+""   );
-                               menu_principal.ProDialogExport.setProgress(i);
-                               i++;
-                            }
-                            //SERVER ACTUALIZA LA CABECERA
-                            PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
-                                   "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
-                                   "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
-                                   "WHERE WINVE_NUMERO="+nroCabecera);
-                            pscAB.executeUpdate();
+                    //SI NO ESTA ANULADO, ENTONCES EXPORTA
+                    else {
+                        db_UPDATE.beginTransaction();
+                        int i=1;
+                        // ESTE CURSOR RECORRE EL DETALLE DEL SQLITE, PARA ACTUALIZAR,
+                        // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
+                        while (cursor.moveToNext())
+                        {
+                            // SE ACTUALIZAR EL DETALLE DEL SERVIDOR.
+                            PreparedStatement ps = connect.prepareStatement(" update web_inventario_det set winvd_cant_inv="+cursor.getString(10)+" " + "" +
+                                    " where winvd_nro_inv="  +cursor.getString(0)+"   and winvd_secu="+ cursor.getString(11)+"");
+                            ps.executeUpdate();
+                            ps.close();
+                            //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C
+                            db_UPDATE.execSQL(" update stkw002inv set estado='C' where winvd_nro_inv="  +cursor.getString(0)+"  and winvd_secu="+ cursor.getString(11)+""   );
+                            menu_principal.ProDialogExport.setProgress(i);
+                            i++;
+                        }
+                        //SERVER ACTUALIZA LA CABECERA
+                        PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
+                                "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
+                                "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
+                                "WHERE WINVE_NUMERO="+nroCabecera);
+                        pscAB.executeUpdate();
                         pscAB.close();
-                            db_UPDATE.setTransactionSuccessful();
-                            db_UPDATE.endTransaction();
+                        db_UPDATE.setTransactionSuccessful();
+                        db_UPDATE.endTransaction();
 
-                   }
+                    }
                 }//FIN DEL CURSOR CABECERA
 
                 if(contadorMensaje==0){
@@ -1625,41 +1575,41 @@ public class controles {
                 }
                 db_consulta.close();
 
-           }catch (Exception e)
-           {
-               try
-               {
-                   db_UPDATE.endTransaction();
-                   connect.rollback();
-                   tipoRegistro=1;
-                   db_UPDATE.close();
+            }catch (Exception e)
+            {
+                try
+                {
+                    db_UPDATE.endTransaction();
+                    connect.rollback();
+                    tipoRegistro=1;
+                    db_UPDATE.close();
 
-               } catch (Exception es)
-               {
-                  // throwables.printStackTrace();
-                   mensajeRespuestaExportStkw002=es.toString();
+                } catch (Exception es)
+                {
+                    // throwables.printStackTrace();
+                    mensajeRespuestaExportStkw002=es.toString();
 
-               }
-               mensajeRespuestaExportStkw002=e.toString();
-               return null;
-           }
+                }
+                mensajeRespuestaExportStkw002=e.toString();
+                return null;
+            }
             //
             finally
-           {
+            {
                 try {
-                        if (tipoRegistro==0)
-                        {
-                            connect.commit();
-                            db_UPDATE.close();
-                            ConsultarPendientesExportar();
-                        }
+                    if (tipoRegistro==0)
+                    {
+                        connect.commit();
+                        db_UPDATE.close();
+                        ConsultarPendientesExportar();
+                    }
 
-                    } catch (Exception e)
-                        {
-                           // throwables.printStackTrace();
-                            mensajeRespuestaExportStkw002=e.toString();
-                        }
-           }
+                } catch (Exception e)
+                {
+                    // throwables.printStackTrace();
+                    mensajeRespuestaExportStkw002=e.toString();
+                }
+            }
             return null;
         }
         @Override
@@ -1679,7 +1629,7 @@ public class controles {
             }
             else {
 
-              builder = new AlertDialog.Builder(context_menuPrincipal);
+                builder = new AlertDialog.Builder(context_menuPrincipal);
                 builder.setIcon(context_menuPrincipal.getResources().getDrawable(R.drawable.ic_danger));
                 builder.setTitle("¡Atención!");
                 builder.setMessage(mensajeRespuestaExportStkw002);
@@ -1690,10 +1640,10 @@ public class controles {
 
                     }
                 });
-                 ad = builder.show();
+                ad = builder.show();
                 ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context_menuPrincipal.getResources().getColor(R.color.azul_claro));
                 ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-             }
+            }
 
         }
     }
