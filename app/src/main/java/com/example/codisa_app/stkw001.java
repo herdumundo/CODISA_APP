@@ -40,10 +40,10 @@ public class stkw001 extends AppCompatActivity {
     public static   SpinnerDialog       sp_sucursal,sp_deposito,sp_area,sp_departamento,sp_seccion,sp_familia,sp_grupo;
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_area,txt_id_area,
             txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
-            txt_id_familia,txt_grupo,txt_id_grupo, lbl_articulos,
-            txt_lv_lote,txt_lv_vencimiento,txtTotalArticuloGrilla;
+            txt_id_familia, lbl_articulos,
+            txt_lv_lote,txt_lv_vencimiento,txtTotalArticuloGrilla,lbl_subgrupo,lbl_grupo;
 
-    public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos;
+    public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos,spinerGrupo;
 
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,
             radioExistenciaNo,radioArticuloSi,radioArticuloNo;
@@ -94,6 +94,8 @@ public class stkw001 extends AppCompatActivity {
         txtTotalArticuloGrilla    = findViewById(R.id.txtTotalArticuloGrilla) ;
 
         txt_sucursal        = findViewById(R.id.txt_desc_sucursal) ;
+        lbl_subgrupo        = findViewById(R.id.lbl_subgrupo) ;
+        lbl_grupo        = findViewById(R.id.lbl_grupo) ;
         txt_id_sucursal     = findViewById(R.id.txt_id_sucursal) ;
         txt_deposito        = findViewById(R.id.txt_deposito) ;
         txt_id_deposito     = findViewById(R.id.txt_id_deposito) ;
@@ -105,12 +107,18 @@ public class stkw001 extends AppCompatActivity {
         txt_seccion         = findViewById(R.id.txt_seccion) ;
         txt_familia         = findViewById(R.id.txt_familia) ;
         txt_id_familia      = findViewById(R.id.txt_id_familia) ;
-        txt_id_grupo        = findViewById(R.id.txt_id_grupo) ;
-        txt_grupo           = findViewById(R.id.txt_grupo) ;
+        spinerGrupo        = findViewById(R.id.spinerGrupo) ;
         LvArticulosStkw001  = findViewById(R.id.listViewDet_art);
         lbl_articulos       = findViewById(R.id.lbl_articulos) ;
         spinerSubGrupo      = findViewById(R.id.spinerSubGrupo);
         spinerArticulos     = findViewById(R.id.spinerArticulos);
+        spinerGrupo.setSearchHint("Busqueda");
+        spinerGrupo.setEmptyTitle("No se encontraron resultados");
+        spinerGrupo.setClearText("Ninguno");
+        spinerGrupo.setColorSeparation(true);
+        spinerGrupo.setHintText("Listado de grupos");
+
+
         spinerSubGrupo.setSearchHint("Busqueda");
         spinerSubGrupo.setEmptyTitle("No se encontraron resultados");
         spinerSubGrupo.setClearText("Ninguno");

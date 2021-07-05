@@ -3,6 +3,7 @@ package Utilidades;
 public class ArrayListContenedor {
 	private long id;
 	private String name;
+	private String stringID;
 	private String lote;
 	private String cantidad;
 	private String fecha_vencimiento;
@@ -15,7 +16,7 @@ public class ArrayListContenedor {
 	}
 
 	public ArrayListContenedor(String name, boolean isSelected, String lote, String cantidad,
-							   String fecha_vencimiento,String subgrupo,String fecha_vencimientoParseado) {
+							   String fecha_vencimiento,String subgrupo,String fecha_vencimientoParseado,String stringID) {
 		this.name = name;
 		this.isSelected = isSelected;
 		this.lote = lote;
@@ -23,6 +24,7 @@ public class ArrayListContenedor {
 		this.fecha_vencimiento = fecha_vencimiento;
 		this.subgrupo = subgrupo;
 		this.fecha_vencimientoParseado = fecha_vencimientoParseado;
+		this.stringID = stringID;
  	}
 
 	public Object getObject() {
@@ -88,6 +90,13 @@ public class ArrayListContenedor {
 	}
 	public void setFechaVencimiento(String fecha_vencimiento) {
 		this.fecha_vencimiento = fecha_vencimiento;
+	}
+
+	public String getstringID() {
+		return stringID;
+	}
+	public void setstringID(String stringID) {
+		this.stringID = stringID;
 	}
 
 	public String getFecha_vencimientoParseado() {
