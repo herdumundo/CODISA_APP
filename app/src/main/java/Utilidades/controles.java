@@ -630,7 +630,7 @@ public class controles {
                             insArt.setFecha_vencimientoParseado(items.get(i).getFecha_vencimientoParseado());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
                             listInsertArticulos.add(insArt);
-                            total_articulos++;
+                            total_articulos++;//
                             if(!grupoParcial.contains(items.get(i).getidGrupo())){
                                 if(contParcialGrupo==0){
                                     grupoParcial=grupoParcial+items.get(i).getidGrupo();
