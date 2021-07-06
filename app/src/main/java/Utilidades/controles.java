@@ -80,6 +80,8 @@ public class controles {
     static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
     static String   mensajeRespuestaStkw001;
     static String   mensajeRespuestaExportStkw002;
+    static String consolidado="";
+    static String grupoParcial="";
     static int      ContExportStkw002;
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
@@ -296,7 +298,7 @@ public class controles {
 
     public static void listar_grupo(Activity activity, String id_familia, Context context,int tipo_toma) {
         try {
-            ids_grupos="";
+          //  ids_grupos="";
             String sqlFamilia="";
             if(id_familia.equals("T")){
                 sqlFamilia="";
@@ -318,7 +320,10 @@ public class controles {
             {
                 ArrayListContenedor h = new ArrayListContenedor();
                 h.setId(Integer.parseInt(rs.getString("grup_codigo")));
-                h.setName( rs.getString("grup_codigo")+"-"+rs.getString("grup_desc") );
+                h.setidFamilia( rs.getString("grup_familia") );
+                h.setDescGrupo( rs.getString("grup_desc") );
+                h.setName( rs.getString("grup_familia")+"#"+ rs.getString("grup_codigo")+"-"+rs.getString("grup_desc") );
+
                 h.setLote("");
                 listArrayGrupo.add(h);
             }
@@ -327,7 +332,7 @@ public class controles {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                     //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
-                    ids_grupos="";
+                     ids_grupos="";
                     stkw001.spinerGrupo.setSearchHint("Busqueda");
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected()) {
@@ -349,7 +354,7 @@ public class controles {
 
         }
         catch (Exception e){
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(context,e.getMessage()+" LISTAR GRUPO",Toast.LENGTH_LONG).show();
             VerificarRed(context_stkw001);
         }
 
@@ -373,8 +378,17 @@ public class controles {
             listArraySubgrupo.clear();
             if(id_grupo.length()>0){
                 connect = conexion.Connections();
+
+
+
+
                 Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery("select * from V_WEB_SUBGRUPO  " +
+                ResultSet rs = stmt.executeQuery("   select * from V_WEB_GRUPO  inner join V_WEB_SUBGRUPO on " +
+                        "V_WEB_SUBGRUPO.sugr_grupo=V_WEB_GRUPO.GRUP_CODIGO  and " +
+                        "V_WEB_SUBGRUPO.SUGR_FLIA=V_WEB_GRUPO.GRUP_FAMILIA and   " +
+                        "V_WEB_SUBGRUPO.SUGR_AREA=V_WEB_GRUPO.GRUP_AREA and " +
+                        "V_WEB_GRUPO.GRUP_SECCION=V_WEB_SUBGRUPO.SUGR_SECCION and " +
+                        "V_WEB_SUBGRUPO.SUGR_DPTO=V_WEB_GRUPO.GRUP_DPTO  " +
                         " where " +
                         "       sugr_grupo in ("+id_grupo+")" +
                         " and   sugr_area='"    +stkw001.txt_id_area.getText().toString().trim()+"'  " +
@@ -382,35 +396,47 @@ public class controles {
                         " and   sugr_dpto='"    +stkw001.txt_id_departamento.getText().toString().trim()+"'"+
                         SqlFamilia);
 
-                // ids_subgrupos="";
+                int cont=0;
                 while ( rs.next())
                 {
                     ArrayListContenedor h = new ArrayListContenedor();
-                  //  h.setId(Integer.parseInt(rs.getString("sugr_codigo")));
+                   // h.setId(Integer.parseInt(rs.getString("sugr_codigo")));
                     h.setstringID(rs.getString("sugr_GRUPO")+"#"+rs.getString("sugr_codigo"));
-                    h.setName(rs.getString("sugr_GRUPO")+"#"+rs.getString("sugr_codigo")+"-"+rs.getString("sugr_desc"));
+                    h.setidFamilia(rs.getString("SUGR_FLIA"));
+                    h.setidGrupo(rs.getString("sugr_GRUPO"));
+                    h.setDescGrupo( rs.getString("grup_desc"));
+                    h.setidSubgrupo( rs.getString("sugr_codigo") );
+                    h.setName(rs.getString("grup_desc")+":"+rs.getString("sugr_codigo")+"-"+rs.getString("sugr_desc"));
                     h.setLote("");
                     listArraySubgrupo.add(h);
+                    cont++;
                 }
             }
-          //  listarArticulos();
+            //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
+            //ARTICULOS SELECCIONADOS.
+            listArrayArticulos.clear();
+            listInsertArticulos.clear();
+            listarArticulos();
 
             stkw001.spinerSubGrupo.setItems(listArraySubgrupo, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                     //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     stkw001.spinerArticulos.setSearchHint("Busqueda");
-                    for (int i = 0; i < items.size(); i++)
+                    ids_subgrupos="";
+                    for (int i = 0; i < items.size();)
                     {
                         if (items.get(i).isSelected())
                         {
                             if(i==0){
-                                ids_subgrupos=""+ids_subgrupos+items.get(i).getId();
+                                ids_subgrupos= "'"+items.get(i).getstringID()+"'";
                             }
                             else {
-                                ids_subgrupos=ids_subgrupos+","+items.get(i).getId();
+                                ids_subgrupos=ids_subgrupos+",'"+items.get(i).getstringID()+"'";
                             }
+                            i++;
                         }
+
                     }
 
                     if(tipo_toma==1)
@@ -465,32 +491,45 @@ public class controles {
             String SqlGrupo="";
             String SqlSubGrupo="";
             String idFamilia=stkw001.txt_id_familia.getText().toString();
+            String id_sucursal=stkw001.txt_id_sucursal.getText().toString();
+            String id_deposito=stkw001.txt_id_deposito.getText().toString();
+            String id_area=stkw001.txt_id_area.getText().toString();
+            String id_dpto=stkw001.txt_id_departamento.getText().toString();
+            String id_seccion=stkw001.txt_id_seccion.getText().toString();
 
             if(idFamilia.equals("T"))
             {
                 SqlFamilia="";
                 SqlGrupo="";
                 SqlSubGrupo="";
+                ids_grupos="T";
+
             }
             else {
                 SqlFamilia=  " and   flia_codigo='"+idFamilia+"'  ";
-                SqlSubGrupo=" and sugr_codigo in ("+ids_subgrupos+")";
-                SqlGrupo="  and  grup_codigo in ("+ids_grupos+")";
+                SqlGrupo="      and  grup_codigo in ("+ids_grupos+")";
+                SqlSubGrupo="   and CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) in ("+ids_subgrupos+")";
 
             }
-          // if(ids_subgrupos.length()>0){
-          // if(idFamilia.equals("T")){
+
+        if(stkw001.BolConsolidar==false)
+        {
+            consolidado="N"; //STRING NECESARIO PARA EL INSERT EN CABECERA Y DETALLE, INDICANDO QUE NO ES UN REGISTRO CONSOLIDADO
+           if(ids_subgrupos.length()>0)
+           {
                 ResultSet rs2 = stmt2.executeQuery("" +
-                        "select " +
-                        "   TO_NUMBER (arde_cant_act) as cantidad  ,TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento,v_web_articulos_clasificacion.* " +
-                        "from " +
-                        "   v_web_articulos_clasificacion " +
-                        "where " +
-                        "   arde_suc="+stkw001.txt_id_sucursal.getText().toString()+"      and " +
-                        "   arde_dep="+stkw001.txt_id_deposito.getText().toString()+"      and " +
-                        "   area_codigo="+stkw001.txt_id_area.getText().toString()+"   and " +
-                        "   dpto_codigo="+stkw001.txt_id_departamento.getText().toString()+"   and " +
-                        "   secc_codigo="+stkw001.txt_id_seccion.getText().toString()  + SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin);
+                "select " +
+                "  CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) as concatID,TO_NUMBER (arde_cant_act) as cantidad," +
+                "   TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento," +
+                "   v_web_articulos_clasificacion.* " +
+                "from " +
+                "   v_web_articulos_clasificacion " +
+                "where " +
+                "   arde_suc="+id_sucursal+"      and " +
+                "   arde_dep="+id_deposito+"      and " +
+                "   area_codigo="+id_area+"   and " +
+                "   dpto_codigo="+id_dpto+"   and " +
+            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin);
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
                 while ( rs2.next())
@@ -498,6 +537,10 @@ public class controles {
                     String vencimiento=rs2.getString("vencimiento");
                     ArrayListContenedor contenedor = new ArrayListContenedor();
                     contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
+                    contenedor.setstringID( rs2.getString("concatID") );
+                    contenedor.setidFamilia( rs2.getString("flia_codigo") );
+                    contenedor.setidGrupo( rs2.getString("GRUP_CODIGO") );
+
                     contenedor.setName(rs2.getString("art_desc"));
                     contenedor.setLote(rs2.getString("arde_lote"));
                     contenedor.setCantidad(rs2.getString("cantidad"));
@@ -506,26 +549,81 @@ public class controles {
                     contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                     listArrayArticulos.add(contenedor);
                 }
-            //}
-        /* else {
+            }
+            else
+            {
                 //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
                 //ARTICULOS SELECCIONADOS.
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
+            }
+        }
 
-            }  */
+        else
+        {
+            consolidado="S"; //STRING NECESARIO PARA EL INSERT EN CABECERA Y DETALLE, INDICANDO QUE   ES UN REGISTRO CONSOLIDADO
+
+            if(ids_subgrupos.length()>0)
+            {
+                ResultSet rs2 = stmt2.executeQuery("" +
+                        "select CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) as concatID, ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO," +
+                        "ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO,AREA_DESC," +
+                        "DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO,SUGR_DESC,ARDE_SUC," +
+                        "ARDE_DEP,SUM(ARDE_CANT_ACT) ARDE_CANT_ACT " +
+                        "from " +
+                        "   v_web_articulos_clasificacion " +
+                        "where " +
+                        "   arde_suc="+id_sucursal+"      and " +
+                        "   arde_dep="+id_deposito+"      and " +
+                        "   area_codigo="+id_area+"   and " +
+                        "   dpto_codigo="+id_dpto+"   and " +
+                        "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+"" +
+                        "GROUP BY ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO,ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO,AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO,SUGR_DESC,ARDE_SUC,ARDE_DEP");
+                listArrayArticulos.clear();
+                listInsertArticulos.clear();
+                while ( rs2.next())
+                {
+                    String vencimiento="N/A";
+                    ArrayListContenedor contenedor = new ArrayListContenedor();
+                    contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
+                    contenedor.setstringID( rs2.getString("concatID") );
+                    contenedor.setidFamilia( rs2.getString("flia_codigo") );
+                    contenedor.setName(rs2.getString("art_desc"));
+                    contenedor.setidGrupo( rs2.getString("GRUP_CODIGO") );
+                    contenedor.setLote("N/A");
+                    contenedor.setCantidad(rs2.getString("ARDE_CANT_ACT"));
+                    contenedor.setFechaVencimiento("N/A");
+                    contenedor.setFecha_vencimientoParseado(vencimiento);
+                    contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
+                    listArrayArticulos.add(contenedor);
+                }
+            }
+            else
+            {
+                //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
+                //ARTICULOS SELECCIONADOS.
+                listArrayArticulos.clear();
+                listInsertArticulos.clear();
+            }
+        }
+
 
             stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
                     listInsertArticulos.clear(); //CADA VEZ QUE SELECCIONAMOS SUB-GRUPO, DEBE LIMPIAR EL ARRAY DE LOS ARTICULOS SELECCIONADOS EN EL SPINNER ARTICULOS.
                     int total_articulos=0;
+                    int contParcialGrupo=0;
+
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected())
                         {
                             ArrayListContenedor insArt = new ArrayListContenedor();
-                            insArt.setId(items.get(i).getId());
+                            insArt.setstringID(items.get(i).getstringID());
+                            insArt.setId(items.get(i).getId() );
                             insArt.setName(items.get(i).getName());
+                            insArt.setidFamilia(items.get(i).getidFamilia());
+                            insArt.setidGrupo(items.get(i).getidGrupo());
                             insArt.setLote(items.get(i).getLote());
                             insArt.setCantidad(items.get(i).getCantidad());
                             insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
@@ -533,6 +631,25 @@ public class controles {
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
                             listInsertArticulos.add(insArt);
                             total_articulos++;
+                            if(!grupoParcial.contains(items.get(i).getidGrupo())){
+                                if(contParcialGrupo==0){
+                                    grupoParcial=grupoParcial+items.get(i).getidGrupo();
+                                }
+                                else{
+                                    grupoParcial=grupoParcial+","+items.get(i).getidGrupo();
+                                }
+                                contParcialGrupo++;
+                            }
+                        }
+                    }
+                    int total_grupo=items.size();
+                    int total_grupo_seleccionado=listInsertArticulos.size();
+                    if(total_grupo==total_grupo_seleccionado){
+                        grupoParcial="";
+                    }
+                    else{
+                        if(grupoParcial.length()==1){
+                            grupoParcial="";
                         }
                     }
                     stkw001.txtTotalArticuloGrilla.setText("TOTAL ARTICULOS SELECCIONADOS: "+total_articulos);
@@ -545,7 +662,7 @@ public class controles {
                             TextView txt_lote = (TextView) view.findViewById(R.id.txt_lote);
                             TextView txt_vto = (TextView) view.findViewById(R.id.txt_vto);
 
-                            txt_nro.setText(""+listInsertArticulos.get(position).getId());
+                            txt_nro.setText(""+listInsertArticulos.get(position).getstringID());
                             txt_producto.setText(""+listInsertArticulos.get(position).getName());
                             txt_lote.setText(""+listInsertArticulos.get(position).getLote());
                             txt_vto.setText(""+listInsertArticulos.get(position).getFecha_vencimientoParseado());
@@ -916,49 +1033,32 @@ public class controles {
             @Override
             public void onClick(String s, int i) {
                 limpiarSubGrupo();
-
-
-
-
                 stkw001.txt_familia.setText(arr_familia.get(i));
                 stkw001.txt_id_familia.setText(arr_id_familia.get(i));
-                if(arr_id_familia.get(i).equals("T")){
+
+                if(arr_id_familia.get(i).equals("T"))
+                {
                     stkw001.spinerGrupo.setVisibility(View.GONE);
                     stkw001.spinerSubGrupo.setVisibility(View.GONE);
                     stkw001.lbl_grupo.setVisibility(View.GONE);
                     stkw001.lbl_subgrupo.setVisibility(View.GONE);
+                    ids_grupos="T";
+                    ids_subgrupos="T";
                     listarArticulos();
                 }
-                else {
+                else
+                {
                     stkw001.spinerGrupo.setVisibility(View.VISIBLE);
                     stkw001.spinerSubGrupo.setVisibility(View.VISIBLE);
                     stkw001.lbl_grupo.setVisibility(View.VISIBLE);
                     stkw001.lbl_subgrupo.setVisibility(View.VISIBLE);
+
                 }
 
                 listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
             }
         });
     }
-
-  /*  public static void Stkw001GrupoOnclick(Activity activity, Context context,int tipo_toma){
-        stkw001.sp_grupo.showSpinerDialog();
-        stkw001.txt_grupo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stkw001.sp_grupo.showSpinerDialog();
-            } } );
-        stkw001.sp_grupo.bindOnSpinerListener(new OnSpinerItemClick() {
-            @Override
-            public void onClick(String s, int i) {
-                limpiarSubGrupo();
-                stkw001.txt_grupo.setText(arr_grupo.get(i));
-                stkw001.txt_id_grupo.setText(arr_id_grupo.get(i));
-                listar_SubGrupo(activity,arr_id_grupo.get(i),context,  tipo_toma);
-            }
-        });
-    }
-    */
 
     public static void ValidarStkw001(Activity activity,Context context){
         if (variables.tipo_stkw001==1){
@@ -968,12 +1068,12 @@ public class controles {
                     ||stkw001.txt_id_departamento.getText().toString().equals("")
                     ||stkw001.txt_id_seccion.getText().toString().equals("")
                     ||stkw001.txt_id_familia.getText().toString().equals("")
-                    ||ids_grupos.equals("")) {
+                    ||ids_grupos.length()==0) {
 
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
                 builder.setTitle("¡Atención!");
-                builder.setMessage("Complete los datos requeridos.");
+                builder.setMessage("Complete los datos requeridos.1");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -1051,7 +1151,7 @@ public class controles {
 
             }
         }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
         else if (variables.tipo_stkw001==2) {
             if( stkw001.txt_id_sucursal.getText().toString().equals("")
                     ||stkw001.txt_id_deposito.getText().toString().equals("")
@@ -1149,8 +1249,6 @@ public class controles {
             }
         }
     }
-
-
 
     public static void ExportarStkw002(){
         try {
@@ -1278,9 +1376,6 @@ public class controles {
         }
     }
 
-
-
-
     ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
@@ -1293,7 +1388,15 @@ public class controles {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+
                 String id_cabecera="";
+                String id_familia="";
+                if(stkw001.txt_id_familia.getText().toString().equals("T")){
+                    id_familia="";
+                }
+                else {
+                    id_familia=stkw001.txt_id_familia.getText().toString();
+                }
                 connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
@@ -1320,7 +1423,7 @@ public class controles {
                         "WINVE_CANT_TOMA," +
                         "WINVE_EMPR," +
                         "WINVE_NUMERO," +
-                        "WINVE_ESTADO_WEB) values  " +
+                        "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
                         "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
                         "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
                       //  "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
@@ -1330,13 +1433,13 @@ public class controles {
                         "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
                         "'"+stkw001.txt_id_area.getText().toString()+"'," +
                         "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
-                        "'"+stkw001.txt_id_familia.getText().toString()+"'," +
+                        "'"+id_familia+"'," +
                         "'"+INVE_IND_LOTE+"'," +
                         "'A'," +
                         "'"+INVE_ART_EST+"'," +
                         "'"+INVE_ART_EXIST+"'," +
                         "'"+INVE_CANT_TOMA+"'," +
-                        "'1', "+id_cabecera+",'A')";
+                        "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"')";
                 PreparedStatement ps = connect.prepareStatement(insertar);
                 ps.executeUpdate();
                 ps.close();
@@ -1346,7 +1449,7 @@ public class controles {
                     for (int i = 0; i < listInsertArticulos.size(); i++) {
                         int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
                         String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
-
+                        long idArticulo=listInsertArticulos.get(i).getId();
                         String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
                                 "WINVD_NRO_INV," + //1
                                 "WINVD_ART," +//2
@@ -1364,12 +1467,13 @@ public class controles {
                                 "WINVD_dpto," +//14
                                 "WINVD_secc," +//15
                                 "WINVD_flia," +//16
-                               // "WINVD_grupo," +//17
+                                 "WINVD_grupo," +//17
                                 "WINVD_subgr," +//18
-                                "WINVD_indiv" +//19
+                                "WINVD_indiv,winvd_consolidado" +//19
                                 ")  VALUES ("+
+
                                 id_cabecera+",'"+
-                                listInsertArticulos.get(i).getId()+"',"+
+                                idArticulo+"',"+
                                 secuencia+","+
                                 cantidad_actual+"," +
                                 "''," +
@@ -1383,9 +1487,9 @@ public class controles {
                                 "'"+stkw001.txt_id_area.getText().toString()+"','"+
                                 stkw001.txt_id_departamento.getText().toString()+"','"+
                                 stkw001.txt_id_seccion.getText().toString()+"'," +
-                                "'"+stkw001.txt_id_familia.getText().toString()+"','"
-                             //   +stkw001.txt_id_grupo.getText().toString()+"','"
-                                +listInsertArticulos.get(i).getSubgrupo()+"','')";
+                                "'"+listInsertArticulos.get(i).getidFamilia()+"','"
+                                +listInsertArticulos.get(i).getidGrupo()+"','"
+                                +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
 
 
                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
@@ -1487,7 +1591,6 @@ public class controles {
 
         }
     }
-
 
     public static class AsyncListarCancelaciones extends AsyncTask<Void, Void, Void>
     {
@@ -1719,7 +1822,6 @@ public class controles {
                 ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context_menuPrincipal.getResources().getColor(R.color.azul_claro));
                 ad.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
             }
-
         }
     }
 

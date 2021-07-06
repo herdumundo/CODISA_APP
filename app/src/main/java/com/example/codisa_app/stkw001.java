@@ -3,36 +3,23 @@ package com.example.codisa_app;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 import Utilidades.MultiSpinnerSearch;
 import Utilidades.controles;
 import Utilidades.variables;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -46,10 +33,10 @@ public class stkw001 extends AppCompatActivity {
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos,spinerGrupo;
 
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,
-            radioExistenciaNo,radioArticuloSi,radioArticuloNo;
-    RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo;
+            radioExistenciaNo,radioArticuloSi,radioArticuloNo,radioConsolidarSi,radioConsolidarNo;
+    RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo,radioGrupoConsolidar;
     public static ProgressDialog progress;
-    public static   Boolean             BolLote=true,Bolexistencia=false,BolDescontinuados=false;
+    public static   Boolean   BolLote=true,Bolexistencia=false,BolDescontinuados=false,BolConsolidar=true;
     public static ListView LvArticulosStkw001;
 
 
@@ -129,6 +116,10 @@ public class stkw001 extends AppCompatActivity {
         spinerArticulos.setEmptyTitle("No se encontraron resultados");
         spinerArticulos.setClearText("Ninguno");
         spinerArticulos.setColorSeparation(true);
+
+        radioConsolidarSi             = findViewById(R.id.radioConsolidarSi);
+        radioConsolidarNo             = findViewById(R.id.radioConsolidarNo);
+
         radioLoteSi             = findViewById(R.id.radioLoteSi);
         radioLoteNo             = findViewById(R.id.radioLoteNo);
         radioExistenciaSi       = findViewById(R.id.radioExistenciaSi);
@@ -138,7 +129,10 @@ public class stkw001 extends AppCompatActivity {
         radioGrupoLote          = findViewById(R.id.radioGrupoLote);
         radioGrupoExistencia    = findViewById(R.id.radioGrupoExistencia);
         radioGrupoArticulo      = findViewById(R.id.radioGrupoArticulo);
+        radioGrupoConsolidar         = findViewById(R.id.radioGrupoConsolidar);
+
         radioLoteSi         .setChecked(true);
+        radioConsolidarSi         .setChecked(true);
         radioExistenciaNo   .setChecked(true);
         radioArticuloNo     .setChecked(true);
         controles.limpiarSubGrupo();
@@ -186,6 +180,29 @@ public class stkw001 extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        radioGrupoConsolidar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch(i) {
+                    case R.id.radioConsolidarSi:
+                        // num=1;
+                        BolConsolidar=true;
+                        controles.listarArticulos();
+                        controles.limpiarListaViewArticulosSTKW001();
+                        break;
+                    case R.id.radioConsolidarNo:
+                        BolConsolidar=false;
+                        controles.listarArticulos();
+                        controles.limpiarListaViewArticulosSTKW001();
+                        break;
+                }
+            }
+        });
+
+
 
         radioGrupoExistencia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
