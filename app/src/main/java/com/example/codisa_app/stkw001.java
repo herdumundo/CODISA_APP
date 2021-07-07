@@ -79,7 +79,10 @@ public class stkw001 extends AppCompatActivity {
 
         // txt_total=findViewById(R.id.txt_totalArticulos);
         txtTotalArticuloGrilla    = findViewById(R.id.txtTotalArticuloGrilla) ;
-
+        BolLote=true;
+        Bolexistencia=false;
+        BolDescontinuados=false;
+        BolConsolidar=true;
         txt_sucursal        = findViewById(R.id.txt_desc_sucursal) ;
         lbl_subgrupo        = findViewById(R.id.lbl_subgrupo) ;
         lbl_grupo        = findViewById(R.id.lbl_grupo) ;
@@ -209,7 +212,6 @@ public class stkw001 extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch(i) {
                     case R.id.radioExistenciaSi:
-
                         Bolexistencia=true;
                         controles.INVE_ART_EXIST="S";
                         if (variables.tipo_stkw001==1){

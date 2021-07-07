@@ -134,25 +134,26 @@ public class MultipleSelectionSpinner extends AppCompatSpinner implements
     simple_adapter.add(buildSelectedItemString());
   }
 
-  public void setSelection(int index) {
-    for (int i = 0; i < mSelection.length; i++) {
-      mSelection[i] = false;
-    }
-    if (index >= 0 && index < mSelection.length) {
-      mSelection[index] = true;
-    } else {
-      throw new IllegalArgumentException("Index " + index
-          + " is out of bounds.");
-    }
-    simple_adapter.clear();
-    simple_adapter.add(buildSelectedItemString());
-        /*if (sbLength>0){
-            Toast.makeText(getContext(), "Length greater than zero", Toast.LENGTH_SHORT).show();
-            simple_adapter.add(buildSelectedItemString());
-        }else{
-            Toast.makeText(getContext(), "Length shorter", Toast.LENGTH_SHORT).show();
-            simple_adapter.add("Tap to select");
-        }*/
+  public void setSelection(int index)
+  {
+      for (int i = 0; i < mSelection.length; i++) {
+        mSelection[i] = false;
+      }
+      if (index >= 0 && index < mSelection.length) {
+        mSelection[index] = true;
+      } else {
+        throw new IllegalArgumentException("Index " + index
+            + " is out of bounds.");
+      }
+      simple_adapter.clear();
+      simple_adapter.add(buildSelectedItemString());
+          /*if (sbLength>0){
+              Toast.makeText(getContext(), "Length greater than zero", Toast.LENGTH_SHORT).show();
+              simple_adapter.add(buildSelectedItemString());
+          }else{
+              Toast.makeText(getContext(), "Length shorter", Toast.LENGTH_SHORT).show();
+              simple_adapter.add("Tap to select");
+          }*/
   }
 
   public void setSelection(int[] selectedIndicies) {

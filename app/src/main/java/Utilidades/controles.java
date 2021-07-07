@@ -57,16 +57,19 @@ public class controles {
 
 
 
-    public static int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
+    public static   int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
-    public static int nroTomaCancelacion;
+    public static   int nroTomaCancelacion;
     public static   String  ids_subgrupos="",ids_grupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
-
+    static          String  grupoSeleccionados="";
+    static          String  SubgrupoGruposSeleccionados="";
+    static          String  SubgrupoSeleccionadosArticulos="";
+    static          String  ArticulosSubgruposSeleccionados="";
     static          List<ArrayListContenedor>   listArrayGrupo      = new ArrayList<>();
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
     static          List<ArrayListContenedor>   listInsertArticulos = new ArrayList<>();
-    public static   ArrayList<Stkw002List> listaStkw001;
+    public static   ArrayList<Stkw002List>      listaStkw001;
 
     public static   List<Stkw002Item> ListArrayInventarioArticulos;
     public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
@@ -80,8 +83,9 @@ public class controles {
     static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
     static String   mensajeRespuestaStkw001;
     static String   mensajeRespuestaExportStkw002;
-    static String consolidado="";
-    static String grupoParcial="";
+    static String   consolidado="";
+    static String   grupoParcial="";
+    static  int gruposSeleccionados=0;
     static int      ContExportStkw002;
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
@@ -165,7 +169,6 @@ public class controles {
 
 
     }
-
 
     public static void listar_depositos(Activity activity, String id_sucursal) {
         try {
@@ -323,31 +326,51 @@ public class controles {
                 h.setidFamilia( rs.getString("grup_familia") );
                 h.setDescGrupo( rs.getString("grup_desc") );
                 h.setName( rs.getString("grup_familia")+"#"+ rs.getString("grup_codigo")+"-"+rs.getString("grup_desc") );
-
                 h.setLote("");
+
                 listArrayGrupo.add(h);
             }
 
             stkw001.spinerGrupo.setItems(listArrayGrupo, new MultiSpinnerListener() {
                 @Override
-                public void onItemsSelected(List<ArrayListContenedor> items) {
+                public void onItemsSelected(List<ArrayListContenedor> items)
+                {
                     //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
-                     ids_grupos="";
+                    ids_grupos="";
+                    grupoSeleccionados="";
+                    int contGrupoSelec=0;
                     stkw001.spinerGrupo.setSearchHint("Busqueda");
-                    for (int i = 0; i < items.size(); i++) {
-                        if (items.get(i).isSelected()) {
-                            if(i==0){
+                    gruposSeleccionados=0; // SE RESETEA A CERO LA CANTIDAD DE GRUPOS SELECCIONADOS
+                    for (int i = 0; i < items.size(); i++)
+                    {
+                        if (items.get(i).isSelected())
+                        {
+                            if(i==0)
+                            {
                                 ids_grupos=ids_grupos+items.get(i).getId();
                             }
-                            else {
+                            else
+                            {
                                 ids_grupos=ids_grupos+","+items.get(i).getId();
                             }
+
+                            if(!grupoSeleccionados.contains(String.valueOf(items.get(i).getId())))
+                            {
+                                if(contGrupoSelec==0)
+                                {
+                                    grupoSeleccionados=String.valueOf(items.get(i).getId());
+                                }
+                                else
+                                {
+                                    grupoSeleccionados=grupoSeleccionados+","+items.get(i).getId();
+
+                                }
+                                contGrupoSelec ++;
+                            }
+                            gruposSeleccionados++;
                         }
                     }
-
                     listar_SubGrupo(activity,ids_grupos,context,tipo_toma);
-
-
                 }
             });
             VerificarRed(context_stkw001);
@@ -367,7 +390,7 @@ public class controles {
             String SqlFamilia="";
             String idFamilia=stkw001.txt_id_familia.getText().toString();
 
-            if(idFamilia.equals("T"))
+            if(idFamilia.equals("T"))//T ES IGUAL A TODOS.
             {
                 SqlFamilia="";
             }
@@ -378,9 +401,6 @@ public class controles {
             listArraySubgrupo.clear();
             if(id_grupo.length()>0){
                 connect = conexion.Connections();
-
-
-
 
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("   select * from V_WEB_GRUPO  inner join V_WEB_SUBGRUPO on " +
@@ -406,7 +426,7 @@ public class controles {
                     h.setidGrupo(rs.getString("sugr_GRUPO"));
                     h.setDescGrupo( rs.getString("grup_desc"));
                     h.setidSubgrupo( rs.getString("sugr_codigo") );
-                    h.setName(rs.getString("grup_desc")+":"+rs.getString("sugr_codigo")+"-"+rs.getString("sugr_desc"));
+                    h.setName(rs.getString("grup_desc")+":"+rs.getString("sugr_grupo")+"#"+rs.getString("sugr_codigo")+"-"+rs.getString("sugr_desc"));
                     h.setLote("");
                     listArraySubgrupo.add(h);
                     cont++;
@@ -424,38 +444,91 @@ public class controles {
                     //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     stkw001.spinerArticulos.setSearchHint("Busqueda");
                     ids_subgrupos="";
+                    SubgrupoGruposSeleccionados="";
+                    SubgrupoSeleccionadosArticulos="";
+                    int conSubgrupoGrupoSelec=0;
+                    int conArtGrupSub=0;
                     for (int i = 0; i < items.size();)
                     {
                         if (items.get(i).isSelected())
                         {
-                            if(i==0){
+                            if(i==0)
+                            {
                                 ids_subgrupos= "'"+items.get(i).getstringID()+"'";
                             }
-                            else {
+                            else
+                            {
                                 ids_subgrupos=ids_subgrupos+",'"+items.get(i).getstringID()+"'";
+                            }
+                            String valorIdGrupo=String.valueOf(items.get(i).getidGrupo());
+                            String valorGrupoSub=String.valueOf(items.get(i).getstringID());
+                            if(!SubgrupoGruposSeleccionados.contains(valorIdGrupo))
+                            {
+                                if(conSubgrupoGrupoSelec==0)
+                                {
+                                    SubgrupoGruposSeleccionados=valorIdGrupo;
+                                 }
+                                else
+                                {
+                                    SubgrupoGruposSeleccionados=SubgrupoGruposSeleccionados+","+valorIdGrupo;
+                                 }
+                                conSubgrupoGrupoSelec ++;
+                            }
+                            if(!SubgrupoSeleccionadosArticulos.contains(valorGrupoSub))
+                            {
+                                if(conArtGrupSub==0)
+                                {
+                                     SubgrupoSeleccionadosArticulos=valorGrupoSub;
+                                }
+                                else
+                                {
+                                     SubgrupoSeleccionadosArticulos=SubgrupoSeleccionadosArticulos+","+valorGrupoSub;
+                                }
+                                conArtGrupSub ++;
                             }
                             i++;
                         }
-
                     }
-
-                    if(tipo_toma==1)
+                    if(SubgrupoGruposSeleccionados.length()==grupoSeleccionados.length())
+                          // grupoSeleccionados ES IGUAL A TODAS LAS UNIONES DEL GRUPO
+                          // SubgrupoGruposSeleccionados ES IGUAL AL DISTINCT DE TODOS LOS SUBGRUPOS SELECCIONADOS, PARA EXTRAER EL ID DEL GRUPO UNICO.
                     {
-                        try {
+                        if(tipo_toma==1)
+                        {
+                            try
+                            {
+                                listarArticulos();
+                            }
+                            catch (Exception e)
+                            {
+                                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else   if(tipo_toma==2)
+                        {
                             listarArticulos();
-
-                        }
-                        catch (Exception e){
-                            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     }
-                    else   if(tipo_toma==2)
+                    else
                     {
-                        listarArticulos();
+                        listArrayArticulos.clear();
+                        listInsertArticulos.clear();
+                        limpiarListaViewArticulosSTKW001();
+                        builder = new android.app.AlertDialog.Builder(context);
+                        builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+                        builder.setTitle("¡Atención!");
+                        builder.setMessage("Grupos seleccionados de màs.");
+                        builder.setPositiveButton("Cerrar", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        ad = builder.show();
+                        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                        ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
                     }
-
-
                 }
             });
             VerificarRed(context_stkw001);
@@ -581,6 +654,9 @@ public class controles {
                         "GROUP BY ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO,ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO,AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO,SUGR_DESC,ARDE_SUC,ARDE_DEP");
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
+                grupoParcial="";
+                int contParcialCriterio=0;
+                int i=0;
                 while ( rs2.next())
                 {
                     String vencimiento="N/A";
@@ -596,6 +672,19 @@ public class controles {
                     contenedor.setFecha_vencimientoParseado(vencimiento);
                     contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                     listArrayArticulos.add(contenedor);
+
+                    if(variables.tipo_stkw001_insert.equals("C")){
+                        if(!grupoParcial.contains(listArrayArticulos.get(i).getidGrupo())){
+                            if(contParcialCriterio==0){
+                                grupoParcial=grupoParcial+listArrayArticulos.get(i).getidGrupo();
+                            }
+                            else{
+                                grupoParcial=grupoParcial+","+listArrayArticulos.get(i).getidGrupo();
+                            }
+                            contParcialCriterio++;
+                        }
+                    }
+                    i++;
                 }
             }
             else
@@ -614,7 +703,8 @@ public class controles {
                     listInsertArticulos.clear(); //CADA VEZ QUE SELECCIONAMOS SUB-GRUPO, DEBE LIMPIAR EL ARRAY DE LOS ARTICULOS SELECCIONADOS EN EL SPINNER ARTICULOS.
                     int total_articulos=0;
                     int contParcialGrupo=0;
-
+                    int contArticulosSubgruposSeleccionados=0;
+                    ArticulosSubgruposSeleccionados="";
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).isSelected())
                         {
@@ -630,7 +720,21 @@ public class controles {
                             insArt.setFecha_vencimientoParseado(items.get(i).getFecha_vencimientoParseado());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
                             listInsertArticulos.add(insArt);
-                            total_articulos++;//
+
+                            if(!ArticulosSubgruposSeleccionados.contains(String.valueOf(items.get(i).getstringID())))
+                            {
+                                if(contArticulosSubgruposSeleccionados==0)
+                                {
+                                     ArticulosSubgruposSeleccionados=String.valueOf(items.get(i).getstringID());
+                                }
+                                else
+                                {
+                                     ArticulosSubgruposSeleccionados=ArticulosSubgruposSeleccionados+","+items.get(i).getstringID();
+                                }
+                                contArticulosSubgruposSeleccionados ++;
+
+
+                            }
                             if(!grupoParcial.contains(items.get(i).getidGrupo())){
                                 if(contParcialGrupo==0){
                                     grupoParcial=grupoParcial+items.get(i).getidGrupo();
@@ -640,15 +744,21 @@ public class controles {
                                 }
                                 contParcialGrupo++;
                             }
+                            total_articulos++;//
                         }
                     }
-                    int total_grupo=items.size();
-                    int total_grupo_seleccionado=listInsertArticulos.size();
-                    if(total_grupo==total_grupo_seleccionado){
+                    // EN ESTE CASO, EL "grupoParcial", IRA A LA CABECERA WEB_INVENTARIO, SI SE SELECCIONA TODOS O SOLO UN GRUPO, ENTONCES  EL
+                    // "grupoParcial" IRA AL INSERT COMO VACIO. O SINO IRA CON LOS GRUPOS QUE FUERON SELECCIONADOS EJEMPLO: 1,2,3.
+                    int total_grupo=listArrayGrupo.size();// OBTENEMOS EL TOTAL DEL GRUPO
+                    int total_grupo_seleccionado=gruposSeleccionados;//OBTENEMOS EL TOTAL DEL GRUPO SELECCIONADO
+
+                    if(total_grupo==total_grupo_seleccionado){ //SI SE SELECCIONO TODOS LOS GRUPOS, ENTONCES EL GRUPO PARCIAL DE LA CABECERA IRA EN VACIO.
                         grupoParcial="";
                     }
-                    else{
-                        if(grupoParcial.length()==1){
+                    else
+                    {
+                        if(grupoParcial.length()==1){ //SI EL GRUPO PARCIAL, ARROJA SOLO UN GRUPO,
+                            // ENTONCES EN LA CABECERA IRA EL CODIGO DEL GRUPO UNICO, PERO EN EL PARCIAL IRA VACIO
                             grupoParcial="";
                         }
                     }
@@ -855,7 +965,6 @@ public class controles {
             lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
         }
     }
-
 
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
@@ -1379,7 +1488,6 @@ public class controles {
     ////////////////////////////////////////////////HILOS ///////////////////////////////////////////////////////////
     public static class AsyncInsertStkw001 extends AsyncTask<Void, Void, Void>
     {
-        int con=0;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1387,177 +1495,13 @@ public class controles {
         }
         @Override
         protected Void doInBackground(Void... params) {
-            try {
+          if(stkw001.txt_id_familia.getText().toString().equals("T")){
+              registrarStkw001FamiliasTodos();
+          }
 
-                String id_cabecera="";
-                String id_familia="";
-                if(stkw001.txt_id_familia.getText().toString().equals("T")){
-                    id_familia="";
-                }
-                else {
-                    id_familia=stkw001.txt_id_familia.getText().toString();
-                }
-                connect = conexion.Connections();
-                Statement stmt = connect.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
-                while (rs.next()){
-                    id_cabecera=rs.getString(1);
-                }
-
-                connect.setAutoCommit(false);
-                String insertar = "insert into WEB_INVENTARIO(" +
-                        "WINVE_SUC,                          " +
-                        "WINVE_DEP,                       " +
-                     //   "WINVE_GRUPO,                 " +
-                        "WINVE_FEC,       " +
-                        "WINVE_LOGIN," +
-                        "WINVE_TIPO_TOMA,                    " +
-                        "WINVE_SECC,                      " +
-                        "WINVE_AREA,                  " +
-                        "WINVE_DPTO,      " +
-                        "WINVE_FLIA," +
-                        "WINVE_IND_LOTE," +
-                        "WINVE_ESTADO," +
-                        "WINVE_ART_EST," +
-                        "WINVE_ART_EXIST," +
-                        "WINVE_CANT_TOMA," +
-                        "WINVE_EMPR," +
-                        "WINVE_NUMERO," +
-                        "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
-                        "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
-                        "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
-                      //  "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
-                        "CURRENT_TIMESTAMP," +
-                        "UPPER('" +variables.userdb+"')," +
-                        "'"+variables.tipo_stkw001_insert+"'," +
-                        "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
-                        "'"+stkw001.txt_id_area.getText().toString()+"'," +
-                        "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
-                        "'"+id_familia+"'," +
-                        "'"+INVE_IND_LOTE+"'," +
-                        "'A'," +
-                        "'"+INVE_ART_EST+"'," +
-                        "'"+INVE_ART_EXIST+"'," +
-                        "'"+INVE_CANT_TOMA+"'," +
-                        "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"')";
-                PreparedStatement ps = connect.prepareStatement(insertar);
-                ps.executeUpdate();
-                ps.close();
-                int secuencia=1;
-                if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
-                {
-                    for (int i = 0; i < listInsertArticulos.size(); i++) {
-                        int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                        String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
-                        long idArticulo=listInsertArticulos.get(i).getId();
-                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                "WINVD_NRO_INV," + //1
-                                "WINVD_ART," +//2
-                                "WINVD_SECU," +//3
-                                "WINVD_CANT_ACT," +//4
-                                "WINVD_CANT_INV," +//5
-                                "WINVD_UBIC," +//6
-                                "WINVD_CODIGO_BARRA," +//7
-                                "WINVD_CANT_PED_RECEP," +//8
-                                "WINVD_LOTE," +//9
-                                "WINVD_FEC_VTO," +//10
-                                "WINVD_LOTE_CLAVE," +//11
-                                "WINVD_UM," +//12
-                                "WINVD_area," +//13
-                                "WINVD_dpto," +//14
-                                "WINVD_secc," +//15
-                                "WINVD_flia," +//16
-                                 "WINVD_grupo," +//17
-                                "WINVD_subgr," +//18
-                                "WINVD_indiv,winvd_consolidado" +//19
-                                ")  VALUES ("+
-
-                                id_cabecera+",'"+
-                                idArticulo+"',"+
-                                secuencia+","+
-                                cantidad_actual+"," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +  "'"+
-                                listInsertArticulos.get(i).getLote()+"'," +
-                                "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
-                                "''," +
-                                "''," +
-                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
-                                stkw001.txt_id_departamento.getText().toString()+"','"+
-                                stkw001.txt_id_seccion.getText().toString()+"'," +
-                                "'"+listInsertArticulos.get(i).getidFamilia()+"','"
-                                +listInsertArticulos.get(i).getidGrupo()+"','"
-                                +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
-
-
-                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                        ps2.executeUpdate();
-                        ps2.close();
-                        secuencia++;
-                        con++;
-                    }}
-
-                else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
-                {
-                    for (int i = 0; i < listArrayArticulos.size(); i++) {
-                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
-                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                "WINVD_NRO_INV," +
-                                "WINVD_ART," +
-                                "WINVD_SECU," +
-                                "WINVD_CANT_ACT," +
-                                "WINVD_CANT_INV," +
-                                "WINVD_UBIC," +
-                                "WINVD_CODIGO_BARRA," +
-                                "WINVD_CANT_PED_RECEP," +
-                                "WINVD_LOTE," +
-                                "WINVD_FEC_VTO," +
-                                "WINVD_LOTE_CLAVE," +
-                                "WINVD_UM," +
-                                "WINVD_area," +
-                                "WINVD_dpto," +
-                                "WINVD_secc," +
-                                "" +
-                                "WINVD_flia," +
-                              //  "WINVD_grupo," +
-                                "WINVD_subgr," +
-                                "WINVD_indiv)  VALUES ("+id_cabecera+",'"+
-                                listArrayArticulos.get(i).getId()+"',"+
-                                secuencia+","+
-                                cantidad_actual+",'','','',''," +
-                                "'"+listArrayArticulos.get(i).getLote()+"',TO_DATE('"+listArrayArticulos.get(i).getFechaVencimiento()+"', 'yyyy/mm/dd hh24:mi:ss') ,'',''," +
-                                "'"+stkw001.txt_id_area.getText().toString()+"','"+stkw001.txt_id_departamento.getText().toString()+"','"+stkw001.txt_id_seccion.getText().toString()+"'," +
-                                "'"+stkw001.txt_id_familia.getText().toString()+"'," +
-                              //  "'"+stkw001.txt_id_grupo.getText().toString()+"'," +
-                                "'"+listArrayArticulos.get(i).getSubgrupo()+"','')";
-
-
-                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                        ps2.executeUpdate();
-                        ps2.close();
-                        secuencia++;
-                        con++;
-                    }
-
-
-                }
-                connect.commit();
-                tipoRespuestaStkw001=1;
-                mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-
-            }
-            catch (Exception error){
-                mensajeRespuestaStkw001=error.toString();
-                tipoRespuestaStkw001=0;
-
-                try {
-                    connect.rollback();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+          else{
+              registrarStkw001Parcial();
+          }
             return null;
         }
         @Override
@@ -1652,7 +1596,6 @@ public class controles {
             alert.show();
         }
     }
-
 
     public static class AsyncExportStkw002 extends AsyncTask<Void, Void, Void>
     {
@@ -1902,6 +1845,724 @@ public class controles {
 
     }
 
+    private static void registrarStkw001FamiliasTodos(){
+        int con=0;
+
+        try {
+
+            String id_cabecera="";
+            if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
+            {
+                    connect = conexion.Connections();
+                    Statement stmt = connect.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+                    while (rs.next()){
+                        id_cabecera=rs.getString(1);
+                    }
+
+                    connect.setAutoCommit(false);
+                    String insertar = "insert into WEB_INVENTARIO(" +
+                            "WINVE_SUC,                          " +
+                            "WINVE_DEP,                       " +
+                            "WINVE_GRUPO,                 " +
+                            "WINVE_FEC,       " +
+                            "WINVE_LOGIN," +
+                            "WINVE_TIPO_TOMA,                    " +
+                            "WINVE_SECC,                      " +
+                            "WINVE_AREA,                  " +
+                            "WINVE_DPTO,      " +
+                            "WINVE_FLIA," +
+                            "WINVE_IND_LOTE," +
+                            "WINVE_ESTADO," +
+                            "WINVE_ART_EST," +
+                            "WINVE_ART_EXIST," +
+                            "WINVE_CANT_TOMA," +
+                            "WINVE_EMPR," +
+                            "WINVE_NUMERO," +
+                            "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
+                            "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                            "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                            "''," +
+                            "CURRENT_TIMESTAMP," +
+                            "UPPER('" +variables.userdb+"')," +
+                            "'"+variables.tipo_stkw001_insert+"'," +
+                            "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                            "''," +
+                            "'"+INVE_IND_LOTE+"'," +
+                            "'A'," +
+                            "'"+INVE_ART_EST+"'," +
+                            "'"+INVE_ART_EXIST+"'," +
+                            "'"+INVE_CANT_TOMA+"'," +
+                            "'1', "+id_cabecera+",'A','"+consolidado+"','')";
+                    PreparedStatement ps = connect.prepareStatement(insertar);
+                    ps.executeUpdate();
+                    ps.close();
+                    int secuencia=1;
+                    if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
+                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
+                            long idArticulo=listInsertArticulos.get(i).getId();
+                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                    "WINVD_NRO_INV," +  //1
+                                    "WINVD_ART," +      //2
+                                    "WINVD_SECU," +     //3
+                                    "WINVD_CANT_ACT," + //4
+                                    "WINVD_CANT_INV," + //5
+                                    "WINVD_UBIC," +     //6
+                                    "WINVD_CODIGO_BARRA," +//7
+                                    "WINVD_CANT_PED_RECEP," +//8
+                                    "WINVD_LOTE_CLAVE," +//9
+                                    "WINVD_UM," +//10
+                                    "WINVD_area," +//11
+                                    "WINVD_dpto," +//12
+                                    "WINVD_secc," +//13
+                                    "WINVD_flia," +//14
+                                    "WINVD_grupo," +//15
+                                    "WINVD_subgr," +//16
+                                    "WINVD_indiv," +//17
+                                    "winvd_consolidado" +//18
+                                    ")  VALUES ("+
+
+                                    id_cabecera+",'"+
+                                    idArticulo+"',"+
+                                    secuencia+","+
+                                    cantidad_actual+"," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                    stkw001.txt_id_departamento.getText().toString()+"','"+
+                                    stkw001.txt_id_seccion.getText().toString()+"'," +
+                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
+                                    +listInsertArticulos.get(i).getidGrupo()+"','"
+                                    +listInsertArticulos.get(i).getSubgrupo()+"'," +
+                                    "''," +
+                                    "'"+consolidado+"')";
 
 
+                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                            ps2.executeUpdate();
+                            ps2.close();
+                            secuencia++;
+                            con++;
+                        }
+                        connect.commit();
+                        tipoRespuestaStkw001=1;
+                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                    }
+                    else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
+                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
+                            long idArticulo=listInsertArticulos.get(i).getId();
+                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                    "WINVD_NRO_INV," + //1
+                                    "WINVD_ART," +//2
+                                    "WINVD_SECU," +//3
+                                    "WINVD_CANT_ACT," +//4
+                                    "WINVD_CANT_INV," +//5
+                                    "WINVD_UBIC," +//6
+                                    "WINVD_CODIGO_BARRA," +//7
+                                    "WINVD_CANT_PED_RECEP," +//8
+                                    "WINVD_LOTE," +//9
+                                    "WINVD_FEC_VTO," +//10
+                                    "WINVD_LOTE_CLAVE," +//11
+                                    "WINVD_UM," +//12
+                                    "WINVD_area," +//13
+                                    "WINVD_dpto," +//14
+                                    "WINVD_secc," +//15
+                                    "WINVD_flia," +//16
+                                    "WINVD_grupo," +//17
+                                    "WINVD_subgr," +//18
+                                    "WINVD_indiv,winvd_consolidado" +//19
+                                    ")  VALUES ("+
+
+                                    id_cabecera+",'"+
+                                    idArticulo+"',"+
+                                    secuencia+","+
+                                    cantidad_actual+"," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +  "'"+
+                                    listInsertArticulos.get(i).getLote()+"'," +
+                                    "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
+                                    "''," +
+                                    "''," +
+                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                    stkw001.txt_id_departamento.getText().toString()+"','"+
+                                    stkw001.txt_id_seccion.getText().toString()+"'," +
+                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
+                                    +listInsertArticulos.get(i).getidGrupo()+"','"
+                                    +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+
+
+                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                            ps2.executeUpdate();
+                            ps2.close();
+                            secuencia++;
+                            con++;
+                        }
+                        connect.commit();
+                        tipoRespuestaStkw001=1;
+                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                    }
+
+
+
+            }
+
+
+            else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
+            {
+                connect = conexion.Connections();
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+                while (rs.next()){
+                    id_cabecera=rs.getString(1);
+                }
+
+                connect.setAutoCommit(false);
+                String insertar = "insert into WEB_INVENTARIO(" +
+                        "WINVE_SUC,                          " +
+                        "WINVE_DEP,                       " +
+                        "WINVE_GRUPO,                 " +
+                        "WINVE_FEC,       " +
+                        "WINVE_LOGIN," +
+                        "WINVE_TIPO_TOMA,                    " +
+                        "WINVE_SECC,                      " +
+                        "WINVE_AREA,                  " +
+                        "WINVE_DPTO,      " +
+                        "WINVE_FLIA," +
+                        "WINVE_IND_LOTE," +
+                        "WINVE_ESTADO," +
+                        "WINVE_ART_EST," +
+                        "WINVE_ART_EXIST," +
+                        "WINVE_CANT_TOMA," +
+                        "WINVE_EMPR," +
+                        "WINVE_NUMERO," +
+                        "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
+                        "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                        "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                       "''," +
+                        "CURRENT_TIMESTAMP," +
+                        "UPPER('" +variables.userdb+"')," +
+                        "'"+variables.tipo_stkw001_insert+"'," +
+                        "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                        "''," +
+                        "'"+INVE_IND_LOTE+"'," +
+                        "'A'," +
+                        "'"+INVE_ART_EST+"'," +
+                        "'"+INVE_ART_EXIST+"'," +
+                        "'"+INVE_CANT_TOMA+"'," +
+                        "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"')";
+                PreparedStatement ps = connect.prepareStatement(insertar);
+                ps.executeUpdate();
+                ps.close();
+                int secuencia=1;
+
+
+                if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
+                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                        long idArticulo=listArrayArticulos.get(i).getId();
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," +  //1
+                                "WINVD_ART," +      //2
+                                "WINVD_SECU," +     //3
+                                "WINVD_CANT_ACT," + //4
+                                "WINVD_CANT_INV," + //5
+                                "WINVD_UBIC," +     //6
+                                "WINVD_CODIGO_BARRA," +//7
+                                "WINVD_CANT_PED_RECEP," +//8
+                                "WINVD_LOTE_CLAVE," +//9
+                                "WINVD_UM," +//10
+                                "WINVD_area," +//11
+                                "WINVD_dpto," +//12
+                                "WINVD_secc," +//13
+                                "WINVD_flia," +//14
+                                "WINVD_grupo," +//15
+                                "WINVD_subgr," +//16
+                                "WINVD_indiv," +//17
+                                "winvd_consolidado" +//18
+                                ")  VALUES ("+
+
+                                id_cabecera+",'"+
+                                idArticulo+"',"+
+                                secuencia+","+
+                                cantidad_actual+"," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                stkw001.txt_id_departamento.getText().toString()+"','"+
+                                stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
+                                +listArrayArticulos.get(i).getidGrupo()+"','"
+                                +listArrayArticulos.get(i).getSubgrupo()+"'," +
+                                "''," +
+                                "'"+consolidado+"')";
+                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+                        ps2.close();
+                        secuencia++;
+                        con++;
+                    }
+                    connect.commit();
+                    tipoRespuestaStkw001=1;
+                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                }
+                else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
+                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                        String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
+                        long idArticulo=listArrayArticulos.get(i).getId();
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," + //1
+                                "WINVD_ART," +//2
+                                "WINVD_SECU," +//3
+                                "WINVD_CANT_ACT," +//4
+                                "WINVD_CANT_INV," +//5
+                                "WINVD_UBIC," +//6
+                                "WINVD_CODIGO_BARRA," +//7
+                                "WINVD_CANT_PED_RECEP," +//8
+                                "WINVD_LOTE," +//9
+                                "WINVD_FEC_VTO," +//10
+                                "WINVD_LOTE_CLAVE," +//11
+                                "WINVD_UM," +//12
+                                "WINVD_area," +//13
+                                "WINVD_dpto," +//14
+                                "WINVD_secc," +//15
+                                "WINVD_flia," +//16
+                                "WINVD_grupo," +//17
+                                "WINVD_subgr," +//18
+                                "WINVD_indiv,winvd_consolidado" +//19
+                                ")  VALUES ("+
+
+                                id_cabecera+",'"+
+                                idArticulo+"',"+
+                                secuencia+","+
+                                cantidad_actual+"," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +  "'"+
+                                listArrayArticulos.get(i).getLote()+"'," +
+                                "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
+                                "''," +
+                                "''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                stkw001.txt_id_departamento.getText().toString()+"','"+
+                                stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
+                                +listArrayArticulos.get(i).getidGrupo()+"','"
+                                +listArrayArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+
+
+                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+                        ps2.close();
+                        secuencia++;
+                        con++;
+                    }
+                    connect.commit();
+                    tipoRespuestaStkw001=1;
+                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                }
+            }
+
+
+        }
+        catch (Exception error){
+            mensajeRespuestaStkw001=error.toString();
+            tipoRespuestaStkw001=0;
+
+            try {
+                connect.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+    private static void registrarStkw001Parcial(){
+        int con=0;
+
+        try {
+
+            String id_cabecera="";
+           // String id_familia="";
+            String idGrupoUnico="";
+            if(ids_grupos.length()==1){
+                idGrupoUnico=ids_grupos;
+            }
+            else {
+                idGrupoUnico="";
+            }
+
+
+            if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
+            {
+                if(ArticulosSubgruposSeleccionados.length()==SubgrupoSeleccionadosArticulos.length())
+                {
+                    connect = conexion.Connections();
+                    Statement stmt = connect.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+                    while (rs.next()){
+                        id_cabecera=rs.getString(1);
+                    }
+
+                    connect.setAutoCommit(false);
+                    String insertar = "insert into WEB_INVENTARIO(" +
+                            "WINVE_SUC,                          " +
+                            "WINVE_DEP,                       " +
+                            "WINVE_GRUPO,                 " +
+                            "WINVE_FEC,       " +
+                            "WINVE_LOGIN," +
+                            "WINVE_TIPO_TOMA,                    " +
+                            "WINVE_SECC,                      " +
+                            "WINVE_AREA,                  " +
+                            "WINVE_DPTO,      " +
+                            "WINVE_FLIA," +
+                            "WINVE_IND_LOTE," +
+                            "WINVE_ESTADO," +
+                            "WINVE_ART_EST," +
+                            "WINVE_ART_EXIST," +
+                            "WINVE_CANT_TOMA," +
+                            "WINVE_EMPR," +
+                            "WINVE_NUMERO," +
+                            "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
+                            "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                            "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                            "'"+idGrupoUnico+"'," +
+                            "CURRENT_TIMESTAMP," +
+                            "UPPER('" +variables.userdb+"')," +
+                            "'"+variables.tipo_stkw001_insert+"'," +
+                            "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                            "'"+stkw001.txt_id_familia.getText().toString()+"'," +
+                            "'"+INVE_IND_LOTE+"'," +
+                            "'A'," +
+                            "'"+INVE_ART_EST+"'," +
+                            "'"+INVE_ART_EXIST+"'," +
+                            "'"+INVE_CANT_TOMA+"'," +
+                            "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"')";
+                    PreparedStatement ps = connect.prepareStatement(insertar);
+                    ps.executeUpdate();
+                    ps.close();
+                    int secuencia=1;
+                    if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
+                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
+                            long idArticulo=listInsertArticulos.get(i).getId();
+                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                    "WINVD_NRO_INV," +  //1
+                                    "WINVD_ART," +      //2
+                                    "WINVD_SECU," +     //3
+                                    "WINVD_CANT_ACT," + //4
+                                    "WINVD_CANT_INV," + //5
+                                    "WINVD_UBIC," +     //6
+                                    "WINVD_CODIGO_BARRA," +//7
+                                    "WINVD_CANT_PED_RECEP," +//8
+                                    "WINVD_LOTE_CLAVE," +//9
+                                    "WINVD_UM," +//10
+                                    "WINVD_area," +//11
+                                    "WINVD_dpto," +//12
+                                    "WINVD_secc," +//13
+                                    "WINVD_flia," +//14
+                                    "WINVD_grupo," +//15
+                                    "WINVD_subgr," +//16
+                                    "WINVD_indiv," +//17
+                                    "winvd_consolidado" +//18
+                                    ")  VALUES ("+
+
+                                    id_cabecera+",'"+
+                                    idArticulo+"',"+
+                                    secuencia+","+
+                                    cantidad_actual+"," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                    stkw001.txt_id_departamento.getText().toString()+"','"+
+                                    stkw001.txt_id_seccion.getText().toString()+"'," +
+                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
+                                    +listInsertArticulos.get(i).getidGrupo()+"','"
+                                    +listInsertArticulos.get(i).getSubgrupo()+"'," +
+                                    "''," +
+                                    "'"+consolidado+"')";
+
+
+                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                            ps2.executeUpdate();
+                            ps2.close();
+                            secuencia++;
+                            con++;
+                        }
+                        connect.commit();
+                        tipoRespuestaStkw001=1;
+                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                    }
+                    else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
+                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
+                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
+                            long idArticulo=listInsertArticulos.get(i).getId();
+                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                    "WINVD_NRO_INV," + //1
+                                    "WINVD_ART," +//2
+                                    "WINVD_SECU," +//3
+                                    "WINVD_CANT_ACT," +//4
+                                    "WINVD_CANT_INV," +//5
+                                    "WINVD_UBIC," +//6
+                                    "WINVD_CODIGO_BARRA," +//7
+                                    "WINVD_CANT_PED_RECEP," +//8
+                                    "WINVD_LOTE," +//9
+                                    "WINVD_FEC_VTO," +//10
+                                    "WINVD_LOTE_CLAVE," +//11
+                                    "WINVD_UM," +//12
+                                    "WINVD_area," +//13
+                                    "WINVD_dpto," +//14
+                                    "WINVD_secc," +//15
+                                    "WINVD_flia," +//16
+                                    "WINVD_grupo," +//17
+                                    "WINVD_subgr," +//18
+                                    "WINVD_indiv,winvd_consolidado" +//19
+                                    ")  VALUES ("+
+
+                                    id_cabecera+",'"+
+                                    idArticulo+"',"+
+                                    secuencia+","+
+                                    cantidad_actual+"," +
+                                    "''," +
+                                    "''," +
+                                    "''," +
+                                    "''," +  "'"+
+                                    listInsertArticulos.get(i).getLote()+"'," +
+                                    "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
+                                    "''," +
+                                    "''," +
+                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                    stkw001.txt_id_departamento.getText().toString()+"','"+
+                                    stkw001.txt_id_seccion.getText().toString()+"'," +
+                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
+                                    +listInsertArticulos.get(i).getidGrupo()+"','"
+                                    +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+
+
+                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                            ps2.executeUpdate();
+                            ps2.close();
+                            secuencia++;
+                            con++;
+                        }
+                        connect.commit();
+                        tipoRespuestaStkw001=1;
+                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                    }
+
+                }
+                else
+                {
+                    tipoRespuestaStkw001=0;
+                    mensajeRespuestaStkw001="NO SE HAN SELECCIONADO ARTICULOS DE TODOS LOS SUB-GRUPOS";
+                }
+
+            }
+
+
+            else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
+            {
+                connect = conexion.Connections();
+                Statement stmt = connect.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
+                while (rs.next()){
+                    id_cabecera=rs.getString(1);
+                }
+
+                connect.setAutoCommit(false);
+                String insertar = "insert into WEB_INVENTARIO(" +
+                        "WINVE_SUC,                          " +
+                        "WINVE_DEP,                       " +
+                        "WINVE_GRUPO,                 " +
+                        "WINVE_FEC,       " +
+                        "WINVE_LOGIN," +
+                        "WINVE_TIPO_TOMA,                    " +
+                        "WINVE_SECC,                      " +
+                        "WINVE_AREA,                  " +
+                        "WINVE_DPTO,      " +
+                        "WINVE_FLIA," +
+                        "WINVE_IND_LOTE," +
+                        "WINVE_ESTADO," +
+                        "WINVE_ART_EST," +
+                        "WINVE_ART_EXIST," +
+                        "WINVE_CANT_TOMA," +
+                        "WINVE_EMPR," +
+                        "WINVE_NUMERO," +
+                        "WINVE_ESTADO_WEB,WINVE_CONSOLIDADO,winve_grupo_parcial) values  " +
+                        "('"+stkw001.txt_id_sucursal.getText().toString()+"',    " +
+                        "'"+stkw001.txt_id_deposito.getText().toString()+"'," +
+                        "'"+idGrupoUnico+"'," +
+                        "CURRENT_TIMESTAMP," +
+                        "UPPER('" +variables.userdb+"')," +
+                        "'"+variables.tipo_stkw001_insert+"'," +
+                        "'"+stkw001.txt_id_seccion.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_area.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_departamento.getText().toString()+"'," +
+                        "'"+stkw001.txt_id_familia.getText().toString()+"'," +
+                        "'"+INVE_IND_LOTE+"'," +
+                        "'A'," +
+                        "'"+INVE_ART_EST+"'," +
+                        "'"+INVE_ART_EXIST+"'," +
+                        "'"+INVE_CANT_TOMA+"'," +
+                        "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"')";
+                PreparedStatement ps = connect.prepareStatement(insertar);
+                ps.executeUpdate();
+                ps.close();
+                int secuencia=1;
+
+                if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
+                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                        long idArticulo=listArrayArticulos.get(i).getId();
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," +  //1
+                                "WINVD_ART," +      //2
+                                "WINVD_SECU," +     //3
+                                "WINVD_CANT_ACT," + //4
+                                "WINVD_CANT_INV," + //5
+                                "WINVD_UBIC," +     //6
+                                "WINVD_CODIGO_BARRA," +//7
+                                "WINVD_CANT_PED_RECEP," +//8
+                                "WINVD_LOTE_CLAVE," +//9
+                                "WINVD_UM," +//10
+                                "WINVD_area," +//11
+                                "WINVD_dpto," +//12
+                                "WINVD_secc," +//13
+                                "WINVD_flia," +//14
+                                "WINVD_grupo," +//15
+                                "WINVD_subgr," +//16
+                                "WINVD_indiv," +//17
+                                "winvd_consolidado" +//18
+                                ")  VALUES ("+
+
+                                id_cabecera+",'"+
+                                idArticulo+"',"+
+                                secuencia+","+
+                                cantidad_actual+"," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                stkw001.txt_id_departamento.getText().toString()+"','"+
+                                stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
+                                +listArrayArticulos.get(i).getidGrupo()+"','"
+                                +listArrayArticulos.get(i).getSubgrupo()+"'," +
+                                "''," +
+                                "'"+consolidado+"')";
+                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+                        ps2.close();
+                        secuencia++;
+                        con++;
+                    }
+                    connect.commit();
+                    tipoRespuestaStkw001=1;
+                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                }
+                else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
+                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
+                        String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
+                        long idArticulo=listArrayArticulos.get(i).getId();
+                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
+                                "WINVD_NRO_INV," + //1
+                                "WINVD_ART," +//2
+                                "WINVD_SECU," +//3
+                                "WINVD_CANT_ACT," +//4
+                                "WINVD_CANT_INV," +//5
+                                "WINVD_UBIC," +//6
+                                "WINVD_CODIGO_BARRA," +//7
+                                "WINVD_CANT_PED_RECEP," +//8
+                                "WINVD_LOTE," +//9
+                                "WINVD_FEC_VTO," +//10
+                                "WINVD_LOTE_CLAVE," +//11
+                                "WINVD_UM," +//12
+                                "WINVD_area," +//13
+                                "WINVD_dpto," +//14
+                                "WINVD_secc," +//15
+                                "WINVD_flia," +//16
+                                "WINVD_grupo," +//17
+                                "WINVD_subgr," +//18
+                                "WINVD_indiv,winvd_consolidado" +//19
+                                ")  VALUES ("+
+
+                                id_cabecera+",'"+
+                                idArticulo+"',"+
+                                secuencia+","+
+                                cantidad_actual+"," +
+                                "''," +
+                                "''," +
+                                "''," +
+                                "''," +  "'"+
+                                listArrayArticulos.get(i).getLote()+"'," +
+                                "TO_DATE('"+fechaVto+"', 'yyyy/mm/dd hh24:mi:ss') ," +
+                                "''," +
+                                "''," +
+                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
+                                stkw001.txt_id_departamento.getText().toString()+"','"+
+                                stkw001.txt_id_seccion.getText().toString()+"'," +
+                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
+                                +listArrayArticulos.get(i).getidGrupo()+"','"
+                                +listArrayArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+
+
+                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
+                        ps2.executeUpdate();
+                        ps2.close();
+                        secuencia++;
+                        con++;
+                    }
+                    connect.commit();
+                    tipoRespuestaStkw001=1;
+                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+                }
+                connect.commit();
+                tipoRespuestaStkw001=1;
+                mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+            }
+
+
+        }
+        catch (Exception error){
+            mensajeRespuestaStkw001=error.toString();
+            tipoRespuestaStkw001=0;
+
+            try {
+                connect.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
 }
