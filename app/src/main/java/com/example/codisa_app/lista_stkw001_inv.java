@@ -74,7 +74,9 @@ public class lista_stkw001_inv extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
                 int nro_registro =Integer.parseInt(controles.listaStkw001.get(pos).getNroToma());
+                String consolidado=controles.listaStkw001.get(pos).getconsolidado();
                 controles.nroTomaCancelacion=nro_registro;
+                controles.consolidadoCancelacion=consolidado;
                 final controles.AsyncListarCancelaciones task = new controles.AsyncListarCancelaciones();
                 task.execute();
 

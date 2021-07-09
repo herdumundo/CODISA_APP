@@ -172,14 +172,14 @@ public class menu_principal extends AppCompatActivity {
 
     public void OnclickSincronizarDatos(View v){
 
-        final async task = new async();
+        final HiloSincronizar task = new HiloSincronizar();
         task.execute();
       //ImportarTomas();
 
 
     }
 
-    public   class async extends AsyncTask<Void, Void, Void>
+    public   class HiloSincronizar extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected void onPreExecute() {
@@ -192,23 +192,12 @@ public class menu_principal extends AppCompatActivity {
                error_importador=1;
                controles.connect = controles.conexion.Connections();
                Statement stmt = controles.connect.createStatement();
-               ResultSet rs = stmt.executeQuery("" +
-                       "   SELECT " +
-                       "       count(*) as  contador " +
-                       "   FROM   " +
-                       "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
-                       "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
-                       "       and a.ART_CODIGO=b.winvd_art       " +
-                       "       and a.SECC_CODIGO=b.winvd_secc     " +
-                       "       and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto   " +
-                       "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
-                       "       and c.winve_dep=a.ARDE_DEP  " +
-                       "       and c.winve_area=a.AREA_CODIGO  " +
-                       "       and c.winve_suc=a.ARDE_SUC   " +
-                       "       and c.winve_secc=a.SECC_CODIGO  " +
-                       "   where " +
-                       "       c.winve_empr=1 " +
-                       "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
+               ResultSet rs = stmt.executeQuery(
+                       "        select count(*) as contador " +
+                               "        from " +
+                               "        WEB_INVENTARIO a " +
+                               "        inner join WEB_INVENTARIO_det b on a.winve_numero=b.winvd_nro_inv   " +
+                               "    where a.WINVE_ESTADO_WEB='A' and a.winve_empr="+variables.ID_SUCURSAL_LOGIN+"");
 
                while (rs.next())
                {
@@ -309,26 +298,36 @@ public class menu_principal extends AppCompatActivity {
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
 
-            ResultSet rs = stmt.executeQuery("" +
-                    "   SELECT " +
-                    "       a.ARDE_SUC, b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
-                    "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec," +
-                    "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu," +
-                    "   case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma,c.winve_login " +
-                    "   FROM   " +
-                    "       V_WEB_ARTICULOS_CLASIFICACION  a   " +
-                    "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  " +
-                    "       and a.ART_CODIGO=b.winvd_art       " +
-                    "       and a.SECC_CODIGO=b.winvd_secc     " +
-                    "        AND TO_DATE(a.ARDE_FEC_VTO_LOTE,'DD/MM/YYYY')=TO_DATE(b.winvd_fec_vto,'DD/MM/YYYY')     " +
-                    "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  " +
-                    "       and c.winve_dep=a.ARDE_DEP  " +
-                    "       and c.winve_area=a.AREA_CODIGO  " +
-                    "       and c.winve_suc=a.ARDE_SUC   " +
-                    "       and c.winve_secc=a.SECC_CODIGO  " +
-                    "   where " +
-                    "       c.winve_empr=1 " +
-                    "       and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'");
+            ResultSet rs = stmt.executeQuery(
+                    "       SELECT  " +
+                            "       distinct  b.winvd_art,  a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,b.winvd_lote," +
+                            "       b.winvd_fec_vto,b.winvd_area,b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo," +
+                            "       b.winvd_cant_act,c.winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc," +
+                            "       sugr_codigo,b.winvd_secu, case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma," +
+                            "       c.winve_login                        " +
+                            "   FROM    " +
+                            "       V_WEB_ARTICULOS_CLASIFICACION  a    " +
+                            "       inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art        " +
+                            "       and a.SECC_CODIGO=b.winvd_secc                           " +
+                            "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP  " +
+                            "       and c.winve_area=a.AREA_CODIGO                             " +
+                            "       and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO   " +
+                            "   where  c.winve_empr="+variables.ID_SUCURSAL_LOGIN+"   and a.ARDE_SUC=1 AND WINVE_ESTADO_WEB='A'  AND c.winve_consolidado='S'" +
+                            "   union all " +
+                            "   SELECT  " +
+                            "       b.winvd_art, a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
+                            "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,    " +
+                            "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu,                       " +
+                            "       case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma,c.winve_login   " +
+                            "   FROM  " +
+                            "       V_WEB_ARTICULOS_CLASIFICACION  a                              " +
+                            "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  and a.ART_CODIGO=b.winvd_art  " +
+                            "       And a.SECC_CODIGO=b.winvd_secc                                 " +
+                            "       AND TO_DATE(a.ARDE_FEC_VTO_LOTE,'DD/MM/YYYY')=TO_DATE(b.winvd_fec_vto,'DD/MM/YYYY')     " +
+                            "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero       " +
+                            "       and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO   " +
+                            "       and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO         " +
+                            "   where    c.winve_empr="+variables.ID_SUCURSAL_LOGIN+" and a.ARDE_SUC=1 AND WINVE_ESTADO_WEB='A'    AND c.winve_consolidado='N'");
             int i=1;
             int contadorMensaje=0;
         while (rs.next())

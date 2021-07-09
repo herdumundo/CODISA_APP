@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class controles {
     public static   int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
     public static   int     nroTomaCancelacion;
+    public static   String  consolidadoCancelacion="";
     static          String  winveSubGrupoParcial=""; // DATO NECESARIO PARA INSERTAR EL ANIDADO DE GRUPO Y SUBGRUPO A LA BD.
 
     public static   String  ids_subgrupos="",ids_grupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
@@ -136,7 +138,6 @@ public class controles {
 
                     Intent intent = new Intent(context, clase_destino);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                     context.startActivity(intent);
                     activity.finish();
                 }
@@ -628,7 +629,7 @@ public class controles {
                 "   arde_dep="+id_deposito+"      and " +
                 "   area_codigo="+id_area+"   and " +
                 "   dpto_codigo="+id_dpto+"   and " +
-            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" GRUP_CODIGO,SUGR_CODIGO asc");
+            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" order by GRUP_CODIGO,SUGR_CODIGO asc");
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
                 while ( rs2.next())
@@ -841,7 +842,8 @@ public class controles {
                     "winvd_cant_inv," +//11
                     "winvd_secu" +//12
                     " from stkw002inv" +
-                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' and winvd_nro_inv="+variables.nro_registro_toma+" " ,null);
+                    " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
+                    "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
             int cont=0;
             ListArrayInventarioArticulos = new ArrayList();
             while (cursor.moveToNext())
@@ -865,65 +867,103 @@ public class controles {
 
     }
 
-    public static void listarWebViewStkw001Cancelacion(int nroToma) {
+    public static void listarWebViewStkw001Cancelacion(int nroToma,String consolidado) {
         try {
             String html="";
             table="";
             connect =  conexion.Connections();
             Statement stmt =  connect.createStatement();
 
-            String sql="select   " +
-                    "   ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO," +
-                    "   ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO," +
-                    "   AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO," +
-                    "   SUGR_DESC,ARDE_SUC,ARDE_DEP,SUM(ARDE_CANT_ACT) ARDE_CANT_ACT " +
-                    "   from V_WEB_ARTICULOS_CLASIFICACION t " +
-                    "   INNER JOIN web_inventario c on t.ARDE_SUC=c.winve_suc " +
-                    "   INNER JOIN WEB_INVENTARIO_det b ON t.ART_CODIGO=b.winvd_art and t.ARDE_DEP=c.winve_dep and t.ART_CODIGO=b.winvd_art     " +
-                    "   and t.SECC_CODIGO=b.winvd_secc  and b.winvd_area=t.AREA_CODIGO   and b.winvd_secc=t.SECC_CODIGO  " +
-                    "    and b.winvd_nro_inv=c.winve_numero " +
-                    "   where c.winve_numero="+nroToma +
-                    "   GROUP BY ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST," +
-                    "   ART_IND_BLOQUEO,ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO," +
-                    "   AREA_CODIGO,AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC," +
-                    "   SUGR_CODIGO,SUGR_DESC,ARDE_SUC,ARDE_DEP";
 
-            ResultSet rs = stmt.executeQuery("SELECT  " +
-                    " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
-                    "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
-                    " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec, " +
-                    " dpto_desc,secc_desc,flia_desc,grup_desc,area_desc   " +
-                    " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
-                    " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
-                    " and a.ART_CODIGO=b.winvd_art    " +
-                    "  and a.SECC_CODIGO=b.winvd_secc   " +
-                    " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
-                    "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
-                    " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
-                    " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
-                    "  where C.WINVE_NUMERO="+nroToma );
-            int cont=0;
-            while (rs.next()){
-                cont++;
-                html=html+  "<tr>" +
-                        "<td>"+rs.getString("winvd_art")+"</td>" +
-                        "<td>"+rs.getString("ART_DESC")+"</td>" +
-                        "<td>"+rs.getString("winvd_lote")+"</td>" +
-                        "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
-                        "</tr>";
+            if(consolidado.equals("NO")){
+                ResultSet rs = stmt.executeQuery("SELECT  " +
+                        " to_char(a.ARDE_FEC_VTO_LOTE) as ARDE_FEC_VTO_LOTE ,b.winvd_fec_vto,  a.ARDE_SUC, " +
+                        "b.winvd_nro_inv, b.winvd_art,a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,    " +
+                        " b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec, " +
+                        " dpto_desc,secc_desc,flia_desc,grup_desc,area_desc ,sugr_desc  " +
+                        " FROM   V_WEB_ARTICULOS_CLASIFICACION  a    " +
+                        " inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote    " +
+                        " and a.ART_CODIGO=b.winvd_art    " +
+                        "  and a.SECC_CODIGO=b.winvd_secc   " +
+                        " and a.ARDE_FEC_VTO_LOTE=b.winvd_fec_vto    " +
+                        "inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero   " +
+                        " and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO    " +
+                        " and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO  " +
+                        "  where C.WINVE_NUMERO="+nroToma+ " order by winvd_art asc" );
+                int cont=0;
+                while (rs.next()){
+                    cont++;
+                    html=html+  "<tr>" +
+                            "<td>"+rs.getString("winvd_art")+"</td>" +
+                            "<td>"+rs.getString("ART_DESC")+"</td>" +
+                            "<td>"+rs.getString("winvd_lote")+"</td>" +
+                            "<td>"+rs.getString("ARDE_FEC_VTO_LOTE")+"</td>" +
+                            "<td>"+rs.getString("FLIA_DESC")+"</td>" +
+                            "<td>"+rs.getString("GRUP_DESC")+"</td>" +
+                            "<td>"+rs.getString("sugr_desc")+"</td>" +
+                            "</tr>";
+
+                }
+                rs.close();
+
+                table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                        "<thead> " +
+                        "<tr>" +
+                        "<td>COD</td>" +
+                        "<td>ARTICULO</td>" +
+                        "<td>LOTE</td>" +
+                        "<td>FECHA VENCIMIENTO</td>" +
+                        "<td>FAMILIA</td>" +
+                        "<td>GRUPO</td>" +
+                        "<td>SUB GRUPO</td>" +
+                        "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
+
 
             }
-            rs.close();
 
-            table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
-                    "<thead> " +
-                    "<tr>" +
-                    "<td>COD</td>" +
-                    "<td>ARTICULO</td>" +
-                    "<td>LOTE</td>" +
-                    "<td>FECHA VENCIMIENTO</td>" +
-                    "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
+            else {
+                String sql="select   " +
+                        "   ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO," +
+                        "   ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO," +
+                        "   AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO," +
+                        "   SUGR_DESC,ARDE_SUC,ARDE_DEP,SUM(ARDE_CANT_ACT) ARDE_CANT_ACT " +
+                        "   from V_WEB_ARTICULOS_CLASIFICACION t " +
+                        "   INNER JOIN web_inventario c on t.ARDE_SUC=c.winve_suc " +
+                        "   INNER JOIN WEB_INVENTARIO_det b ON t.ART_CODIGO=b.winvd_art and t.ARDE_DEP=c.winve_dep and t.ART_CODIGO=b.winvd_art     " +
+                        "   and t.SECC_CODIGO=b.winvd_secc  and b.winvd_area=t.AREA_CODIGO   and b.winvd_secc=t.SECC_CODIGO  " +
+                        "    and b.winvd_nro_inv=c.winve_numero " +
+                        "   where c.winve_numero="+nroToma +
+                        "   GROUP BY ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST," +
+                        "   ART_IND_BLOQUEO,ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO," +
+                        "   AREA_CODIGO,AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC," +
+                        "   SUGR_CODIGO,SUGR_DESC,ARDE_SUC,ARDE_DEP,sugr_desc  ";
 
+                ResultSet rs = stmt.executeQuery(sql);
+                int cont=0;
+                while (rs.next()){
+                    cont++;
+                    html=html+  "<tr>" +
+                            "<td>"+rs.getString("ART_CODIGO")+"</td>" +
+                            "<td>"+rs.getString("ART_DESC")+"</td>" +
+                            "<td>"+rs.getString("FLIA_DESC")+"</td>" +
+                            "<td>"+rs.getString("GRUP_DESC")+"</td>" +
+                            "<td>"+rs.getString("sugr_desc")+"</td>" +
+                            "</tr>";
+                            }
+                rs.close();
+
+                table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                        "<thead> " +
+                        "<tr>" +
+                        "<td>COD</td>" +
+                        "<td>ARTICULO</td>" +
+                        "<td>FAMILIA</td>" +
+                        "<td>GRUPO</td>" +
+                        "<td>SUB GRUPO</td>" +
+                        "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
+
+
+            }
 
         }
         catch (Exception e){
@@ -1595,7 +1635,7 @@ public class controles {
         }
         @Override
         protected Void doInBackground(Void... params) {
-            listarWebViewStkw001Cancelacion(nroTomaCancelacion);
+            listarWebViewStkw001Cancelacion(nroTomaCancelacion,consolidadoCancelacion);
             return null;
         }
         @Override
@@ -1605,7 +1645,14 @@ public class controles {
             AlertDialog.Builder alert = new AlertDialog.Builder(contextListaStkw001);
             alert.setTitle("ARTICULOS CARGADOS");
             WebView wv = new WebView(contextListaStkw001);
+            WebSettings settings = wv.getSettings();
+            settings.setMinimumFontSize(20);
+            settings.setLoadWithOverviewMode(true);
+            settings.setUseWideViewPort(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setSupportZoom(true);
             wv.loadData(table, "text/html", "utf-8");
+
             alert.setView(wv);
             alert.setNegativeButton("CERRAR", new DialogInterface.OnClickListener()
             {
@@ -1953,8 +2000,8 @@ public class controles {
                     if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
                         for (int i = 0; i < listInsertArticulos.size(); i++) {
                             int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
-                            long idArticulo=listInsertArticulos.get(i).getId();
+                            //String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
+                          //  long idArticulo=listInsertArticulos.get(i).getId();
                             String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
                                     "WINVD_NRO_INV," +  //1
                                     "WINVD_ART," +      //2
@@ -1977,7 +2024,7 @@ public class controles {
                                     ")  VALUES ("+
 
                                     id_cabecera+",'"+
-                                    idArticulo+"',"+
+                                    listInsertArticulos.get(i).getId()+"',"+
                                     secuencia+","+
                                     cantidad_actual+"," +
                                     "''," +
@@ -2250,28 +2297,32 @@ public class controles {
         int con=0;
 
         try {
-            winveSubGrupoParcial=""; //RESETEAMOS LA UNION DEL GRUPO CON LOS SUBGRUPOS PARA EL INSERT EN SUBGRUPOS PARCIALES
-            String id_cabecera="";
-            String idGrupoUnico="";
-            if(ids_grupos.length()==1){
-                if(ids_grupos.equals("T")){
-                    idGrupoUnico="";
-
-                }
-                else {
-                    idGrupoUnico=ids_grupos;
-                }
-                grupoParcial="";
-            }
-
-            else {
-                capturarWinveSubGrupoParcial();
-                idGrupoUnico="";
-            }
 
 
             if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
             {
+                winveSubGrupoParcial=""; //RESETEAMOS LA UNION DEL GRUPO CON LOS SUBGRUPOS PARA EL INSERT EN SUBGRUPOS PARCIALES
+                String id_cabecera="";
+                String idGrupoUnico="";
+
+                if(ids_grupos.equals("T")){
+                    idGrupoUnico="";//LIMPIAMOS EL ID DE GRUPO QUE VA EN CABECERA
+                    grupoParcial="";//LIMPIAMOS EL GRUPO PARCIAL, YA QUE SE SELECCIONAN TODOS LOS GRUPOS.
+                    winveSubGrupoParcial="";//LIMPIAMOS EL SUBGRUPO PARCIAL, YA QUE SE SELECCIONAN TODOS LOS GRUPOS.
+                }
+                else {
+                    if(!ids_grupos.contains(",")){ //SI ID GRUPO NO CONTIENE "," ES PORQUE SOLO SE SELECCIONO UN GRUPO.
+                        idGrupoUnico=ids_grupos; // EN ID UNICO COLOCA EL UNICO ID DEL GRUPO SELECCIONADO
+                        grupoParcial=""; // LIMPIAMOS EL GRUPO PARCIAL, YA QUE EL GRUPO SERA UNA UNICA SELECCION
+                    }
+                    if(ids_subgrupos.contains(",")){ // SI ID SUBGRUPO  CONTIENE ",", ES PORQUE SE SELECCIONARON MAS DE UN SUBGRUPO
+                        capturarWinveSubGrupoParcialManual(); // CAPTURAMOS EL ID DEL GRUPO SEGUIDO DE SUS SUBGRUPOS CORRESPONDIENTES.
+                        if(ids_grupos.contains(",")){ // SI ID GRUPO   CONTIENE "," ES PORQUE  SE SELECCIONARON MAS DE UN GRUPO, ENTONCES LIMPIA EL ID UNICO.
+                            idGrupoUnico="";
+                        }
+                    }
+                }
+
                 if(ArticulosSubgruposSeleccionados.length()!=SubgrupoSeleccionadosArticulos.length()&& GruposTodos==false)
                 {
                     tipoRespuestaStkw001=0;
@@ -2450,6 +2501,29 @@ public class controles {
 
             else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
             {
+                winveSubGrupoParcial=""; //RESETEAMOS LA UNION DEL GRUPO CON LOS SUBGRUPOS PARA EL INSERT EN SUBGRUPOS PARCIALES
+                String id_cabecera="";
+                String idGrupoUnico="";
+
+                if(ids_grupos.equals("T")){
+                    idGrupoUnico="";//LIMPIAMOS EL ID DE GRUPO QUE VA EN CABECERA
+                    grupoParcial="";//LIMPIAMOS EL GRUPO PARCIAL, YA QUE SE SELECCIONAN TODOS LOS GRUPOS.
+                    winveSubGrupoParcial="";//LIMPIAMOS EL SUBGRUPO PARCIAL, YA QUE SE SELECCIONAN TODOS LOS GRUPOS.
+                }
+                else {
+                    if(!ids_grupos.contains(",")){ //SI ID GRUPO NO CONTIENE "," ES PORQUE SOLO SE SELECCIONO UN GRUPO.
+                        idGrupoUnico=ids_grupos; // EN ID UNICO COLOCA EL UNICO ID DEL GRUPO SELECCIONADO
+                        grupoParcial=""; // LIMPIAMOS EL GRUPO PARCIAL, YA QUE EL GRUPO SERA UNA UNICA SELECCION
+                    }
+                    if(ids_subgrupos.contains(",")){ // SI ID SUBGRUPO  CONTIENE ",", ES PORQUE SE SELECCIONARON MAS DE UN SUBGRUPO
+                        capturarWinveSubGrupoParcialCriterio(); // CAPTURAMOS EL ID DEL GRUPO SEGUIDO DE SUS SUBGRUPOS CORRESPONDIENTES.
+                        if(ids_grupos.contains(",")){ // SI ID GRUPO   CONTIENE "," ES PORQUE  SE SELECCIONARON MAS DE UN GRUPO, ENTONCES LIMPIA EL ID UNICO.
+                            idGrupoUnico="";
+                        }
+                    }
+                }
+
+
                 connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
@@ -2627,7 +2701,7 @@ public class controles {
         }
     }
 
-    private static void capturarWinveSubGrupoParcial()
+    private static void capturarWinveSubGrupoParcialManual()
     {
         String grupo="";
         int cont=0;
@@ -2646,10 +2720,10 @@ public class controles {
            }
             i++;
         }
-    String grupoUnidos []  =  grupo.split(",");
-    String subgrupounidos="";
-    winveSubGrupoParcial="";
-    int conSub=0;
+        String grupoUnidos []  =  grupo.split(",");
+        String subgrupounidos="";
+        winveSubGrupoParcial="";
+        int conSub=0;
         for (int con = 0; con <  grupoUnidos.length; )
         {
             subgrupounidos="";
@@ -2683,5 +2757,59 @@ public class controles {
      }
 
 
+    private static void capturarWinveSubGrupoParcialCriterio()
+    {
+        String grupo="";
+        int cont=0;
+        for (int i = 0; i <  listArrayArticulos.size(); )
+        {
+            if(!grupo.contains(listArrayArticulos.get(i).getidGrupo()) )
+            {    if(cont==0)
+            {
+                grupo=listArrayArticulos.get(i).getidGrupo();
+            }
+            else
+            {
+                grupo=grupo+","+listArrayArticulos.get(i).getidGrupo();
+            }
+                cont++;
+            }
+            i++;
+        }
+        String grupoUnidos []  =  grupo.split(",");
+        String subgrupounidos="";
+        winveSubGrupoParcial="";
+        int conSub=0;
+        for (int con = 0; con <  grupoUnidos.length; )
+        {
+            subgrupounidos="";
+            conSub=0;
+            for (int i = 0; i <  listArrayArticulos.size(); )
+            {
+                if(grupoUnidos[con].equals(listArrayArticulos.get(i).getidGrupo())){
+                    if(conSub==0){
+                        subgrupounidos=listArrayArticulos.get(i).getSubgrupo();
+                    }
+                    else {
+                        if(!subgrupounidos.contains(listArrayArticulos.get(i).getSubgrupo()))
+                        {
+                            subgrupounidos=subgrupounidos+","+listArrayArticulos.get(i).getSubgrupo();
+                        }
+                    }
+                    conSub++;
+                }
+                i++;
+            }
+
+            if(con==0)
+            {
+                winveSubGrupoParcial= grupoUnidos[con]+":"+subgrupounidos;
+            }
+            else {
+                winveSubGrupoParcial=winveSubGrupoParcial+";"+grupoUnidos[con]+":"+subgrupounidos;
+            }
+            con++;
+        }
+    }
 
 }
