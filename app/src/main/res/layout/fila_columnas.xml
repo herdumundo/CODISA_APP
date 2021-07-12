@@ -89,5 +89,4 @@
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"></TextView>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+ </androidx.constraintlayout.widget.ConstraintLayout>

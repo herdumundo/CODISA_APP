@@ -12,16 +12,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         card_view:cardBackgroundColor="@color/azul3"
         card_view:cardCornerRadius="2dp"
-        card_view:contentPadding="10dp">
+        card_view:contentPadding="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="237dp"
+            android:layout_height="200dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -33,7 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+              >
 
                 <TextView
                     android:id="@+id/text1"
@@ -43,96 +44,107 @@
                     android:layout_alignParentTop="true"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text2"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text3"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text4"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
-                    />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text5"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text6"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text7"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/text8"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="5sp"
                     app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/text9"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvName"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white" />
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="5sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -304,7 +304,10 @@ public class menu_principal extends AppCompatActivity {
                             "       b.winvd_fec_vto,b.winvd_area,b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo," +
                             "       b.winvd_cant_act,c.winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc," +
                             "       sugr_codigo,b.winvd_secu, case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma," +
-                            "       c.winve_login                        " +
+                            "       c.winve_login,  'SI'  AS winvd_consolidado , " +
+                            "        case when c.winve_grupo IS NULL and  c.winve_grupo_parcial IS NULL then 'TODOS'    " +
+                            "        WHEN c.winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial," +
+                            "       case when c.winve_flia is null then 'TODAS' else a.flia_desc end as desc_familia                    " +
                             "   FROM    " +
                             "       V_WEB_ARTICULOS_CLASIFICACION  a    " +
                             "       inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art        " +
@@ -318,7 +321,11 @@ public class menu_principal extends AppCompatActivity {
                             "       b.winvd_art, a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
                             "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,    " +
                             "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu,                       " +
-                            "       case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma,c.winve_login   " +
+                            "       case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma," +
+                            "       c.winve_login, 'NO'  AS winvd_consolidado ," +
+                            "        case when c.winve_grupo IS NULL and  c.winve_grupo_parcial IS NULL then 'TODOS'    " +
+                            "       WHEN c.winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial," +
+                            "       case when c.winve_flia is null then 'TODAS' else a.flia_desc end as desc_familia" +
                             "   FROM  " +
                             "       V_WEB_ARTICULOS_CLASIFICACION  a                              " +
                             "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  and a.ART_CODIGO=b.winvd_art  " +
@@ -366,29 +373,38 @@ public class menu_principal extends AppCompatActivity {
                 "winvd_cant_inv," +
                 "winvd_subgr," +
                 "winvd_secu," +
-                "estado,tipo_toma, winve_login) VALUES ('"+
-                rs.getInt("ARDE_SUC")               +"','"+
-                rs.getInt("winvd_nro_inv")          +"','"+
-                rs.getString("winvd_art")           +"','"+
-                decripcionArt           +"','"+
-                rs.getString("winvd_lote")          +"','"+
-                rs.getString("winvd_fec_vto")       +"','"+
-                rs.getString("winvd_area")          +"','"+
-                rs.getString("winvd_dpto")          +"','"+
-                rs.getString("winvd_secc")          +"','"+
-                rs.getString("winvd_flia")          +"','"+
-                rs.getString("winvd_grupo")         +"','"+
-                rs.getString("winvd_cant_act")      +"','"+
-                rs.getString("winve_fec")           +"','"+
-                rs.getString("dpto_desc")           +"','"+
-                rs.getString("secc_desc")           +"','"+
-                rs.getString("flia_desc")           +"','"+
-                rs.getString("grup_desc")           +"','"+
-                rs.getString("area_desc")           +"','" +
-                "0','" +
-                rs.getString("sugr_codigo")         +"','" +
-                rs.getString("winvd_secu")          +"','" +
-                "A','"+rs.getString("tipo_toma")   +"','"+rs.getString("winve_login")   +"') "); //ESTADO PENDIENTE A INVENTARIAR.
+                "estado," +
+                "tipo_toma, " +
+                "winve_login," +
+                "winvd_consolidado,desc_grupo_parcial,desc_familia) " +
+                "VALUES ('"+
+                            rs.getInt("ARDE_SUC")               +"','"+
+                            rs.getInt("winvd_nro_inv")          +"','"+
+                            rs.getString("winvd_art")           +"','"+
+                            decripcionArt           +"','"+
+                            rs.getString("winvd_lote")          +"','"+
+                            rs.getString("winvd_fec_vto")       +"','"+
+                            rs.getString("winvd_area")          +"','"+
+                            rs.getString("winvd_dpto")          +"','"+
+                            rs.getString("winvd_secc")          +"','"+
+                            rs.getString("winvd_flia")          +"','"+
+                            rs.getString("winvd_grupo")         +"','"+
+                            rs.getString("winvd_cant_act")      +"','"+
+                            rs.getString("winve_fec")           +"','"+
+                            rs.getString("dpto_desc")           +"','"+
+                            rs.getString("secc_desc")           +"','"+
+                            rs.getString("flia_desc")           +"','"+
+                            rs.getString("grup_desc")           +"','"+
+                            rs.getString("area_desc")           +"','"+
+                            "0','"                                         +
+                            rs.getString("sugr_codigo")         +"','" +
+                            rs.getString("winvd_secu")          +"','" +
+                            "A','"+rs.getString("tipo_toma")    +"','"
+                            +rs.getString("winve_login")   +"','"
+                            +rs.getString("winvd_consolidado")+"','"
+                            +rs.getString("desc_grupo_parcial")+"','"
+                            +rs.getString("desc_familia")+"'" +
+                        ") "); //ESTADO PENDIENTE A INVENTARIAR.
                 dbdbSTKW002INV.close();
             }
             db_consulta.close();

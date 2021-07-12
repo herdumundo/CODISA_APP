@@ -11,6 +11,7 @@ public class variables {
     public static String tipo_stkw001_insert;
     public static int tipo_stkw001;
     public static int nro_registro_toma;
+    public static String consolidado;
     public static      int tipoListaStkw002=1;
     public static      int tipoStkw002;
 

@@ -28,11 +28,12 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     private static List<Stkw002Item> listaStkw002;
     public static int CodigoRegistro;
     public static String MensajeRegistro;
-
+    static   int cont=1;
      class ExampleViewHolder extends ViewHolder {
         TextView textProducto;
         TextView textCantidad;
          TextView textLote;
+         TextView textCont;
      //    TextView textArea;
 
         ExampleViewHolder(View itemView) {
@@ -40,6 +41,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
             this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
+            this.textCont = (TextView) itemView.findViewById(R.id.textCont);
        //     this.textArea = (TextView) itemView.findViewById(R.id.txt_area);
         }
     }
@@ -54,11 +56,20 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
     }
 
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
+        cont=1;
         Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
         holder.textCantidad.setText(currentItem.getCantidad());
+        holder.textCont.setText(currentItem.getcontador());
     //    holder.textArea.setText(currentItem.getArea());
-        holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
+        if(variables.consolidado.equals("SI")){
+
+        }
+        else{
+            holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
+
+        }
+
 
   holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -66,10 +77,11 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 if(!hasFocus)
                 {
                     listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
-
+                    cont=cont*Integer.parseInt(holder.textCantidad.getText().toString().trim());
                 }
             }
         });
+      //  int as=cont;
          }
 
     public int getItemCount() {
@@ -89,9 +101,6 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
             for (int i = 0; i < listaStkw002.size(); i++) {
                 String cantidad =listaStkw002.get(i).getCantidad();
-                String lote =listaStkw002.get(i).getLote();
-                String cod_articulo =listaStkw002.get(i).getCodArticulo();
-                String fecha_vto =listaStkw002.get(i).getVencimiento();
                 String secuencia =listaStkw002.get(i).getSecuencia();
                 if(cantidad.length()==0)
                 {

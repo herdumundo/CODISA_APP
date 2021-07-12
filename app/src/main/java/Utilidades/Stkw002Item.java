@@ -3,7 +3,9 @@ package Utilidades;
 public class Stkw002Item {
      private String producto;
   //  private String posicion;
+
     private String cantidad;
+    private String contador;
     private String lote;
      private String cod_articulo;
     private String vencimiento;
@@ -12,7 +14,7 @@ public class Stkw002Item {
     private String departamento;
     private String area;
 
-    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ) {
+    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ,String contador ) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
      //   this.posicion = posicion;
@@ -22,6 +24,8 @@ public class Stkw002Item {
         this.vencimiento = vencimiento;
         this.secuencia = secuencia;
         this.area = area;
+        this.contador = contador;
+
     }
 
     public String getProducto() {
@@ -47,6 +51,15 @@ public class Stkw002Item {
     public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
     }
+
+    public String getcontador() {
+        return this.contador;
+    }
+    public void setcontador(String contador) {
+        this.contador = contador;
+    }
+
+
 
     public String getLote() {
         return this.lote;

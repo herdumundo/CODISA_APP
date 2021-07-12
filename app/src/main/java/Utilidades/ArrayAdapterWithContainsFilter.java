@@ -31,8 +31,8 @@ public class ArrayAdapterWithContainsFilter<S> extends ArrayAdapter {
 
     // Filter Class
     public void getContainsFilter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        items.clear();
+       // charText = charText.toLowerCase(Locale.getDefault());
+       items.clear();
         if (charText.length() == 0) {
             items.addAll(arraylist);
         }

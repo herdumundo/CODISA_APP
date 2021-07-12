@@ -11,7 +11,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
 
     }
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "CODISA_INV.db";
 
     public ConexionSQLiteHelper(Context context) {
@@ -29,7 +29,8 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 "   winvd_flia INTEGER,flia_desc TEXT," +
                 "   winvd_grupo INTEGER,grup_desc TEXT, " +
                 "   winvd_subgr INTEGER," +
-                "   estado TEXT,WINVE_LOGIN_CERRADO_WEB TEXT,tipo_toma TEXT,winve_login TEXT)");
+                "   estado TEXT,WINVE_LOGIN_CERRADO_WEB TEXT," +
+                "   tipo_toma TEXT,winve_login TEXT, winvd_consolidado TEXT,desc_grupo_parcial TEXT,desc_familia TEXT)");
 
         db.execSQL("CREATE TABLE USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO TEXT,NOMBRE TEXT ,LOGIN_O TEXT,LOGIN_PASS" +
                 " TEXT,SUCURSAL_DESCRIPCION TEXT, ROL_SUCURSAL INTEGER)");

@@ -91,7 +91,7 @@ public class controles {
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
     public static void conexion_sqlite(Context context) {
-        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,4);
+        conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,ConexionSQLiteHelper.DATABASE_VERSION);
     }
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
@@ -840,7 +840,8 @@ public class controles {
                     "winvd_grupo," +//9
                     "winvd_cant_act," +//10
                     "winvd_cant_inv," +//11
-                    "winvd_secu" +//12
+                    "winvd_secu," +//11
+                    "grup_desc" +//12
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
                     "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
@@ -852,7 +853,7 @@ public class controles {
                 contador_stkw002++;
                 ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
-                        cursor.getString(12),cursor.getString(5)));
+                        cursor.getString(12),cursor.getString(5),cursor.getString(13)));
                 cont++;
             }
             stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
@@ -1033,12 +1034,12 @@ public class controles {
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
                     text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
                     text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("AREA:                                  "+listaStkw001.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:            "+listaStkw001.get(position).getDpto());
+                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
+                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
                     text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
                     text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
-                    text7.setText("LOTE CONSOLIDADO:      "+listaStkw001.get(position).getconsolidado());
-                    text8.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
+                    text7.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
+                    text8.setText("CONSOLIDADO:                  "+listaStkw001.get(position).getconsolidado());
 
 
                     txtimagen.setImageResource(R.drawable.ic_consulta);

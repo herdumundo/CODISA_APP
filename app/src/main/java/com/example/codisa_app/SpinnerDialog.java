@@ -154,9 +154,11 @@ public class SpinnerDialog {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (isUseContainsFilter()) {
-                    adapter.getContainsFilter(searchBox.getText().toString());
+                  //  adapter.getContainsFilter(searchBox.getText().toString());
                 } else {
                     adapter.getFilter().filter(searchBox.getText().toString());
+                  //  adapter.getContainsFilter(searchBox.getText().toString());
+
                 }
             }
         });

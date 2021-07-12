@@ -83,8 +83,10 @@ public class lista_stkw002_inv extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int pos, long l) {
 
-                int nro_registro =Integer.parseInt(listaStkw002.get(pos).getNroToma());
-                variables.nro_registro_toma=nro_registro;
+               // int nro_registro =Integer.parseInt(listaStkw002.get(pos).getNroToma());
+
+                variables.nro_registro_toma=Integer.parseInt(listaStkw002.get(pos).getNroToma());
+                variables.consolidado= listaStkw002.get(pos).getconsolidado() ;
                 ir_stkw001_registro();
 
 
@@ -103,11 +105,14 @@ public class lista_stkw002_inv extends AppCompatActivity
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
             String sql="";
             if(estado.equals("A")){
-                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) , area_desc,dpto_desc,tipo_toma,secc_desc  " +
+                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) , area_desc,dpto_desc,tipo_toma,secc_desc," +
+                        "winvd_consolidado,desc_grupo_parcial,desc_familia " +
                         " from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         " and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1 desc";
             }else {
-                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc,tipo_toma,secc_desc from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc," +
+                        "tipo_toma,secc_desc,winvd_consolidado,desc_grupo_parcial,desc_familia " +
+                        "from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1 desc";
             }
             Cursor cursor=db_consulta.rawQuery(sql ,null);
@@ -119,12 +124,15 @@ public class lista_stkw002_inv extends AppCompatActivity
                 Stkw002List=new Stkw002List();
                 Stkw002List.setNroToma(cursor.getString(0));
                 Stkw002List.setFechaToma(cursor.getString(1));
-                //Stkw002List.setFamilia(cursor.getString(2));
-              //  Stkw002List.setGrupo(cursor.getString(3));
                 Stkw002List.setArea(cursor.getString(2));
                 Stkw002List.setDpto(cursor.getString(3));
                 Stkw002List.setTipoToma(cursor.getString(4));
                 Stkw002List.setSeccion(cursor.getString(5));
+                Stkw002List.setconsolidado(cursor.getString(6));
+                Stkw002List.setGrupo(cursor.getString(7));
+                Stkw002List.setFamilia(cursor.getString(8));
+
+
                 listaStkw002.add(Stkw002List);
                 cont++;
             }
@@ -140,17 +148,18 @@ public class lista_stkw002_inv extends AppCompatActivity
                     TextView text6 = (TextView) view.findViewById(R.id.text6);
                     TextView text7 = (TextView) view.findViewById(R.id.text7);
                     TextView text8 = (TextView) view.findViewById(R.id.text8);
+                    TextView text9 = (TextView) view.findViewById(R.id.text9);
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
                     text1.setText("NRO. DE TOMA:               "+listaStkw002.get(position).getNroToma());
                     text2.setText("FECHA TOMA:                  "+listaStkw002.get(position).getFechaToma());
                     text3.setText("AREA:                                  "+listaStkw002.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:           "+listaStkw002.get(position).getDpto());
+                    text4.setText("DEPARTAMENTO:            "+listaStkw002.get(position).getDpto());
                     text5.setText("SECCION:                           "+listaStkw002.get(position).getSeccion());
-                   // text6.setText("FAMILIA:                             "+listaStkw002.get(position).getFamilia());
-                   // text7.setText("GRUPO:                               "+listaStkw002.get(position).getGrupo());
-                    text8.setText("TOMA:                                 "+listaStkw002.get(position).getTipoToma());
-                    text6.setVisibility(View.GONE);
-                    text7.setVisibility(View.GONE);
+                    text6.setText("FAMILIA:                             "+listaStkw002.get(position).getFamilia());
+                    text7.setText("GRUPO:                               "+listaStkw002.get(position).getGrupo());
+                    text8.setText("CONSOLIDADO:                "+listaStkw002.get(position).getconsolidado());
+                    text9.setText("TOMA:                                 "+listaStkw002.get(position).getTipoToma());
+
 
 
                   //  text4.setText();
@@ -179,8 +188,9 @@ public class lista_stkw002_inv extends AppCompatActivity
 
         }
         catch (Exception e){
-            String err=e.toString();
-        }
+            txtSinresultado.setVisibility(View.VISIBLE);
+            txtSinresultado.setText(e.getMessage());
+         }
     }
 
 

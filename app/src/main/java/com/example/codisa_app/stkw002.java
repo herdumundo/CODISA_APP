@@ -122,7 +122,9 @@ public class stkw002 extends AppCompatActivity {
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
             for (Stkw002Item item : controles.ListArrayInventarioArticulos )
             {
-                if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text))
+                if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text)
+                        ||item.getCodArticulo().contains(text)||item.getVencimiento().contains(text)
+                        ||item.getcontador().toLowerCase().contains(text)|| item.getCantidad().equals(text.trim()))
                 {
                     filteredList.add(item);
                 }
