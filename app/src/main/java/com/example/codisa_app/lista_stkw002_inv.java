@@ -104,17 +104,17 @@ public class lista_stkw002_inv extends AppCompatActivity
 
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
             String sql="";
-            if(estado.equals("A")){
+           //< if(estado.equals("A")){
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) , area_desc,dpto_desc,tipo_toma,secc_desc," +
                         "winvd_consolidado,desc_grupo_parcial,desc_familia " +
                         " from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         " and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1 desc";
-            }else {
+            /*}else {
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc," +
                         "tipo_toma,secc_desc,winvd_consolidado,desc_grupo_parcial,desc_familia " +
                         "from STKW002INV WHERE ESTADO='"+estado+"'  " +
                         "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1 desc";
-            }
+           // }*/
             Cursor cursor=db_consulta.rawQuery(sql ,null);
             int cont=0;
             Stkw002List Stkw002List=null;

@@ -90,6 +90,7 @@ public class controles {
     static  int     ContExportStkw002;
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
+
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,ConexionSQLiteHelper.DATABASE_VERSION);
     }
@@ -841,7 +842,8 @@ public class controles {
                     "winvd_cant_act," +//10
                     "winvd_cant_inv," +//11
                     "winvd_secu," +//11
-                    "grup_desc" +//12
+                    "grup_desc," +//11
+                    "flia_desc" +//12
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
                     "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
@@ -853,7 +855,7 @@ public class controles {
                 contador_stkw002++;
                 ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
-                        cursor.getString(12),cursor.getString(5),cursor.getString(13)));
+                        cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14)));
                 cont++;
             }
             stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);

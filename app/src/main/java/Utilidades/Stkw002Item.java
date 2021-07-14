@@ -11,10 +11,11 @@ public class Stkw002Item {
     private String vencimiento;
     private String secuencia;
     private String seccion;
-    private String departamento;
+    private String grupo;
     private String area;
+    private String familia;
 
-    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ,String contador ) {
+    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ,String grupo,String familia ) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
      //   this.posicion = posicion;
@@ -24,7 +25,8 @@ public class Stkw002Item {
         this.vencimiento = vencimiento;
         this.secuencia = secuencia;
         this.area = area;
-        this.contador = contador;
+        this.grupo = grupo;
+        this.familia = familia;
 
     }
 
@@ -52,11 +54,18 @@ public class Stkw002Item {
         this.cantidad = cantidad;
     }
 
-    public String getcontador() {
-        return this.contador;
+    public String getgrupo() {
+        return this.grupo;
     }
-    public void setcontador(String contador) {
-        this.contador = contador;
+    public void setgrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getfamilia() {
+        return this.familia;
+    }
+    public void setfamilia(String familia) {
+        this.familia = familia;
     }
 
 

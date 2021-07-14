@@ -33,7 +33,8 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         TextView textProducto;
         TextView textCantidad;
          TextView textLote;
-         TextView textCont;
+         TextView txtFamilia;
+         TextView txtGrupo;
      //    TextView textArea;
 
         ExampleViewHolder(View itemView) {
@@ -41,8 +42,8 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
             this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
-            this.textCont = (TextView) itemView.findViewById(R.id.textCont);
-       //     this.textArea = (TextView) itemView.findViewById(R.id.txt_area);
+            this.txtFamilia = (TextView) itemView.findViewById(R.id.txt_familia);
+            this.txtGrupo = (TextView) itemView.findViewById(R.id.txt_grupo);
         }
     }
 
@@ -60,14 +61,14 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
         holder.textCantidad.setText(currentItem.getCantidad());
-        holder.textCont.setText(currentItem.getcontador());
-    //    holder.textArea.setText(currentItem.getArea());
+        holder.txtGrupo.setText("Gupo:"+currentItem.getgrupo());
+        holder.txtFamilia.setText("Familia:"+currentItem.getfamilia());
         if(variables.consolidado.equals("SI")){
 
         }
         else{
             holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
-
+            holder.textLote.setVisibility(View.VISIBLE);
         }
 
 
@@ -77,7 +78,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 if(!hasFocus)
                 {
                     listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
-                    cont=cont*Integer.parseInt(holder.textCantidad.getText().toString().trim());
+                   // cont=cont*Integer.parseInt(holder.textCantidad.getText().toString().trim());
                 }
             }
         });

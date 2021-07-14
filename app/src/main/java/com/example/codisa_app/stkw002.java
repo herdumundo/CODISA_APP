@@ -120,17 +120,34 @@ public class stkw002 extends AppCompatActivity {
         try {
 
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
-            for (Stkw002Item item : controles.ListArrayInventarioArticulos )
-            {
-                if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text)
-                        ||item.getCodArticulo().contains(text)||item.getVencimiento().contains(text)
-                        ||item.getcontador().toLowerCase().contains(text)|| item.getCantidad().equals(text.trim()))
+            if(variables.consolidado.equals("SI")){
+                for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
-                    filteredList.add(item);
+                    if(item.getProducto().toLowerCase().contains(text)
+                            ||item.getCodArticulo().contains(text)
+                            ||item.getgrupo().toLowerCase().contains(text)||
+                            item.getfamilia().toLowerCase().contains(text)|| item.getCantidad().contains(text.trim()))
+                    {
+                        filteredList.add(item);
+                    }
+                    // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
                 }
-              // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
+                adapter.setFilter(filteredList);
             }
-            adapter.setFilter(filteredList);
+            else{
+                for (Stkw002Item item : controles.ListArrayInventarioArticulos )
+                {
+                    if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text)
+                            ||item.getCodArticulo().contains(text)||item.getVencimiento().contains(text)
+                            ||item.getgrupo().toLowerCase().contains(text)||item.getfamilia().toLowerCase().contains(text)|| item.getCantidad().contains(text.trim()))
+                    {
+                        filteredList.add(item);
+                    }
+                    // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
+                }
+                adapter.setFilter(filteredList);
+            }
+
 
 
         }

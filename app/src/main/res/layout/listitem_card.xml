@@ -36,115 +36,345 @@
                 android:orientation="vertical"
               >
 
-                <TextView
-                    android:id="@+id/text1"
+                <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_height="196dp">
 
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
 
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                    <RelativeLayout
+                        android:layout_width="141dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                         >
 
-                <TextView
-                    android:id="@+id/text2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                        <TextView
+                            android:id="@+id/text10"
+                            android:layout_width="141dp"
 
-                <TextView
-                    android:id="@+id/text3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                            android:layout_height="18dp"
 
-                <TextView
-                    android:id="@+id/text4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                            android:layout_above="@+id/text11"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="-1dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="1dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
 
-                <TextView
-                    android:id="@+id/text5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                        <TextView
+                            android:id="@+id/text11"
+                            android:layout_width="130dp"
 
-                <TextView
-                    android:id="@+id/text6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                            android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/text7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                            android:layout_above="@+id/text12"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
 
-                <TextView
-                    android:id="@+id/text8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                        <TextView
+                            android:id="@+id/text12"
+                            android:layout_width="91dp"
 
-                <TextView
-                    android:id="@+id/text9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginTop="1dp"
-                    android:textColor="@color/white"
-                    app:autoSizeMaxTextSize="15sp"
-                    app:autoSizeMinTextSize="5sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform" />
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text13"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="3dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text13"
+                            android:layout_width="91dp"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text14"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="2dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text14"
+                            android:layout_width="91dp"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text15"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="3dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text15"
+                            android:layout_width="91dp"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text16"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text16"
+                            android:layout_width="91dp"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text17"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="2dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text17"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_above="@+id/text18"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text18"
+                            android:layout_width="130dp"
+
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="209dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="0dp">
+
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="206dp"
+
+                            android:layout_height="19dp"
+                            android:layout_above="@+id/text2"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+
+                        <TextView
+                            android:id="@+id/text2"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text3"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text3"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text4"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text4"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text5"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text5"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text6"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text6"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text7"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text7"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text8"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text8"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/text9"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+
+                        <TextView
+                            android:id="@+id/text9"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/white"
+                            app:autoSizeMaxTextSize="15sp"
+                            app:autoSizeMinTextSize="5sp"
+                            app:autoSizeStepGranularity="2sp"
+                            app:autoSizeTextType="uniform" />
+                    </RelativeLayout>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
