@@ -42,7 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.Result;
+
 public class controles {
+
     public static   ArrayList<String> arrSucursales       =   new ArrayList<>();
     public static   ArrayList<String> arrIdSucursales     =   new ArrayList<>();
     public static   ArrayList<String> arr_id_deposito     =   new ArrayList<>();
@@ -60,7 +63,6 @@ public class controles {
     public static   int     nroTomaCancelacion;
     public static   String  consolidadoCancelacion="";
     static          String  winveSubGrupoParcial=""; // DATO NECESARIO PARA INSERTAR EL ANIDADO DE GRUPO Y SUBGRUPO A LA BD.
-
     public static   String  ids_subgrupos="",ids_grupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
     static          String  grupoSeleccionados="";
     static          String  SubgrupoGruposSeleccionados="";
@@ -819,7 +821,7 @@ public class controles {
 
         }
         catch (Exception E){
-            Toast.makeText(context_stkw001,E.getMessage()+" LISTAR ARTICULOS",Toast.LENGTH_LONG).show();
+          //  Toast.makeText(context_stkw001,E.getMessage()+" LISTAR ARTICULOS",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -988,7 +990,9 @@ public class controles {
                     "      NVL(NVL(grup_desc,WINVE_GRUPO_PARCIAL),'TODOS') AS desc_grupos,to_char(WEB_INVENTARIO.Winve_Fec,'DD/MM/YYYY HH:SS') AS FECHAFORM," +
                     "       WEB_INVENTARIO.*,V_WEB_GRUPO.*,V_WEB_area.*,V_WEB_SECC.*,V_WEB_DPTO.*,  NVL(V_WEB_FLIA.flia_desc,'TODAS') AS flia_desc ," +
                     "       case  WEB_INVENTARIO.winve_tipo_toma when 'C' then 'CRITERIO' " +
-                    "       ELSE 'MANUAL' END AS tipo_toma ,CASE winve_consolidado WHEN 'S' THEN 'SI' ELSE 'NO' END AS   consolidado" +
+                    "       ELSE 'MANUAL' END AS tipo_toma ,CASE winve_consolidado WHEN 'S' THEN 'SI' ELSE 'NO' END AS   consolidado," +
+                    "       case when  winve_grupo IS NULL and   winve_grupo_parcial IS NULL then 'TODOS'   " +
+                    "       WHEN  winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial" +
                     "   FROM " +
                     "       WEB_INVENTARIO " +
                     "       LEFT OUTER JOIN V_WEB_FLIA on WEB_INVENTARIO.WINVE_FLIA=V_WEB_FLIA.FLIA_CODIGO " +
@@ -1008,7 +1012,7 @@ public class controles {
                 Stkw001List.setNroToma(rs.getString("WINVE_NUMERO"));
                 Stkw001List.setFechaToma(rs.getString("FECHAFORM"));
                 Stkw001List.setFamilia(rs.getString("flia_desc"));
-                Stkw001List.setGrupo(rs.getString("desc_grupos"));
+                Stkw001List.setGrupo(rs.getString("desc_grupo_parcial"));
                 Stkw001List.setArea(rs.getString("area_desc"));
                 Stkw001List.setDpto(rs.getString("DPTO_DESC"));
                 Stkw001List.setTipoToma(rs.getString("tipo_toma"));
@@ -1033,15 +1037,37 @@ public class controles {
                     TextView text6 = (TextView) view.findViewById(R.id.text6);
                     TextView text7 = (TextView) view.findViewById(R.id.text7);
                     TextView text8 = (TextView) view.findViewById(R.id.text8);
+                    TextView text9 = (TextView) view.findViewById(R.id.text9);
+                    TextView text_1 = (TextView) view.findViewById(R.id.text_1);
+                    TextView text_2 = (TextView) view.findViewById(R.id.text_2);
+                    TextView text_3 = (TextView) view.findViewById(R.id.text_3);
+                    TextView text_4 = (TextView) view.findViewById(R.id.text_4);
+                    TextView text_5 = (TextView) view.findViewById(R.id.text_5);
+                    TextView text_6 = (TextView) view.findViewById(R.id.text_6);
+                    TextView text_7 = (TextView) view.findViewById(R.id.text_7);
+                    TextView text_8 = (TextView) view.findViewById(R.id.text_8);
+                    TextView text_9 = (TextView) view.findViewById(R.id.text_9);
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
-                    text1.setText("NRO. DE TOMA:               "+listaStkw001.get(position).getNroToma());
-                    text2.setText("FECHA TOMA:                  "+listaStkw001.get(position).getFechaToma());
-                    text3.setText("AREA:                                 "+listaStkw001.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:             "+listaStkw001.get(position).getDpto());
-                    text5.setText("SECCION:                           "+listaStkw001.get(position).getSeccion());
-                    text6.setText("FAMILIA:                             "+listaStkw001.get(position).getFamilia());
-                    text7.setText("TOMA:                                 "+listaStkw001.get(position).getTipoToma());
-                    text8.setText("CONSOLIDADO:                  "+listaStkw001.get(position).getconsolidado());
+
+                    text1.setText(listaStkw001.get(position).getNroToma());
+                    text2.setText(listaStkw001.get(position).getFechaToma());
+                    text3.setText(listaStkw001.get(position).getArea());
+                    text4.setText(listaStkw001.get(position).getDpto());
+                    text5.setText(listaStkw001.get(position).getSeccion());
+                    text6.setText(listaStkw001.get(position).getFamilia());
+                    text7.setText(listaStkw001.get(position).getGrupo());
+                    text8.setText(listaStkw001.get(position).getconsolidado());
+                    text9.setText(listaStkw001.get(position).getTipoToma());
+
+                    text_1.setText("NRO. DE TOMA:");
+                    text_2.setText("FECHA TOMA:");
+                    text_3.setText("AREA:");
+                    text_4.setText("DEPARTAMENTO:");
+                    text_5.setText("SECCION:");
+                    text_6.setText("FAMILIA:");
+                    text_7.setText("GRUPO:");
+                    text_8.setText("CONSOLIDADO:");
+                    text_9.setText("TOMA:");
 
 
                     txtimagen.setImageResource(R.drawable.ic_consulta);
@@ -1867,6 +1893,7 @@ public class controles {
             }
         }
     }
+
 
     public static   void limpiarListaViewArticulosSTKW001(){
         ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {

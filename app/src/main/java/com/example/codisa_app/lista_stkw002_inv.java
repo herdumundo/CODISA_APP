@@ -149,17 +149,36 @@ public class lista_stkw002_inv extends AppCompatActivity
                     TextView text7 = (TextView) view.findViewById(R.id.text7);
                     TextView text8 = (TextView) view.findViewById(R.id.text8);
                     TextView text9 = (TextView) view.findViewById(R.id.text9);
+                    TextView text_1 = (TextView) view.findViewById(R.id.text_1);
+                    TextView text_2 = (TextView) view.findViewById(R.id.text_2);
+                    TextView text_3 = (TextView) view.findViewById(R.id.text_3);
+                    TextView text_4 = (TextView) view.findViewById(R.id.text_4);
+                    TextView text_5 = (TextView) view.findViewById(R.id.text_5);
+                    TextView text_6 = (TextView) view.findViewById(R.id.text_6);
+                    TextView text_7 = (TextView) view.findViewById(R.id.text_7);
+                    TextView text_8 = (TextView) view.findViewById(R.id.text_8);
+                    TextView text_9 = (TextView) view.findViewById(R.id.text_9);
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
-                    text1.setText("NRO. DE TOMA:               "+listaStkw002.get(position).getNroToma());
-                    text2.setText("FECHA TOMA:                  "+listaStkw002.get(position).getFechaToma());
-                    text3.setText("AREA:                                  "+listaStkw002.get(position).getArea());
-                    text4.setText("DEPARTAMENTO:            "+listaStkw002.get(position).getDpto());
-                    text5.setText("SECCION:                           "+listaStkw002.get(position).getSeccion());
-                    text6.setText("FAMILIA:                             "+listaStkw002.get(position).getFamilia());
-                    text7.setText("GRUPO:                               "+listaStkw002.get(position).getGrupo());
-                    text8.setText("CONSOLIDADO:                "+listaStkw002.get(position).getconsolidado());
-                    text9.setText("TOMA:                                 "+listaStkw002.get(position).getTipoToma());
 
+                    text1.setText(listaStkw002.get(position).getNroToma());
+                    text2.setText(listaStkw002.get(position).getFechaToma());
+                    text3.setText(listaStkw002.get(position).getArea());
+                    text4.setText(listaStkw002.get(position).getDpto());
+                    text5.setText(listaStkw002.get(position).getSeccion());
+                    text6.setText(listaStkw002.get(position).getFamilia());
+                    text7.setText(listaStkw002.get(position).getGrupo());
+                    text8.setText(listaStkw002.get(position).getconsolidado());
+                    text9.setText(listaStkw002.get(position).getTipoToma());
+
+                    text_1.setText("NRO. DE TOMA:");
+                    text_2.setText("FECHA TOMA:");
+                    text_3.setText("AREA:");
+                    text_4.setText("DEPARTAMENTO:");
+                    text_5.setText("SECCION:");
+                    text_6.setText("FAMILIA:");
+                    text_7.setText("GRUPO:");
+                    text_8.setText("CONSOLIDADO:");
+                    text_9.setText("TOMA:");
 
 
                   //  text4.setText();

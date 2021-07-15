@@ -2,7 +2,10 @@ package com.example.codisa_app;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -29,7 +32,8 @@ public class stkw001 extends AppCompatActivity {
             txt_departamento,txt_id_departamento,txt_id_seccion,txt_seccion,txt_familia,
             txt_id_familia, lbl_articulos,
             txt_lv_lote,txt_lv_vencimiento,txtTotalArticuloGrilla,lbl_subgrupo,lbl_grupo;
-
+     static   AlertDialog.Builder builder;
+     static   AlertDialog ad;
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos,spinerGrupo;
 
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,
@@ -210,28 +214,28 @@ public class stkw001 extends AppCompatActivity {
         radioGrupoExistencia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch(i) {
+                switch(i)
+                {
                     case R.id.radioExistenciaSi:
                         Bolexistencia=true;
                         controles.INVE_ART_EXIST="S";
-                        if (variables.tipo_stkw001==1){
+                        if (variables.tipo_stkw001==1)
+                        {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
-
                         }
                         // Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;
                     case R.id.radioExistenciaNo:
                         Bolexistencia=false;
                         controles.INVE_ART_EXIST="N";
-                        if (variables.tipo_stkw001==1){
+                        if (variables.tipo_stkw001==1)
+                        {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
-
                         }
                         //   Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;
-
                 }
             }
         });

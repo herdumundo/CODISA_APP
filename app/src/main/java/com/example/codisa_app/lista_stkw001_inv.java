@@ -59,11 +59,11 @@ public class lista_stkw001_inv extends AppCompatActivity {
         controles.contextListaStkw001=this;
         controles.ListarTomasServer(this);
 
-
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
         getSupportActionBar().setCustomView(R.layout.customactionbar);
         TextView txtActionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
         txtActionbar.setText("CANCELACIÓN DE TOMAS");
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -79,7 +79,6 @@ public class lista_stkw001_inv extends AppCompatActivity {
                 controles.consolidadoCancelacion=consolidado;
                 final controles.AsyncListarCancelaciones task = new controles.AsyncListarCancelaciones();
                 task.execute();
-
             }
         });
         controles.VerificarRed(this);
