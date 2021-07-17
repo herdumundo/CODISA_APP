@@ -4,6 +4,7 @@ import Utilidades.Stkw002Item;
 import Utilidades.Stkw002List;
 import Utilidades.controles;
 import Utilidades.variables;
+import maes.tech.intentanim.CustomIntent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,6 +99,8 @@ public class lista_stkw002_inv extends AppCompatActivity
             Intent intent = new Intent(lista_stkw002_inv.this, stkw002.class);
             finish();
             startActivity(intent);
+        CustomIntent.customType(this,"left-to-right");
+
     }
     private void consultar_tomas_generadas(String estado) {
         try {

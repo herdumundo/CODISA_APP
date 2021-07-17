@@ -126,7 +126,8 @@ public class stkw002 extends AppCompatActivity {
                     if(item.getProducto().toLowerCase().contains(text)
                             ||item.getCodArticulo().contains(text)
                             ||item.getgrupo().toLowerCase().contains(text)||
-                            item.getfamilia().toLowerCase().contains(text)|| item.getCantidad().contains(text.trim()))
+                            item.getfamilia().toLowerCase().contains(text)||
+                            item.getCantidad().contains(text.trim()))
                     {
                         filteredList.add(item);
                     }
@@ -137,9 +138,10 @@ public class stkw002 extends AppCompatActivity {
             else{
                 for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
-                    if(item.getProducto().toLowerCase().contains(text)||item.getLote().toLowerCase().contains(text)
+                    if(item.getProducto().toLowerCase().contains(text.toLowerCase())||item.getLote().toLowerCase().contains(text.toLowerCase())
                             ||item.getCodArticulo().contains(text)||item.getVencimiento().contains(text)
-                            ||item.getgrupo().toLowerCase().contains(text)||item.getfamilia().toLowerCase().contains(text)|| item.getCantidad().contains(text.trim()))
+                            ||item.getgrupo().toLowerCase().contains(text.toLowerCase())||item.getfamilia().toLowerCase().contains(text.toLowerCase())
+                            || item.getCantidad().contains(text.trim()))
                     {
                         filteredList.add(item);
                     }

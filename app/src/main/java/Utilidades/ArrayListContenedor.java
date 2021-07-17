@@ -7,12 +7,14 @@ public class ArrayListContenedor {
 	private String idFamilia;
 	private String idGrupo;
 	private String DescGrupo;
+	private String DescSubgrupo;
 	private String idSubgrupo;
 	private String lote;
 	private String cantidad;
 	private String fecha_vencimiento;
 	private String fecha_vencimientoParseado;
 	private String subgrupo;
+	private String familia;
 	private boolean isSelected;
 	private Object object;
 
@@ -34,6 +36,11 @@ public class ArrayListContenedor {
 		this.idGrupo = idGrupo;
 		this.DescGrupo = DescGrupo;
 		this.idSubgrupo = idSubgrupo;
+		this.familia = familia;
+		this.DescSubgrupo = DescSubgrupo;
+
+
+
  	}
 
 	public Object getObject() {
@@ -94,6 +101,14 @@ public class ArrayListContenedor {
 	}
 
 
+	public String getDescFamilia() {
+		return familia;
+	}
+	public void setDescFamilia(String familia) {
+		this.familia = familia;
+	}
+
+
 
 	public String getSubgrupo() {
 		return subgrupo;
@@ -123,7 +138,12 @@ public class ArrayListContenedor {
 		this.idFamilia = idFamilia;
 	}
 
-
+	public String getDescSubgrupo() {
+		return DescSubgrupo;
+	}
+	public void setDescSubgrupo(String DescSubgrupo) {
+		this.DescSubgrupo = DescSubgrupo;
+	}
 
 	public String getidGrupo() {
 		return idGrupo;

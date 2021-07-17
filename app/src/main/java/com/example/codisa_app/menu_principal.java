@@ -18,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.media.session.PlaybackState;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -38,6 +39,8 @@ import java.util.ArrayList;
 import Utilidades.Stkw002List;
 import Utilidades.controles;
 import Utilidades.variables;
+import maes.tech.intentanim.CustomIntent;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -106,6 +109,7 @@ public class menu_principal extends AppCompatActivity {
         variables.tipoStkw002=2;
         Intent i=new Intent(this,lista_stkw002_inv.class);
         startActivity(i);
+        CustomIntent.customType(menu_principal.this,"left-to-right");
     }
 
     public void OnclickIrStkw001(View v){
@@ -124,6 +128,7 @@ public class menu_principal extends AppCompatActivity {
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
                         finish();
                         startActivity(intent);
+                        CustomIntent.customType(menu_principal.this,"left-to-right");
 
                     }
                 });
@@ -136,6 +141,7 @@ public class menu_principal extends AppCompatActivity {
                         Intent intent = new Intent(menu_principal.this, stkw001.class);
                         finish();
                         startActivity(intent);
+                        CustomIntent.customType(menu_principal.this,"left-to-right");
 
                     }
                 });
@@ -153,6 +159,7 @@ public class menu_principal extends AppCompatActivity {
         Intent intent = new Intent(this, lista_stkw001_inv.class);
         finish();
         startActivity(intent);
+        CustomIntent.customType(menu_principal.this,"left-to-right");
 
     }
 

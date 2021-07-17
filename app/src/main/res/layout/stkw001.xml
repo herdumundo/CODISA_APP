@@ -20,67 +20,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/relative"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginTop="108dp"
-        android:background="@color/azul3"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="MissingConstraints"
-
-        tools:layout_editor_absoluteX="0dp">
-
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="180dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:text="COD"
-
-            android:textColor="@color/white"></TextView>
-
-        <TextView
-            android:id="@+id/TextView02"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_alignParentLeft="true"
-            android:layout_weight="1"
-            android:text="ARTICULO"
-            android:textColor="@color/white"></TextView>
-
-        <TextView
-            android:id="@+id/TextView03"
-            android:layout_width="210dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
-            android:text="LOTE"
-            android:textColor="@color/white"></TextView>
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="190dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
-            android:text="VTO."
-            android:textColor="@color/white"></TextView>
-    </LinearLayout>
 
     <TextView
         android:id="@+id/txtTotalArticuloGrilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@color/azul3"
         android:text="TOTAL ARTICULOS SELECCIONADOS:"
         android:textAlignment="textStart"
         android:textColor="@color/white"
         android:textStyle="normal|bold"
-        app:layout_constraintTop_toBottomOf="@+id/listViewDet_art"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -88,32 +38,16 @@
         android:id="@+id/btnRegistrar"
         android:layout_width="278dp"
         android:layout_height="51dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/bordercolor"
         android:drawableLeft="@drawable/ic_registrar"
         android:onClick="registrarToma"
         android:text="Generar Toma"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTotalArticuloGrilla" />
-
-    <ListView
-        android:id="@+id/listViewDet_art"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-
-        app:layout_constraintTop_toBottomOf="@+id/relative"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-16dp">
-
-
-    </ListView>
-
 
     <RadioGroup
         android:id="@+id/radioGrupoConsolidar"
@@ -159,9 +93,6 @@
     </RadioGroup>
 
 
-
-
-
     <RadioGroup
         android:id="@+id/radioGrupoLote"
         android:layout_width="110dp"
@@ -180,9 +111,9 @@
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoLote"
+            android:buttonTint="@color/azul3"
             android:text="SI"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -197,9 +128,9 @@
             android:layout_height="match_parent"
             android:layout_alignStart="@+id/radioGrupoLote"
             android:layout_alignBottom="@+id/radioGrupoLote"
+            android:buttonTint="@color/azul3"
             android:text="NO"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -223,9 +154,9 @@
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoArticulo"
+            android:buttonTint="@color/azul3"
             android:text="SI"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -235,9 +166,9 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoArticulo"
             android:layout_alignBottom="@+id/radioGrupoArticulo"
+            android:buttonTint="@color/azul3"
             android:text="NO"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -260,9 +191,9 @@
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/radioGrupoExistencia"
+            android:buttonTint="@color/azul3"
             android:text="SI"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -272,9 +203,9 @@
             android:layout_height="match_parent"
             android:layout_alignStart="@+id/radioGrupoExistencia"
             android:layout_alignBottom="@+id/radioGrupoExistencia"
+            android:buttonTint="@color/azul3"
             android:text="NO"
             android:textSize="15dp"
-            android:buttonTint="@color/azul3"
 
             android:textStyle="bold" />
 
@@ -335,13 +266,12 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:text="Sub-Grupo:"
+        android:text="Subgrupo:"
         android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_grupo"
         tools:ignore="MissingConstraints" />
-
 
 
     <TextView
@@ -450,7 +380,7 @@
     <TextView
         android:id="@+id/lbl_area"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="19dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Area:"
@@ -463,7 +393,7 @@
     <TextView
         android:id="@+id/lbl_sucursal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="19dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:text="Sucursal:"
@@ -476,7 +406,7 @@
     <TextView
         android:id="@+id/lbl_deposito"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="19dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Deposito:"
@@ -616,7 +546,7 @@
         android:layout_width="191dp"
         android:layout_height="29dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
 
         android:drawableEnd="@drawable/ic_action_spinner"
         android:textSize="20sp"
@@ -651,4 +581,120 @@
         tools:ignore="MissingConstraints" />
 
 
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="324dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinerArticulos"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorDarkGray"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/azul3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="69dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/azul3"
+                    android:divider="@drawable/divider"
+                    android:text="FAMILIA"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/azul3"
+                    android:text="GRUPO"
+                    android:textStyle="bold"
+                    android:divider="@drawable/divider"
+
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/azul3"
+                    android:text="SUBGRUPO"
+                    android:textStyle="bold"
+                    android:divider="@drawable/divider"
+
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="66dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:text="COD ART."
+                    android:divider="@drawable/divider"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"></TextView>
+
+                <TextView
+                    android:background="@color/azul3"
+                    android:textStyle="bold"
+                    android:id="@+id/TextView02"
+                    android:layout_width="204dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:text="ARTICULO"
+                    android:divider="@drawable/divider"
+
+                    android:textColor="@color/white"></TextView>
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="100dp"
+                    android:layout_height="32dp"
+                    android:divider="@drawable/divider"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:text="LOTE"
+                    android:textColor="@color/white"></TextView>
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="100dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:text="VTO."
+                    android:textStyle="bold"
+                    android:textColor="@color/white"></TextView>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listViewDet_art"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/azul_claro2"
+                android:scrollbars="horizontal|vertical" />
+        </LinearLayout>
+    </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,16 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import Utilidades.ArrayAdapterWithContainsFilter;
 import Utilidades.OnSpinerItemClick;
+import Utilidades.Stkw002Item;
+import Utilidades.controles;
+import Utilidades.variables;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -38,8 +43,7 @@ public class SpinnerDialog {
     boolean showKeyboard = false;
     boolean useContainsFilter = false;
     int titleColor,searchIconColor,searchTextColor,itemColor,itemDividerColor,closeColor;
-
-    private void initColor(Context context){
+     private void initColor(Context context){
         this.titleColor=context.getResources().getColor(R.color.colorBlack);
         this.searchIconColor=context.getResources().getColor(R.color.colorBlack);
         this.searchTextColor=context.getResources().getColor(R.color.colorBlack);
@@ -102,9 +106,7 @@ public class SpinnerDialog {
             showKeyboard(searchBox);
         }
 
-       // title.setTextColor(titleColor);
-      //  searchBox.setTextColor(searchTextColor);
-       // rippleViewClose.setTextColor(closeColor);
+
 
 
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.items_view, items);
@@ -148,24 +150,25 @@ public class SpinnerDialog {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (isUseContainsFilter()) {
+                    //  adapter.getContainsFilter(searchBox.getText().toString());
+                } else {
+                   adapter.getFilter().filter(searchBox.getText().toString().toLowerCase());
 
+                    // adapter.getContainsFilter(searchBox.getText().toString());
+                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (isUseContainsFilter()) {
-                  //  adapter.getContainsFilter(searchBox.getText().toString());
-                } else {
-                    adapter.getFilter().filter(searchBox.getText().toString());
-                  //  adapter.getContainsFilter(searchBox.getText().toString());
 
-                }
             }
         });
 
         rippleViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 closeSpinerDialog();
             }
         });
@@ -200,6 +203,20 @@ public class SpinnerDialog {
                            }
                 , 200);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private boolean isCancellable() {
         return cancellable;

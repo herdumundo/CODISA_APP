@@ -117,7 +117,7 @@ public class stkw001 extends AppCompatActivity {
         spinerSubGrupo.setEmptyTitle("No se encontraron resultados");
         spinerSubGrupo.setClearText("Ninguno");
         spinerSubGrupo.setColorSeparation(true);
-        spinerSubGrupo.setHintText("Listado de sub-grupos");
+        spinerSubGrupo.setHintText("Listado de subgrupos");
         spinerArticulos.setHintText("Listado de articulos");
         spinerArticulos.setSearchHint("Busqueda");
         spinerArticulos.setEmptyTitle("No se encontraron resultados");

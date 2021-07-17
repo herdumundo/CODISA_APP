@@ -44,6 +44,8 @@ import java.util.List;
 
 import javax.xml.transform.Result;
 
+import maes.tech.intentanim.CustomIntent;
+
 public class controles {
 
     public static   ArrayList<String> arrSucursales       =   new ArrayList<>();
@@ -116,6 +118,8 @@ public class controles {
 
                     context.startActivity(intent);
                     activity.finish();
+                    CustomIntent.customType(context,"right-to-left");
+
                 }
             });
             builder.setNegativeButton("No",null);
@@ -143,6 +147,8 @@ public class controles {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(intent);
                     activity.finish();
+                    CustomIntent.customType(context,"right-to-left");
+
                 }
             });
             builder.setNegativeButton("No",null);
@@ -161,7 +167,10 @@ public class controles {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             context.startActivity(intent);
+            CustomIntent.customType(context,"right-to-left");
+
             activity.finish();
+
         }
     }
 
@@ -185,7 +194,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_deposito.add(rs.getString("dep_codigo"));
-                arr_deposito.add(rs.getString("dep_codigo")+"-"+rs.getString("dep_desc"));
+                arr_deposito.add(rs.getString("dep_codigo")+" - "+rs.getString("dep_desc"));
             }
             stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
             Stkw001DepositoOnclick();
@@ -209,7 +218,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_area.add(rs.getString("area_codigo"));
-                arr_area.add(rs.getString("area_codigo")+"-"+rs.getString("area_desc"));
+                arr_area.add(rs.getString("area_codigo")+" - "+rs.getString("area_desc"));
             }
             stkw001.sp_area = new SpinnerDialog(activity,arr_area,"Listado de areas");
             Stkw001AreaOnclick(activity,context,tipo_toma);
@@ -234,7 +243,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_departamento.add(rs.getString("dpto_codigo"));
-                arr_departamento.add(rs.getString("dpto_codigo")+"-"+rs.getString("dpto_desc"));
+                arr_departamento.add(rs.getString("dpto_codigo")+" - "+rs.getString("dpto_desc"));
             }
             stkw001.sp_departamento = new SpinnerDialog(activity,arr_departamento,"Listado de departamentos");
             Stkw001DepartamentoOnclick(activity,context,  tipo_toma);
@@ -261,7 +270,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_seccion.add(rs.getString("secc_codigo"));
-                arr_seccion.add(rs.getString("secc_codigo")+"-"+rs.getString("secc_desc"));
+                arr_seccion.add(rs.getString("secc_codigo")+" - "+rs.getString("secc_desc"));
             }
             stkw001.sp_seccion = new SpinnerDialog(activity,arr_seccion,"Listado de secciones");
             Stkw001SeccionOnclick(activity,context,  tipo_toma);
@@ -290,7 +299,7 @@ public class controles {
             while ( rs.next())
             {
                 arr_id_familia.add(rs.getString("flia_codigo"));
-                arr_familia.add(rs.getString("flia_codigo")+"-"+rs.getString("flia_desc"));
+                arr_familia.add(rs.getString("flia_codigo")+" - "+rs.getString("flia_desc"));
             }
             stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
             Stkw001FamiliaOnclick(activity, context, tipo_toma);
@@ -328,7 +337,7 @@ public class controles {
                 h.setId(Integer.parseInt(rs.getString("grup_codigo")));
                 h.setidFamilia( rs.getString("grup_familia") );
                 h.setDescGrupo( rs.getString("grup_desc") );
-                h.setName( rs.getString("grup_familia")+"#"+ rs.getString("grup_codigo")+"-"+rs.getString("grup_desc") );
+                h.setName(  rs.getString("grup_codigo")+" - "+rs.getString("grup_desc") );
                 h.setLote("");
 
                 listArrayGrupo.add(h);
@@ -453,7 +462,7 @@ public class controles {
                     h.setidGrupo(rs.getString("sugr_GRUPO"));
                     h.setDescGrupo( rs.getString("grup_desc"));
                     h.setidSubgrupo( rs.getString("sugr_codigo") );
-                    h.setName(rs.getString("grup_desc")+":"+rs.getString("sugr_grupo")+"#"+rs.getString("sugr_codigo")+"-"+rs.getString("sugr_desc"));
+                    h.setName(rs.getString("grup_desc")+": [" +rs.getString("sugr_codigo")+" - "+rs.getString("sugr_desc")+"]");
                     h.setLote("");
                     listArraySubgrupo.add(h);
                     cont++;
@@ -575,7 +584,7 @@ public class controles {
             String inExistenciaCero="";
             String TotalJoin="";
             if(!stkw001.BolLote){
-                inLote="and arde_lote='000000' AND ARDE_FEC_VTO_LOTE='31/12/3000'";
+                inLote="and arde_lote='000000' AND ARDE_FEC_VTO_LOTE='31/12/5000'";
             }
             if(!stkw001.BolDescontinuados){
                 inEstado="and art_est='A'";
@@ -643,13 +652,16 @@ public class controles {
                     contenedor.setstringID( rs2.getString("concatID") );
                     contenedor.setidFamilia( rs2.getString("flia_codigo") );
                     contenedor.setidGrupo( rs2.getString("GRUP_CODIGO") );
-
+                    contenedor.setDescGrupo( rs2.getString("GRUP_desc") );
+                    contenedor.setDescFamilia( rs2.getString("flia_desc") );
                     contenedor.setName(rs2.getString("art_desc"));
                     contenedor.setLote(rs2.getString("arde_lote"));
                     contenedor.setCantidad(rs2.getString("cantidad"));
                     contenedor.setFechaVencimiento(rs2.getString("ARDE_FEC_VTO_LOTE"));
                     contenedor.setFecha_vencimientoParseado(vencimiento);
                     contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
+                    contenedor.setDescSubgrupo(rs2.getString("sugr_desc"));
+
                     listArrayArticulos.add(contenedor);
                 }
             }
@@ -699,11 +711,14 @@ public class controles {
                     contenedor.setidFamilia( rs2.getString("flia_codigo") );
                     contenedor.setName(rs2.getString("art_desc"));
                     contenedor.setidGrupo( rs2.getString("GRUP_CODIGO") );
+                    contenedor.setDescGrupo( rs2.getString("GRUP_desc") );
+                    contenedor.setDescFamilia( rs2.getString("flia_desc") );
                     contenedor.setLote("N/A");
                     contenedor.setCantidad(rs2.getString("ARDE_CANT_ACT"));
                     contenedor.setFechaVencimiento("N/A");
                     contenedor.setFecha_vencimientoParseado(vencimiento);
                     contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
+                    contenedor.setDescSubgrupo(rs2.getString("sugr_desc"));
                     listArrayArticulos.add(contenedor);
 
                     if(variables.tipo_stkw001_insert.equals("C")){
@@ -752,6 +767,9 @@ public class controles {
                             insArt.setFechaVencimiento(items.get(i).getFechaVencimiento());
                             insArt.setFecha_vencimientoParseado(items.get(i).getFecha_vencimientoParseado());
                             insArt.setSubgrupo(items.get(i).getSubgrupo());
+                            insArt.setDescFamilia(items.get(i).getDescFamilia());
+                            insArt.setDescGrupo(items.get(i).getDescGrupo());
+                            insArt.setDescSubgrupo(items.get(i).getDescSubgrupo());
                             listInsertArticulos.add(insArt);
 
                             if(!ArticulosSubgruposSeleccionados.contains(String.valueOf(items.get(i).getstringID())))
@@ -804,9 +822,15 @@ public class controles {
                             TextView txt_producto = (TextView) view.findViewById(R.id.txt_producto);
                             TextView txt_lote = (TextView) view.findViewById(R.id.txt_lote);
                             TextView txt_vto = (TextView) view.findViewById(R.id.txt_vto);
+                            TextView txt_familia = (TextView) view.findViewById(R.id.txt_familia);
+                            TextView txt_grupo = (TextView) view.findViewById(R.id.txt_grupo);
+                            TextView txt_subgrupo = (TextView) view.findViewById(R.id.txt_subgrupo);
 
-                           // txt_nro.setText(""+listInsertArticulos.get(position).getstringID());
-                            txt_nro.setText(""+listInsertArticulos.get(position).getidGrupo()+"-"+listInsertArticulos.get(position).getSubgrupo());
+                            txt_familia.setText(""+listInsertArticulos.get(position).getDescFamilia());
+                            txt_subgrupo.setText(""+listInsertArticulos.get(position).getDescSubgrupo());
+                            txt_grupo.setText(""+listInsertArticulos.get(position).getDescGrupo());
+
+                            txt_nro.setText(""+listInsertArticulos.get(position).getId());
                             txt_producto.setText(""+listInsertArticulos.get(position).getName());
                             txt_lote.setText(""+listInsertArticulos.get(position).getLote());
                             txt_vto.setText(""+listInsertArticulos.get(position).getFecha_vencimientoParseado());
@@ -920,7 +944,7 @@ public class controles {
                         "<td>FECHA VENCIMIENTO</td>" +
                         "<td>FAMILIA</td>" +
                         "<td>GRUPO</td>" +
-                        "<td>SUB GRUPO</td>" +
+                        "<td>SUBGRUPO</td>" +
                         "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
 
 
@@ -964,7 +988,7 @@ public class controles {
                         "<td>ARTICULO</td>" +
                         "<td>FAMILIA</td>" +
                         "<td>GRUPO</td>" +
-                        "<td>SUB GRUPO</td>" +
+                        "<td>SUBGRUPO</td>" +
                         "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
 
 
@@ -1282,7 +1306,7 @@ public class controles {
                     GruposTodos=false; //VOLVEMOS A COLOCAR EN FALSE LA SELECCION TOTAL DE GRUPOS
 
                 }
-
+             //   stkw001.sp_familia = new SpinnerDialog(activity,arr_familia,"Listado de familias");
                 listar_grupo(activity,arr_id_familia.get(i),context, tipo_toma);
             }
         });
@@ -1321,7 +1345,7 @@ public class controles {
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
                 builder.setTitle("¡Atención!");
-                builder.setMessage("Seleccione sub-grupo.");
+                builder.setMessage("Seleccione subgrupo.");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -1414,7 +1438,7 @@ public class controles {
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
                 builder.setTitle("¡Atención!");
-                builder.setMessage("Seleccione sub-grupo.");
+                builder.setMessage("Seleccione subgrupo.");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -2356,7 +2380,7 @@ public class controles {
                 if(ArticulosSubgruposSeleccionados.length()!=SubgrupoSeleccionadosArticulos.length()&& GruposTodos==false)
                 {
                     tipoRespuestaStkw001=0;
-                    mensajeRespuestaStkw001="NO SE HAN SELECCIONADO ARTICULOS DE TODOS LOS SUB-GRUPOS";
+                    mensajeRespuestaStkw001="NO SE HAN SELECCIONADO ARTICULOS DE TODOS LOS SUBGRUPOS";
                 }
                 else
                 {
