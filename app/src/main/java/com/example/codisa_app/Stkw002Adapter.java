@@ -63,13 +63,13 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         holder.textCantidad.setText(currentItem.getCantidad());
         holder.txtGrupo.setText("Gupo:"+currentItem.getgrupo());
         holder.txtFamilia.setText("Familia:"+currentItem.getfamilia());
-        if(variables.consolidado.equals("SI")){
+       /* if(variables.consolidado.equals("SI")){
 
         }
         else{
             holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
             holder.textLote.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
   holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -103,12 +103,13 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             for (int i = 0; i < listaStkw002.size(); i++) {
                 String cantidad =listaStkw002.get(i).getCantidad();
                 String secuencia =listaStkw002.get(i).getSecuencia();
+                String codArticulo =listaStkw002.get(i).getCodArticulo();
                 if(cantidad.length()==0)
                 {
                     cantidad="0";
                 }
                 db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"', WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' " +
-                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_secu="+secuencia);
+                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+codArticulo);
                 // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }
             CodigoRegistro= 0;

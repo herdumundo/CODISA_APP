@@ -120,7 +120,7 @@ public class stkw002 extends AppCompatActivity {
         try {
 
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
-            if(variables.consolidado.equals("SI")){
+           // if(variables.consolidado.equals("SI")){
                 for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
                     if(item.getProducto().toLowerCase().contains(text)
@@ -134,8 +134,8 @@ public class stkw002 extends AppCompatActivity {
                     // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
                 }
                 adapter.setFilter(filteredList);
-            }
-            else{
+           // }
+        /*    else{
                 for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
                     if(item.getProducto().toLowerCase().contains(text.toLowerCase())||item.getLote().toLowerCase().contains(text.toLowerCase())
@@ -148,7 +148,7 @@ public class stkw002 extends AppCompatActivity {
                     // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
                 }
                 adapter.setFilter(filteredList);
-            }
+            }*/
 
 
 

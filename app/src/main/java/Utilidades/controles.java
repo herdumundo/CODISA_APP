@@ -88,7 +88,7 @@ public class controles {
     static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
     static String   mensajeRespuestaStkw001;
     static String   mensajeRespuestaExportStkw002;
-    static String   consolidado="";
+    //static String   consolidado="";
     static String   grupoParcial="";
     static  int     gruposSeleccionados=0;
     static  int     ContExportStkw002;
@@ -624,10 +624,8 @@ public class controles {
                 SqlSubGrupo="";
             }
 
-        if(stkw001.BolConsolidar==false)
-        {
-            consolidado="N"; //STRING NECESARIO PARA EL INSERT EN CABECERA Y DETALLE, INDICANDO QUE NO ES UN REGISTRO CONSOLIDADO
-           if(ids_subgrupos.length()>0)
+
+            if(ids_subgrupos.length()>0)
            {
                 ResultSet rs2 = stmt2.executeQuery("" +
                 "select " +
@@ -672,77 +670,8 @@ public class controles {
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
             }
-        }
 
-        else
-        {
-            consolidado="S"; //STRING NECESARIO PARA EL INSERT EN CABECERA Y DETALLE, INDICANDO QUE   ES UN REGISTRO CONSOLIDADO
 
-            if(ids_subgrupos.length()>0)
-            {
-                ResultSet rs2 = stmt2.executeQuery("" +
-                        "select CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) as concatID, ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED,ART_EST,ART_IND_BLOQUEO," +
-                        "ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL,ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO,AREA_DESC," +
-                        "DPTO_CODIGO,DPTO_DESC,SECC_CODIGO,SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO,SUGR_DESC,ARDE_SUC," +
-                        "ARDE_DEP,SUM(ARDE_CANT_ACT) ARDE_CANT_ACT " +
-                        "from " +
-                        "   v_web_articulos_clasificacion " +
-                        "where " +
-                        "   arde_suc="+id_sucursal+"      and " +
-                        "   arde_dep="+id_deposito+"      and " +
-                        "   area_codigo="+id_area+"   and " +
-                        "   dpto_codigo="+id_dpto+"   and " +
-                        "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+"" +
-                        "GROUP BY ART_CODIGO,ART_DESC,ART_DESC_ABREV,ART_COD_ALFANUMERICO,ART_TIPO,ART_IMPU,ART_UNID_MED," +
-                        "ART_EST,ART_IND_BLOQUEO,ART_CLASIFICACION,ART_CATEGORIA,ART_IND_LOTE,ART_IND_REG_ESPECIAL," +
-                        "ART_COD_PADRE,ART_CODIGO_HIJO,AREA_CODIGO,AREA_DESC,DPTO_CODIGO,DPTO_DESC,SECC_CODIGO," +
-                        "SECC_DESC,FLIA_CODIGO,FLIA_DESC,GRUP_CODIGO,GRUP_DESC,SUGR_CODIGO,SUGR_DESC,ARDE_SUC,ARDE_DEP order by GRUP_CODIGO,SUGR_CODIGO asc");
-                listArrayArticulos.clear();
-                listInsertArticulos.clear();
-                grupoParcial="";
-                int contParcialCriterio=0;
-                int i=0;
-                while ( rs2.next())
-                {
-                    String vencimiento="N/A";
-                    ArrayListContenedor contenedor = new ArrayListContenedor();
-                    contenedor.setId(Integer.parseInt(rs2.getString("art_codigo")));
-                    contenedor.setstringID( rs2.getString("concatID") );
-                    contenedor.setidFamilia( rs2.getString("flia_codigo") );
-                    contenedor.setName(rs2.getString("art_desc"));
-                    contenedor.setidGrupo( rs2.getString("GRUP_CODIGO") );
-                    contenedor.setDescGrupo( rs2.getString("GRUP_desc") );
-                    contenedor.setDescFamilia( rs2.getString("flia_desc") );
-                    contenedor.setLote("N/A");
-                    contenedor.setCantidad(rs2.getString("ARDE_CANT_ACT"));
-                    contenedor.setFechaVencimiento("N/A");
-                    contenedor.setFecha_vencimientoParseado(vencimiento);
-                    contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
-                    contenedor.setDescSubgrupo(rs2.getString("sugr_desc"));
-                    listArrayArticulos.add(contenedor);
-
-                    if(variables.tipo_stkw001_insert.equals("C")){
-                        if(!grupoParcial.contains(listArrayArticulos.get(i).getidGrupo())){
-                            if(contParcialCriterio==0){
-                                grupoParcial=grupoParcial+listArrayArticulos.get(i).getidGrupo();
-                            }
-                            else{
-                                grupoParcial=grupoParcial+","+listArrayArticulos.get(i).getidGrupo();
-                            }
-                            contParcialCriterio++;
-                        }
-                    }
-                    i++;
-                }
-            }
-            else
-            {
-                //EN CASO DE QUE NO HAYAN IDS, SELECCIONADOS EN EL SUBGRUPO, ENTONCES LIMPIA EL ARRAY DE ARTICULOS Y DE LOS
-                //ARTICULOS SELECCIONADOS.
-                listArrayArticulos.clear();
-                listInsertArticulos.clear();
-            }
-        }
 
 
             stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
@@ -2046,69 +1975,13 @@ public class controles {
                             "'"+INVE_ART_EST+"'," +
                             "'"+INVE_ART_EXIST+"'," +
                             "'"+INVE_CANT_TOMA+"'," +
-                            "'1', "+id_cabecera+",'A','"+consolidado+"','')";
+                            "'1', "+id_cabecera+",'A','N','')";
                     PreparedStatement ps = connect.prepareStatement(insertar);
                     ps.executeUpdate();
                     ps.close();
                     int secuencia=1;
-                    if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
-                        for (int i = 0; i < listInsertArticulos.size(); i++) {
-                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                            //String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
-                          //  long idArticulo=listInsertArticulos.get(i).getId();
-                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                    "WINVD_NRO_INV," +  //1
-                                    "WINVD_ART," +      //2
-                                    "WINVD_SECU," +     //3
-                                    "WINVD_CANT_ACT," + //4
-                                    "WINVD_CANT_INV," + //5
-                                    "WINVD_UBIC," +     //6
-                                    "WINVD_CODIGO_BARRA," +//7
-                                    "WINVD_CANT_PED_RECEP," +//8
-                                    "WINVD_LOTE_CLAVE," +//9
-                                    "WINVD_UM," +//10
-                                    "WINVD_area," +//11
-                                    "WINVD_dpto," +//12
-                                    "WINVD_secc," +//13
-                                    "WINVD_flia," +//14
-                                    "WINVD_grupo," +//15
-                                    "WINVD_subgr," +//16
-                                    "WINVD_indiv," +//17
-                                    "winvd_consolidado" +//18
-                                    ")  VALUES ("+
 
-                                    id_cabecera+",'"+
-                                    listInsertArticulos.get(i).getId()+"',"+
-                                    secuencia+","+
-                                    cantidad_actual+"," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
-                                    stkw001.txt_id_departamento.getText().toString()+"','"+
-                                    stkw001.txt_id_seccion.getText().toString()+"'," +
-                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
-                                    +listInsertArticulos.get(i).getidGrupo()+"','"
-                                    +listInsertArticulos.get(i).getSubgrupo()+"'," +
-                                    "''," +
-                                    "'"+consolidado+"')";
-
-
-                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                            ps2.executeUpdate();
-                            ps2.close();
-                            secuencia++;
-                            con++;
-                        }
-                        connect.commit();
-                        tipoRespuestaStkw001=1;
-                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                    }
-                    else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
-                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                         for (int i = 0; i < listInsertArticulos.size(); i++) {
                             int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
                             String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
                             long idArticulo=listInsertArticulos.get(i).getId();
@@ -2151,7 +2024,7 @@ public class controles {
                                     stkw001.txt_id_seccion.getText().toString()+"'," +
                                     "'"+listInsertArticulos.get(i).getidFamilia()+"','"
                                     +listInsertArticulos.get(i).getidGrupo()+"','"
-                                    +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+                                    +listInsertArticulos.get(i).getSubgrupo()+"','','N')";
 
 
                             PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
@@ -2163,7 +2036,6 @@ public class controles {
                         connect.commit();
                         tipoRespuestaStkw001=1;
                         mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                    }
 
 
 
@@ -2214,68 +2086,14 @@ public class controles {
                         "'"+INVE_ART_EST+"'," +
                         "'"+INVE_ART_EXIST+"'," +
                         "'"+INVE_CANT_TOMA+"'," +
-                        "'1', "+id_cabecera+",'A','"+consolidado+"','')";
+                        "'1', "+id_cabecera+",'A','N','')";
                 PreparedStatement ps = connect.prepareStatement(insertar);
                 ps.executeUpdate();
                 ps.close();
                 int secuencia=1;
 
 
-                if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
-                    for (int i = 0; i < listArrayArticulos.size(); i++) {
-                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
-                        long idArticulo=listArrayArticulos.get(i).getId();
-                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                "WINVD_NRO_INV," +  //1
-                                "WINVD_ART," +      //2
-                                "WINVD_SECU," +     //3
-                                "WINVD_CANT_ACT," + //4
-                                "WINVD_CANT_INV," + //5
-                                "WINVD_UBIC," +     //6
-                                "WINVD_CODIGO_BARRA," +//7
-                                "WINVD_CANT_PED_RECEP," +//8
-                                "WINVD_LOTE_CLAVE," +//9
-                                "WINVD_UM," +//10
-                                "WINVD_area," +//11
-                                "WINVD_dpto," +//12
-                                "WINVD_secc," +//13
-                                "WINVD_flia," +//14
-                                "WINVD_grupo," +//15
-                                "WINVD_subgr," +//16
-                                "WINVD_indiv," +//17
-                                "winvd_consolidado" +//18
-                                ")  VALUES ("+
-
-                                id_cabecera+",'"+
-                                idArticulo+"',"+
-                                secuencia+","+
-                                cantidad_actual+"," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
-                                stkw001.txt_id_departamento.getText().toString()+"','"+
-                                stkw001.txt_id_seccion.getText().toString()+"'," +
-                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
-                                +listArrayArticulos.get(i).getidGrupo()+"','"
-                                +listArrayArticulos.get(i).getSubgrupo()+"'," +
-                                "''," +
-                                "'"+consolidado+"')";
-                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                        ps2.executeUpdate();
-                        ps2.close();
-                        secuencia++;
-                        con++;
-                    }
-                    connect.commit();
-                    tipoRespuestaStkw001=1;
-                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                }
-                else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
-                    for (int i = 0; i < listArrayArticulos.size(); i++) {
+                     for (int i = 0; i < listArrayArticulos.size(); i++) {
                         int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
                         String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
                         long idArticulo=listArrayArticulos.get(i).getId();
@@ -2318,7 +2136,7 @@ public class controles {
                                 stkw001.txt_id_seccion.getText().toString()+"'," +
                                 "'"+listArrayArticulos.get(i).getidFamilia()+"','"
                                 +listArrayArticulos.get(i).getidGrupo()+"','"
-                                +listArrayArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+                                +listArrayArticulos.get(i).getSubgrupo()+"','','N')";
 
 
                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
@@ -2330,8 +2148,7 @@ public class controles {
                     connect.commit();
                     tipoRespuestaStkw001=1;
                     mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                }
-            }
+             }
 
 
         }
@@ -2427,70 +2244,13 @@ public class controles {
                             "'"+INVE_ART_EST+"'," +
                             "'"+INVE_ART_EXIST+"'," +
                             "'"+INVE_CANT_TOMA+"'," +
-                            "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"','"+winveSubGrupoParcial+"')";
+                            "'1', "+id_cabecera+",'A','N','"+grupoParcial+"','"+winveSubGrupoParcial+"')";
                     PreparedStatement ps = connect.prepareStatement(insertar);
                     ps.executeUpdate();
                     ps.close();
                     int secuencia=1;
-                    if(stkw001.BolConsolidar==true)
-                    {//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
-                        for (int i = 0; i < listInsertArticulos.size(); i++) {
-                            int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
-                            String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
-                            long idArticulo=listInsertArticulos.get(i).getId();
-                            String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                    "WINVD_NRO_INV," +  //1
-                                    "WINVD_ART," +      //2
-                                    "WINVD_SECU," +     //3
-                                    "WINVD_CANT_ACT," + //4
-                                    "WINVD_CANT_INV," + //5
-                                    "WINVD_UBIC," +     //6
-                                    "WINVD_CODIGO_BARRA," +//7
-                                    "WINVD_CANT_PED_RECEP," +//8
-                                    "WINVD_LOTE_CLAVE," +//9
-                                    "WINVD_UM," +//10
-                                    "WINVD_area," +//11
-                                    "WINVD_dpto," +//12
-                                    "WINVD_secc," +//13
-                                    "WINVD_flia," +//14
-                                    "WINVD_grupo," +//15
-                                    "WINVD_subgr," +//16
-                                    "WINVD_indiv," +//17
-                                    "winvd_consolidado" +//18
-                                    ")  VALUES ("+
 
-                                    id_cabecera+",'"+
-                                    idArticulo+"',"+
-                                    secuencia+","+
-                                    cantidad_actual+"," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "''," +
-                                    "'"+stkw001.txt_id_area.getText().toString()+"','"+
-                                    stkw001.txt_id_departamento.getText().toString()+"','"+
-                                    stkw001.txt_id_seccion.getText().toString()+"'," +
-                                    "'"+listInsertArticulos.get(i).getidFamilia()+"','"
-                                    +listInsertArticulos.get(i).getidGrupo()+"','"
-                                    +listInsertArticulos.get(i).getSubgrupo()+"'," +
-                                    "''," +
-                                    "'"+consolidado+"')";
-
-
-                            PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                            ps2.executeUpdate();
-                            ps2.close();
-                            secuencia++;
-                            con++;
-                        }
-                        connect.commit();
-                        tipoRespuestaStkw001=1;
-                        mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                    }
-                    else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
-                        for (int i = 0; i < listInsertArticulos.size(); i++) {
+                         for (int i = 0; i < listInsertArticulos.size(); i++) {
                             int cantidad_actual=Integer.parseInt(listInsertArticulos.get(i).getCantidad());
                             String fechaVto=listInsertArticulos.get(i).getFechaVencimiento();
                             long idArticulo=listInsertArticulos.get(i).getId();
@@ -2533,7 +2293,7 @@ public class controles {
                                     stkw001.txt_id_seccion.getText().toString()+"'," +
                                     "'"+listInsertArticulos.get(i).getidFamilia()+"','"
                                     +listInsertArticulos.get(i).getidGrupo()+"','"
-                                    +listInsertArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+                                    +listInsertArticulos.get(i).getSubgrupo()+"','','N')";
 
 
                             PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
@@ -2545,7 +2305,6 @@ public class controles {
                         connect.commit();
                         tipoRespuestaStkw001=1;
                         mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                    }
 
 
                 }
@@ -2620,66 +2379,12 @@ public class controles {
                         "'"+INVE_ART_EST+"'," +
                         "'"+INVE_ART_EXIST+"'," +
                         "'"+INVE_CANT_TOMA+"'," +
-                        "'1', "+id_cabecera+",'A','"+consolidado+"','"+grupoParcial+"','"+winveSubGrupoParcial+"')";
+                        "'1', "+id_cabecera+",'A','N','"+grupoParcial+"','"+winveSubGrupoParcial+"')";
                 PreparedStatement ps = connect.prepareStatement(insertar);
                 ps.executeUpdate();
                 ps.close();
                 int secuencia=1;
 
-                if(stkw001.BolConsolidar==true){//SI ES REGISTRO CONSOLIDADO ENTONCES HACE ESTE INSERT
-                    for (int i = 0; i < listArrayArticulos.size(); i++) {
-                        int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
-                        long idArticulo=listArrayArticulos.get(i).getId();
-                        String insertar_detalle=" insert into WEB_INVENTARIO_DET (" +
-                                "WINVD_NRO_INV," +  //1
-                                "WINVD_ART," +      //2
-                                "WINVD_SECU," +     //3
-                                "WINVD_CANT_ACT," + //4
-                                "WINVD_CANT_INV," + //5
-                                "WINVD_UBIC," +     //6
-                                "WINVD_CODIGO_BARRA," +//7
-                                "WINVD_CANT_PED_RECEP," +//8
-                                "WINVD_LOTE_CLAVE," +//9
-                                "WINVD_UM," +//10
-                                "WINVD_area," +//11
-                                "WINVD_dpto," +//12
-                                "WINVD_secc," +//13
-                                "WINVD_flia," +//14
-                                "WINVD_grupo," +//15
-                                "WINVD_subgr," +//16
-                                "WINVD_indiv," +//17
-                                "winvd_consolidado" +//18
-                                ")  VALUES ("+
-
-                                id_cabecera+",'"+
-                                idArticulo+"',"+
-                                secuencia+","+
-                                cantidad_actual+"," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "''," +
-                                "'"+stkw001.txt_id_area.getText().toString()+"','"+
-                                stkw001.txt_id_departamento.getText().toString()+"','"+
-                                stkw001.txt_id_seccion.getText().toString()+"'," +
-                                "'"+listArrayArticulos.get(i).getidFamilia()+"','"
-                                +listArrayArticulos.get(i).getidGrupo()+"','"
-                                +listArrayArticulos.get(i).getSubgrupo()+"'," +
-                                "''," +
-                                "'"+consolidado+"')";
-                        PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
-                        ps2.executeUpdate();
-                        ps2.close();
-                        secuencia++;
-                        con++;
-                    }
-                    connect.commit();
-                    tipoRespuestaStkw001=1;
-                    mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                }
-                else {  //SI NO ES CON LOTE CONSOLIDADO ENTONCES HACE REGISTRO NORMAL.
                     for (int i = 0; i < listArrayArticulos.size(); i++) {
                         int cantidad_actual=Integer.parseInt(listArrayArticulos.get(i).getCantidad());
                         String fechaVto=listArrayArticulos.get(i).getFechaVencimiento();
@@ -2723,7 +2428,7 @@ public class controles {
                                 stkw001.txt_id_seccion.getText().toString()+"'," +
                                 "'"+listArrayArticulos.get(i).getidFamilia()+"','"
                                 +listArrayArticulos.get(i).getidGrupo()+"','"
-                                +listArrayArticulos.get(i).getSubgrupo()+"','','"+consolidado+"')";
+                                +listArrayArticulos.get(i).getSubgrupo()+"','','N')";
 
 
                         PreparedStatement ps2 = connect.prepareStatement(insertar_detalle);
@@ -2735,10 +2440,7 @@ public class controles {
                     connect.commit();
                     tipoRespuestaStkw001=1;
                     mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
-                }
-                connect.commit();
-                tipoRespuestaStkw001=1;
-                mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
+
             }
 
 

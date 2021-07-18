@@ -37,10 +37,10 @@ public class stkw001 extends AppCompatActivity {
     public static MultiSpinnerSearch    spinerSubGrupo,spinerArticulos,spinerGrupo;
 
     public static   RadioButton         radioLoteSi,radioLoteNo,radioExistenciaSi,
-            radioExistenciaNo,radioArticuloSi,radioArticuloNo,radioConsolidarSi,radioConsolidarNo;
-    RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo,radioGrupoConsolidar;
+            radioExistenciaNo,radioArticuloSi,radioArticuloNo;
+    RadioGroup radioGrupoLote,radioGrupoExistencia,radioGrupoArticulo;
     public static ProgressDialog progress;
-    public static   Boolean   BolLote=true,Bolexistencia=false,BolDescontinuados=false,BolConsolidar=true;
+    public static   Boolean   BolLote=true,Bolexistencia=false,BolDescontinuados=false;
     public static ListView LvArticulosStkw001;
 
 
@@ -86,7 +86,6 @@ public class stkw001 extends AppCompatActivity {
         BolLote=true;
         Bolexistencia=false;
         BolDescontinuados=false;
-        BolConsolidar=true;
         txt_sucursal        = findViewById(R.id.txt_desc_sucursal) ;
         lbl_subgrupo        = findViewById(R.id.lbl_subgrupo) ;
         lbl_grupo        = findViewById(R.id.lbl_grupo) ;
@@ -124,8 +123,7 @@ public class stkw001 extends AppCompatActivity {
         spinerArticulos.setClearText("Ninguno");
         spinerArticulos.setColorSeparation(true);
 
-        radioConsolidarSi             = findViewById(R.id.radioConsolidarSi);
-        radioConsolidarNo             = findViewById(R.id.radioConsolidarNo);
+
 
         radioLoteSi             = findViewById(R.id.radioLoteSi);
         radioLoteNo             = findViewById(R.id.radioLoteNo);
@@ -136,11 +134,9 @@ public class stkw001 extends AppCompatActivity {
         radioGrupoLote          = findViewById(R.id.radioGrupoLote);
         radioGrupoExistencia    = findViewById(R.id.radioGrupoExistencia);
         radioGrupoArticulo      = findViewById(R.id.radioGrupoArticulo);
-        radioGrupoConsolidar         = findViewById(R.id.radioGrupoConsolidar);
 
         radioLoteSi         .setChecked(true);
-        radioConsolidarSi         .setChecked(true);
-        radioExistenciaNo   .setChecked(true);
+         radioExistenciaNo   .setChecked(true);
         radioArticuloNo     .setChecked(true);
         controles.limpiarSubGrupo();
         LvArticulosStkw001.setNestedScrollingEnabled(true);
@@ -189,25 +185,6 @@ public class stkw001 extends AppCompatActivity {
         });
 
 
-
-        radioGrupoConsolidar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch(i) {
-                    case R.id.radioConsolidarSi:
-                        // num=1;
-                        BolConsolidar=true;
-                        controles.listarArticulos();
-                        controles.limpiarListaViewArticulosSTKW001();
-                        break;
-                    case R.id.radioConsolidarNo:
-                        BolConsolidar=false;
-                        controles.listarArticulos();
-                        controles.limpiarListaViewArticulosSTKW001();
-                        break;
-                }
-            }
-        });
 
 
 

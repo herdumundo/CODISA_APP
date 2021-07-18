@@ -9,19 +9,6 @@
 
 
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="147dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="304dp"
-        android:text="Consolidar lotes"
-        android:textColor="#030561"
-        android:textStyle="normal|bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
         android:id="@+id/txtTotalArticuloGrilla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,49 +35,6 @@
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTotalArticuloGrilla" />
-
-    <RadioGroup
-        android:id="@+id/radioGrupoConsolidar"
-        android:layout_width="110dp"
-
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9">
-
-        <!-- In RadioGroup create the 1 Radio Button-->
-        <!-- like this we will add some more Radio Button-->
-
-        <RadioButton
-            android:id="@+id/radioConsolidarSi"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/radioGrupoLote"
-            android:buttonTint="@color/azul3"
-            android:text="SI"
-            android:textSize="15dp"
-
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" />
-
-        <RadioButton
-            android:id="@+id/radioConsolidarNo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/radioGrupoLote"
-            android:layout_alignBottom="@+id/radioGrupoLote"
-            android:buttonTint="@color/azul3"
-            android:text="NO"
-            android:textSize="15dp"
-
-            android:textStyle="bold" />
-
-    </RadioGroup>
 
 
     <RadioGroup
@@ -532,13 +476,12 @@
         android:id="@+id/textView2"
         android:layout_width="79dp"
         android:layout_height="18dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="Incluir lote"
         android:textColor="#030561"
         android:textStyle="normal|bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGrupoConsolidar" />
+        app:layout_constraintTop_toBottomOf="@+id/lbl_subgrupo"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Utilidades.MultiSpinnerSearch
 
@@ -615,67 +558,70 @@
                     app:autoSizeMinTextSize="7sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform" />
+
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@color/azul3"
+                    android:divider="@drawable/divider"
                     android:text="GRUPO"
-                    android:textStyle="bold"
-                    android:divider="@drawable/divider"
-
                     android:textColor="@color/white"
+
+                    android:textStyle="bold"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="7sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform" />
+
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_weight="1"
                     android:background="@color/azul3"
-                    android:text="SUBGRUPO"
-                    android:textStyle="bold"
                     android:divider="@drawable/divider"
-
+                    android:text="SUBGRUPO"
                     android:textColor="@color/white"
+
+                    android:textStyle="bold"
                     app:autoSizeMaxTextSize="15sp"
                     app:autoSizeMinTextSize="7sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform" />
+
                 <TextView
                     android:id="@+id/TextView01"
                     android:layout_width="66dp"
                     android:layout_height="32dp"
                     android:layout_weight="1"
-                    android:text="COD ART."
                     android:divider="@drawable/divider"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"></TextView>
+                    android:text="COD ART."
+                    android:textColor="@color/white"
+                    android:textStyle="bold"></TextView>
 
                 <TextView
-                    android:background="@color/azul3"
-                    android:textStyle="bold"
                     android:id="@+id/TextView02"
                     android:layout_width="204dp"
                     android:layout_height="32dp"
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
-                    android:text="ARTICULO"
+                    android:background="@color/azul3"
                     android:divider="@drawable/divider"
+                    android:text="ARTICULO"
+                    android:textColor="@color/white"
 
-                    android:textColor="@color/white"></TextView>
+                    android:textStyle="bold"></TextView>
 
                 <TextView
                     android:id="@+id/TextView03"
                     android:layout_width="100dp"
                     android:layout_height="32dp"
-                    android:divider="@drawable/divider"
-                    android:textStyle="bold"
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
+                    android:divider="@drawable/divider"
                     android:text="LOTE"
-                    android:textColor="@color/white"></TextView>
+                    android:textColor="@color/white"
+                    android:textStyle="bold"></TextView>
 
                 <TextView
                     android:id="@+id/textView12"
@@ -684,8 +630,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
                     android:text="VTO."
-                    android:textStyle="bold"
-                    android:textColor="@color/white"></TextView>
+                    android:textColor="@color/white"
+                    android:textStyle="bold"></TextView>
 
             </LinearLayout>
 

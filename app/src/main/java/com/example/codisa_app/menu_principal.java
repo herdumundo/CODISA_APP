@@ -227,7 +227,7 @@ public class menu_principal extends AppCompatActivity {
             super.onPostExecute(result);
 
             prodialog.dismiss();
-            if (error_importador==0){
+            if (error_importador==0){//SI NO HAY ERRORES
 
                 builder = new AlertDialog.Builder(menu_principal.this);
                 builder.setIcon(getResources().getDrawable(R.drawable.ic_danger));
@@ -305,7 +305,7 @@ public class menu_principal extends AppCompatActivity {
             controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
 
-            ResultSet rs = stmt.executeQuery(
+       /*     ResultSet rs = stmt.executeQuery(
                     "       SELECT  " +
                             "       distinct  b.winvd_art,  a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,b.winvd_lote," +
                             "       b.winvd_fec_vto,b.winvd_area,b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo," +
@@ -322,26 +322,33 @@ public class menu_principal extends AppCompatActivity {
                             "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP  " +
                             "       and c.winve_area=a.AREA_CODIGO                             " +
                             "       and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO   " +
-                            "   where  c.winve_empr="+variables.ID_SUCURSAL_LOGIN+"   and a.ARDE_SUC=1 AND WINVE_ESTADO_WEB='A'  AND c.winve_consolidado='S'" +
-                            "   union all " +
-                            "   SELECT  " +
-                            "       b.winvd_art, a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,b.winvd_lote,b.winvd_fec_vto,b.winvd_area,  " +
-                            "       b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,b.winvd_cant_act,c.winve_fec,    " +
-                            "       dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,b.winvd_secu,                       " +
-                            "       case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma," +
-                            "       c.winve_login, 'NO'  AS winvd_consolidado ," +
-                            "        case when c.winve_grupo IS NULL and  c.winve_grupo_parcial IS NULL then 'TODOS'    " +
-                            "       WHEN c.winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial," +
-                            "       case when c.winve_flia is null then 'TODAS' else a.flia_desc end as desc_familia" +
-                            "   FROM  " +
-                            "       V_WEB_ARTICULOS_CLASIFICACION  a                              " +
-                            "       inner join WEB_INVENTARIO_det b on a.arde_lote=b.winvd_lote  and a.ART_CODIGO=b.winvd_art  " +
-                            "       And a.SECC_CODIGO=b.winvd_secc                                 " +
-                            "       AND TO_DATE(a.ARDE_FEC_VTO_LOTE,'DD/MM/YYYY')=TO_DATE(b.winvd_fec_vto,'DD/MM/YYYY')     " +
-                            "       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero       " +
-                            "       and c.winve_dep=a.ARDE_DEP    and c.winve_area=a.AREA_CODIGO   " +
-                            "       and c.winve_suc=a.ARDE_SUC    and c.winve_secc=a.SECC_CODIGO         " +
-                            "   where    c.winve_empr="+variables.ID_SUCURSAL_LOGIN+" and a.ARDE_SUC=1 AND WINVE_ESTADO_WEB='A'    AND c.winve_consolidado='N'");
+                            "   where  c.winve_empr="+variables.ID_SUCURSAL_LOGIN+"   and a.ARDE_SUC=1 AND WINVE_ESTADO_WEB='A' ");
+            */
+
+            ResultSet rs = stmt.executeQuery(
+                    "      SELECT  "+
+                        "     DISTINCT b.winvd_art,  a.ARDE_SUC, b.winvd_nro_inv, a.ART_DESC,'' AS winvd_lote,"+
+                    "   '' AS winvd_fec_vto,b.winvd_area,b.winvd_dpto,b.winvd_secc,b.winvd_flia,b.winvd_grupo,"+
+                    "   '' AS winvd_cant_act,c.winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,"+
+                    "   sugr_codigo,'' AS winvd_secu, case c.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma,"+
+                    "   c.winve_login,  ''  AS winvd_consolidado ,"+
+                    "     case when c.winve_grupo IS NULL and  c.winve_grupo_parcial IS NULL then 'TODOS'"+
+                    "     WHEN c.winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial,"+
+                    "   case when c.winve_flia is null then 'TODAS' else a.flia_desc end as desc_familia"+
+                    "    FROM"+
+                    "   V_WEB_ARTICULOS_CLASIFICACION  a"+
+                    "   inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art"+
+                    "   and a.SECC_CODIGO=b.winvd_secc"+
+                    "    inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP"+
+                    "   and c.winve_area=a.AREA_CODIGO"+
+                    "   and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO"+
+                    "   where  c.winve_empr=1   and a.ARDE_SUC="+variables.ID_SUCURSAL_LOGIN+" AND WINVE_ESTADO_WEB='A'"+
+                    "    GROUP BY WINVD_ART,ARDE_SUC,a.ART_DESC,WINVD_NRO_INV,"+
+                    "   WINVD_AREA,WINVD_DPTO,WINVD_SECC,WINVD_FLIA,WINVD_GRUPO,SUGR_CODIGO,WINVE_LOGIN,c.winve_fec,dpto_desc"+
+                    "   ,secc_desc,flia_desc,grup_desc,area_desc,b.winvd_secu, c.winve_tipo_toma,c.winve_grupo,c.winve_grupo_parcial,"+
+                    "   c.winve_flia");
+
+
             int i=1;
             int contadorMensaje=0;
         while (rs.next())
