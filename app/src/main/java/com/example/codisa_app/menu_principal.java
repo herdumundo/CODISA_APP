@@ -75,12 +75,7 @@ public class menu_principal extends AppCompatActivity {
         txt1.setText("Usuario:       "+variables.NOMBRE_LOGIN);
         txt2.setText("Sucursal:     "+variables.DESCRIPCION_SUCURSAL_LOGIN);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
-     /*   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
-        this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-*/
 
         controles.conexion_sqlite(this);
         controles.ConsultarPendientesExportar();

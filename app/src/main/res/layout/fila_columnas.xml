@@ -10,8 +10,7 @@
       >
 
     <LinearLayout
-        android:id="@+id/relative"
-        android:layout_width="match_parent"
+         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorlogin"
         android:orientation="horizontal"
@@ -49,7 +48,7 @@
             app:autoSizeTextType="uniform" />
         <TextView
             android:id="@+id/txt_subgrupo"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="20dp"
             android:layout_weight="1"
             android:background="@color/colorlogin"
@@ -80,7 +79,7 @@
         <TextView
             android:id="@+id/txt_producto"
 
-            android:layout_width="204dp"
+            android:layout_width="300dp"
             android:layout_height="29dp"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"

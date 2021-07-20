@@ -639,7 +639,7 @@ public class controles {
                 "   arde_dep="+id_deposito+"      and " +
                 "   area_codigo="+id_area+"   and " +
                 "   dpto_codigo="+id_dpto+"   and " +
-            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" order by GRUP_CODIGO,SUGR_CODIGO asc");
+            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" order by flia_desc,GRUP_desc,sugr_desc,art_desc  asc");
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
                 while ( rs2.next())
@@ -1699,7 +1699,7 @@ public class controles {
 
                 Statement stmtStk =  connect.createStatement();
 
-                ResultSet RsStk = stmtStk.executeQuery("SELECT nvl(MAX(INVE_NUMERO),0)+1  as id FROM web_stk_carga_inv" );
+                ResultSet RsStk = stmtStk.executeQuery("SELECT nvl(MAX(INVE_NUMERO),0)+1  as id FROM  stk_carga_inv" );
 
                 while (RsStk.next()){
                     idGenCabStk=RsStk.getInt("id");
