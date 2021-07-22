@@ -169,6 +169,10 @@ public class stkw001 extends AppCompatActivity {
                             controles.limpiarListaViewArticulosSTKW001();
 
                         }
+                        else {
+                            controles.listarArticulos();
+                            controles.INVE_IND_LOTE="S";
+                        }
                         break;
                     case R.id.radioLoteNo:
                         BolLote=false;
@@ -179,6 +183,9 @@ public class stkw001 extends AppCompatActivity {
                             controles.limpiarListaViewArticulosSTKW001();
 
                         }
+                        else {
+                            controles.listarArticulos();
+                         }
                         break;
                 }
             }
@@ -201,6 +208,10 @@ public class stkw001 extends AppCompatActivity {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
                         }
+                        else {
+                            controles.listarArticulos();
+
+                        }
                         // Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;
                     case R.id.radioExistenciaNo:
@@ -210,6 +221,10 @@ public class stkw001 extends AppCompatActivity {
                         {
                             controles.listarArticulos();
                             controles.limpiarListaViewArticulosSTKW001();
+                        }
+                        else {
+                            controles.listarArticulos();
+
                         }
                         //   Toast.makeText(getApplicationContext(),Bolexistencia.toString(),Toast.LENGTH_LONG).show();
                         break;

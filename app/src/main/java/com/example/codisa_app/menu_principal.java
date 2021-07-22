@@ -57,7 +57,7 @@ public class menu_principal extends AppCompatActivity {
     static int   ContProgressBarImportador=0;
       String mensajeImporError="";
     public void onBackPressed()  {
-        Utilidades.controles.volver_atras(this,this, com.example.codisa_app.login.class,"¿Desea salir de la aplicación?",3);
+        Utilidades.controles.volver_atras(this,this, login.class,"¿Desea salir de la aplicación?",3);
     }
     @SuppressLint("WrongConstant")
     @Override

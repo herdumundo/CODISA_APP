@@ -659,7 +659,6 @@ public class controles {
                     contenedor.setFecha_vencimientoParseado(vencimiento);
                     contenedor.setSubgrupo(rs2.getString("sugr_codigo"));
                     contenedor.setDescSubgrupo(rs2.getString("sugr_desc"));
-
                     listArrayArticulos.add(contenedor);
                 }
             }
@@ -670,10 +669,6 @@ public class controles {
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
             }
-
-
-
-
             stkw001.spinerArticulos.setItems(listArrayArticulos, new MultiSpinnerListener() {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items) {
@@ -1387,7 +1382,7 @@ public class controles {
                 builder = new android.app.AlertDialog.Builder(context);
                 builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
                 builder.setTitle("¡Atención!");
-                builder.setMessage("La combinación de filtros no contienen articulos para generar la toma.");
+                builder.setMessage("Las combinaciónes de filtros recae en articulos inexistentes.");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -1797,7 +1792,7 @@ public class controles {
                                 "(INVE_NUMERO,      INVE_EMPR,  INVE_SUC,               INVE_DEP,       INVE_FEC,           INVE_CANT_TOMA, " +
                                 "INVE_LOGIN,                    INVE_TIPO_TOMA,     INVE_REF) values " +
                                 "('"+idGenCabStk+"','1',        '"+winve_suc+"',        '"+winve_dep+"',CURRENT_TIMESTAMP,  '1',             " +
-                                "'"+WINVE_LOGIN_CERRADO_WEB+"', '"+tipoToma+"',     '"+nroCabecera+"')");
+                                "UPPER('"+WINVE_LOGIN_CERRADO_WEB+"'), '"+tipoToma+"',     '"+nroCabecera+"')");
                         psCabStk.executeUpdate();
                         pscAB.executeUpdate();
                         pscAB.close();

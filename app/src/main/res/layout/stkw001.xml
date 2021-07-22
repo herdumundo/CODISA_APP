@@ -93,8 +93,8 @@
 
     <RadioGroup
         android:id="@+id/radioGrupoArticulo"
-        android:layout_width="143dp"
-        android:layout_height="35dp"
+        android:layout_width="110dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,8 +131,8 @@
 
     <RadioGroup
         android:id="@+id/radioGrupoExistencia"
-        android:layout_width="119dp"
-        android:layout_height="33dp"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -386,7 +386,7 @@
 
     <TextView
         android:id="@+id/txt_area"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
         android:layout_height="19dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="12dp"
@@ -400,7 +400,7 @@
 
     <TextView
         android:id="@+id/txt_departamento"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
         android:layout_height="19dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="12dp"
@@ -414,7 +414,7 @@
 
     <TextView
         android:id="@+id/txt_familia"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
         android:layout_height="19dp"
 
         android:layout_marginStart="128dp"
@@ -428,7 +428,7 @@
 
     <TextView
         android:id="@+id/txt_seccion"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
         android:layout_height="19dp"
 
         android:layout_marginStart="128dp"
@@ -442,7 +442,7 @@
 
     <TextView
         android:id="@+id/txt_deposito"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
         android:layout_height="19dp"
 
         android:layout_marginStart="128dp"
@@ -457,7 +457,7 @@
     <TextView
 
         android:id="@+id/txt_desc_sucursal"
-        android:layout_width="173dp"
+        android:layout_width="171dp"
 
         android:layout_height="19dp"
 
