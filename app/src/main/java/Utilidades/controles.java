@@ -791,9 +791,10 @@ public class controles {
                     "winvd_grupo," +//9
                     "winvd_cant_act," +//10
                     "winvd_cant_inv," +//11
-                    "winvd_secu," +//11
-                    "grup_desc," +//11
-                    "flia_desc" +//12
+                    "winvd_secu," +//12
+                    "grup_desc," +//13
+                    "flia_desc," +//14
+                    "toma_registro" +//15
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
                     "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
@@ -805,7 +806,8 @@ public class controles {
                 contador_stkw002++;
                 ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
-                        cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14)));
+                        cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
+                        cursor.getString(15)));
                 cont++;
             }
             stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
@@ -1503,7 +1505,7 @@ public class controles {
         SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
         Cursor cursor=db_consulta.rawQuery("select  count(distinct winvd_nro_inv)" +
                 " from stkw002inv" +
-                " WHERE estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')" ,null);
+                " WHERE estado in ('P','F') AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')" ,null);
         ListArrayInventarioArticulos = new ArrayList();
         if (cursor.moveToNext())
         {
@@ -1701,18 +1703,19 @@ public class controles {
                 }
 
 
-                Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB,winve_dep,arde_suc,tipo_toma from stkw002inv " +
-                        "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
+                Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB,winve_dep,arde_suc,tipo_toma,toma_registro from stkw002inv " +
+                        "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado IN ('P','F') and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
 
                 int contadorMensaje=0; // EN EL CASO DE QUE QUEDE EN CERO, ENTONCES EL MENSAJE SERA, DE QUE NO HAY DATOS PARA EXPORTAR
                 while (cursorCab.moveToNext())
                 {
-
                     int nroCabecera=cursorCab.getInt(0);
                     int winve_dep=cursorCab.getInt(2);
                     int winve_suc=cursorCab.getInt(3);
                     String WINVE_LOGIN_CERRADO_WEB=cursorCab.getString(1);
                     String tipoToma="";
+                    String tomaRegistro="";
+                    tomaRegistro= cursorCab.getString(5);
                     if(cursorCab.getString(4).equals("MANUAL")){
                         tipoToma="M";
                     }
@@ -1737,7 +1740,7 @@ public class controles {
                             "winve_suc" +  //13
                             " from stkw002inv" +
                             " WHERE " +
-                            "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND winvd_nro_inv="+nroCabecera+
+                            "arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado in ('P','F') AND winvd_nro_inv="+nroCabecera+
                             " and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')"  ,null);
 
                     //PRIMERO CONSULTA SI EL NRO DE TOMA A EXPORTAR, NO SE ENCUENTRA ANULADO EN EL SERVER
@@ -1762,16 +1765,28 @@ public class controles {
                             // PRIMERO EL DETALLE DEL SERVER, LUEGO EL DETALLE DEL SQLITE
                             while (cursor.moveToNext())
                             {
+                                if(tomaRegistro.equals("R")){ // SE REINVENTARIA
+                                    // SE ACTUALIZA WEB_STK_CARGA_INV_DET LAS CANTIDADES REINVENTARIADAS
+                                    PreparedStatement ps = connect.prepareStatement(
+                                            " UPDATE WEB_STK_CARGA_INV_DET SET INVD_CANT_INV='"+cursor.getString(10)+"' " +
+                                                    "WHERE INVD_NRO_INV="+cursor.getString(0)+  " AND INVD_ART='"+cursor.getString(2)+"'"
+                                           );
+                                    ps.executeUpdate();
+                                    ps.close();
+                                }
+                                else{
+                                    // SE INSERTA EN WEB_STK_CARGA_INV_DET, YA NO SE ACTUALIZA NADA EN WEB_INVENTARIO_DET
+                                    PreparedStatement ps = connect.prepareStatement(" INSERT INTO WEB_STK_CARGA_INV_DET  " +
+                                            "(          INVD_NRO_INV,       INVD_ART,                           INVD_SECU,          INVD_CANT_INV,                      " +
+                                            "           INVD_FEC_VTO,       INVD_LOTE,          INVD_UM) " +
 
-                            // SE INSERTA EN WEB_STK_CARGA_INV_DET, YA NO SE ACTUALIZA NADA EN WEB_INVENTARIO_DET
-                            PreparedStatement ps = connect.prepareStatement(" INSERT INTO WEB_STK_CARGA_INV_DET  " +
-                                    "(          INVD_NRO_INV,       INVD_ART,                           INVD_SECU,          INVD_CANT_INV,                      " +
-                                    "           INVD_FEC_VTO,       INVD_LOTE,          INVD_UM) " +
+                                            "VALUES (   '"+idGenCabStk+"',  '"+cursor.getString(2)+"','"+secuencia+"',   '"+cursor.getString(10)+"'," +
+                                            "           '01/01/3000',       '"+idGenCabStk+"',  '')");
+                                    ps.executeUpdate();
+                                    ps.close();
+                                }
 
-                                    "VALUES (   '"+idGenCabStk+"',  '"+cursor.getString(2)+"','"+secuencia+"',   '"+cursor.getString(10)+"'," +
-                                    "           '01/01/3000',       '"+idGenCabStk+"',  '')");
-                            ps.executeUpdate();
-                            ps.close();
+
 
                             //SQLITE ACTUALIZA EL ESTADO DEL INVENTARIO A C, SE CAMBIA LA SECUENCIA POR EL CODIGO DE ARTICULO,
                             // YA QUE EL ARTICULO SERA UNICO POR CADA TOMA.
@@ -1781,21 +1796,37 @@ public class controles {
                             i++;
                             secuencia++;
                         }
-                        //SERVER ACTUALIZA LA CABECERA WEB_INVENTARIO
-                        PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
-                                "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
-                                "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
-                                "WHERE WINVE_NUMERO="+nroCabecera);
+                        if(tomaRegistro.equals("R")){ // SE REINVENTARIA
+                            //CERRAMOS EL STK CON ESTADO A.
+                            PreparedStatement pscAB = connect.prepareStatement(
+                                    " UPDATE WEB_STK_CARGA_INV SET invew_est='A' " +
+                                            "WHERE INVE_NUMERO="+nroCabecera+  "  "
+                            );
+                            pscAB.executeUpdate();
+                            pscAB.close();
+                        }
 
-                        //HACEMOs INSERT EN LA CABECERA WEB_STK_CARGA_INV
-                        PreparedStatement psCabStk = connect.prepareStatement("insert into WEB_STK_CARGA_INV " +
-                                "(INVE_NUMERO,      INVE_EMPR,  INVE_SUC,               INVE_DEP,       INVE_FEC,           INVE_CANT_TOMA, " +
-                                "INVE_LOGIN,                    INVE_TIPO_TOMA,     INVE_REF) values " +
-                                "('"+idGenCabStk+"','1',        '"+winve_suc+"',        '"+winve_dep+"',CURRENT_TIMESTAMP,  '1',             " +
-                                "UPPER('"+WINVE_LOGIN_CERRADO_WEB+"'), '"+tipoToma+"',     '"+nroCabecera+"')");
-                        psCabStk.executeUpdate();
-                        pscAB.executeUpdate();
-                        pscAB.close();
+
+                        else { // EN EL CASO QUE SEA UN INVENTARIO NUEVO, ENTONCES INSERTA
+                            //SERVER ACTUALIZA LA CABECERA WEB_INVENTARIO
+                            PreparedStatement pscAB = connect.prepareStatement("UPDATE web_inventario SET WINVE_ESTADO_WEB='C' , " +
+                                    "WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP," +
+                                    "WINVE_LOGIN_CERRADO_WEB=UPPER('"+WINVE_LOGIN_CERRADO_WEB+"') " +
+                                    "WHERE WINVE_NUMERO="+nroCabecera);
+
+                            //HACEMOs INSERT EN LA CABECERA WEB_STK_CARGA_INV
+                            PreparedStatement psCabStk = connect.prepareStatement("insert into WEB_STK_CARGA_INV " +
+                                    "(INVE_NUMERO,      INVE_EMPR,  INVE_SUC,               INVE_DEP,       INVE_FEC,           INVE_CANT_TOMA, " +
+                                    "INVE_LOGIN,                    INVE_TIPO_TOMA,     INVE_REF) values " +
+                                    "('"+idGenCabStk+"','1',        '"+winve_suc+"',        '"+winve_dep+"',CURRENT_TIMESTAMP,  '1',             " +
+                                    "UPPER('"+WINVE_LOGIN_CERRADO_WEB+"'), '"+tipoToma+"',     '"+nroCabecera+"')");
+                            psCabStk.executeUpdate();
+                            pscAB.executeUpdate();
+                            pscAB.close();
+                        }
+
+
+
                         db_UPDATE.setTransactionSuccessful();
                         db_UPDATE.endTransaction();
 

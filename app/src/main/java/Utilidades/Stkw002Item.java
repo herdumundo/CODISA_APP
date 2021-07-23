@@ -14,8 +14,9 @@ public class Stkw002Item {
     private String grupo;
     private String area;
     private String familia;
+    private String tomaRegistro;
 
-    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ,String grupo,String familia ) {
+    public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento ,String secuencia,String area ,String grupo,String familia ,String tomaRegistro) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
      //   this.posicion = posicion;
@@ -27,6 +28,7 @@ public class Stkw002Item {
         this.area = area;
         this.grupo = grupo;
         this.familia = familia;
+        this.tomaRegistro = tomaRegistro;
 
     }
 
@@ -68,7 +70,9 @@ public class Stkw002Item {
         this.familia = familia;
     }
 
-
+    public String getTomaRegistro() {
+        return this.tomaRegistro;
+    }
 
     public String getLote() {
         return this.lote;

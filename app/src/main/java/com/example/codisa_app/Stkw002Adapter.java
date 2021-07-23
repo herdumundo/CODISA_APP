@@ -104,12 +104,21 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 String cantidad =listaStkw002.get(i).getCantidad();
                 String secuencia =listaStkw002.get(i).getSecuencia();
                 String codArticulo =listaStkw002.get(i).getCodArticulo();
+                String tomaRegistro =listaStkw002.get(i).getTomaRegistro();
                 if(cantidad.length()==0)
                 {
                     cantidad="0";
                 }
-                db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"', WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' " +
-                        " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+codArticulo);
+                if(tomaRegistro.equals("R")){ // SI ES IGUAL A "R", ENTONCES SIGNIFICA, QUE ES UN REINVENTARIO. QUE SE VOLVIO A INVENTARIAR, LUEGO DE EXPORTAR.
+                    db_UPDATE.execSQL(" update STKW002INV set  estado ='F' ,winvd_cant_inv ='"+cantidad +"', WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' " +
+                            " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+codArticulo);
+                }
+                else {
+                    db_UPDATE.execSQL(" update STKW002INV set  estado ='P' ,winvd_cant_inv ='"+cantidad +"', WINVE_LOGIN_CERRADO_WEB='"+variables.userdb+"' " +
+                            " where winvd_nro_inv="+ variables.nro_registro_toma+" and winvd_art="+codArticulo);
+
+                }
+
                 // SOLO SE COMPARA POR NRO DE INVENTARIO MAS EL NRO DE SECUENCIA.
             }
             CodigoRegistro= 0;
