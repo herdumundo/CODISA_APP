@@ -794,7 +794,8 @@ public class controles {
                     "winvd_secu," +//12
                     "grup_desc," +//13
                     "flia_desc," +//14
-                    "toma_registro" +//15
+                    "toma_registro," +//15
+                    "cod_barra" +//16
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
                     "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
@@ -807,7 +808,7 @@ public class controles {
                 ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
                         cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
-                        cursor.getString(15)));
+                        cursor.getString(15),cursor.getString(16)));
                 cont++;
             }
             stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
@@ -1694,13 +1695,9 @@ public class controles {
                 connect = conexion.Connections();
                 connect.setAutoCommit(false);
 
-                Statement stmtStk =  connect.createStatement();
 
-                ResultSet RsStk = stmtStk.executeQuery("SELECT nvl(MAX(INVE_NUMERO),0)+1  as id FROM  stk_carga_inv" );
 
-                while (RsStk.next()){
-                    idGenCabStk=RsStk.getInt("id");
-                }
+
 
 
                 Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB,winve_dep,arde_suc,tipo_toma,toma_registro from stkw002inv " +
@@ -1722,6 +1719,16 @@ public class controles {
                     else{
                         tipoToma="C";
                     }
+                    if(!tomaRegistro.equals("R")){
+                        Statement stmtStk =  connect.createStatement();
+                        // ResultSet RsStk = stmtStk.executeQuery("SELECT nvl(MAX(INVE_NUMERO),0)+1  as id FROM  stk_carga_inv" );
+                        ResultSet RsStk = stmtStk.executeQuery("SELECT SEQ_STK_CARGA_INV.NEXTVAL    FROM   DUAL" );
+
+                        while (RsStk.next()){
+                            idGenCabStk=RsStk.getInt(1);
+                        }
+                    }
+
                     contadorMensaje++;
                     Cursor cursor=db_consulta.rawQuery("select " +
                             "winvd_nro_inv," +  //0

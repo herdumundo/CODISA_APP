@@ -1,15 +1,18 @@
 package com.example.codisa_app;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.sql.PreparedStatement;
@@ -21,6 +24,8 @@ import java.util.List;
 import Utilidades.Stkw002Item;
 import Utilidades.controles;
 import Utilidades.variables;
+
+import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -32,18 +37,21 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
      class ExampleViewHolder extends ViewHolder {
         TextView textProducto;
         TextView textCantidad;
-         TextView textLote;
+         TextView textBarra;
          TextView txtFamilia;
          TextView txtGrupo;
+         RelativeLayout relative;
      //    TextView textArea;
 
         ExampleViewHolder(View itemView) {
             super(itemView);
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
-            this.textLote = (TextView) itemView.findViewById(R.id.txt_lote_inv);
+            this.textBarra = (TextView) itemView.findViewById(R.id.txt_barra);
             this.txtFamilia = (TextView) itemView.findViewById(R.id.txt_familia);
             this.txtGrupo = (TextView) itemView.findViewById(R.id.txt_grupo);
+            this.relative =  itemView.findViewById(R.id.relative);
+
         }
     }
 
@@ -61,25 +69,20 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
         holder.textCantidad.setText(currentItem.getCantidad());
+        holder.textBarra.setText(currentItem.getCodBarra());
         holder.txtGrupo.setText("Gupo:"+currentItem.getgrupo());
         holder.txtFamilia.setText("Familia:"+currentItem.getfamilia());
-       /* if(variables.consolidado.equals("SI")){
 
-        }
-        else{
-            holder.textLote.setText("LOTE:"+currentItem.getLote()+"  VTO.:"+currentItem.getVencimiento());
-            holder.textLote.setVisibility(View.VISIBLE);
-        }*/
 
 
   holder.textCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+            @SuppressLint("ResourceAsColor")
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
                     listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
-                   // cont=cont*Integer.parseInt(holder.textCantidad.getText().toString().trim());
-                }
+                 }
             }
         });
       //  int as=cont;
