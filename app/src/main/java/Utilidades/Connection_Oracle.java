@@ -7,6 +7,7 @@ import android.util.Log;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Struct;
 
 /**
  * Created by hvelazquez on 04/04/2018.
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 
 public class Connection_Oracle {
      @SuppressLint("NewaApi")
-    public Connection Connections(){
+    public static Connection Connections(){
         String user = variables.userdb;
         String url = "jdbc:oracle:thin:@(DESCRIPTION= (ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.19)(PORT=1521)) (CONNECT_DATA=(SERVICE_NAME=codisaprod)))";
         String passwd = variables.passdb;
@@ -29,9 +30,31 @@ public class Connection_Oracle {
             DriverManager.setLoginTimeout(5);
             connection= DriverManager.getConnection(url, user, passwd);
             controles.verificadorRed=1;
+            controles.resBD=1;
         }
         catch (SQLException se) {
-            Log.e("error here 1 : ", se.getMessage());
+
+            switch (se.getErrorCode()){
+                case 1017:
+                    controles.mensajeLogin="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
+                    break;
+                case  17002  :
+                case  20:
+                    controles.mensajeLogin="ERROR DE CONEXION, VERIFIQUE LA RED.";
+                    controles.resBD=2;
+                    variables.userdb=user;
+                    variables.passdb=passwd;
+
+                    break;
+
+                case  17452:
+                    controles.mensajeLogin="USUARIO O CONTRASEÑA INCORRECTA, FAVOR VERIFIQUE.";
+                    controles.resBD=3;
+                    break;
+                default :
+                    controles.mensajeLogin=se.getMessage();
+                    controles.resBD=3;
+            }
         }
         catch (ClassNotFoundException e)
         {
@@ -39,5 +62,6 @@ public class Connection_Oracle {
         }
         return connection;
  }
+
  }
 

@@ -47,6 +47,8 @@ import javax.xml.transform.Result;
 import maes.tech.intentanim.CustomIntent;
 
 public class controles {
+    public static int resBD;
+    public static String mensajeLogin;
 
     public static   ArrayList<String> arrSucursales       =   new ArrayList<>();
     public static   ArrayList<String> arrIdSucursales     =   new ArrayList<>();
@@ -78,8 +80,7 @@ public class controles {
     static boolean  GruposTodos=false;
     public static   List<Stkw002Item> ListArrayInventarioArticulos;
     public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
-    public static   Connection_Oracle   conexion = new Connection_Oracle();
-    public static   Connection        connect ;
+    public static   Connection        connect  ;
     public static   Context context_stkw001;
     public static   Context contextListaStkw001;
     public static   Context context_menuPrincipal;
@@ -95,83 +96,111 @@ public class controles {
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
 
+    //public static  connect = conexion.Connections();
+
+    public  static  void connect(){
+        try {
+            Connection_Oracle   conexion = new Connection_Oracle();
+            connect = conexion.Connections();
+            }
+        catch (Exception e){
+            String asd=e.getMessage();
+        }
+    }
+    public static void desconectarBD(){
+        try {
+            connect.close();
+            System.exit(0);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static void conexion_sqlite(Context context) {
         conSqlite=      new ConexionSQLiteHelper(context,"CODISA_INV",null,ConexionSQLiteHelper.DATABASE_VERSION);
     }
 
     public static void volver_atras(Context context, Activity activity, Class clase_destino, String texto, int tipo)  {
-        if(tipo==1){
-            variables.tipoListaStkw002=1;
-            variables.tipoStkw002=2;
+        switch(tipo)
+        {
+            // declaración case
+            // los valores deben ser del mismo tipo de la expresión
+            case 1 :
+                variables.tipoListaStkw002=1;
+                variables.tipoStkw002=2;
 
-            builder = new android.app.AlertDialog.Builder(context);
-            builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
-            builder.setTitle("¡Atención!");
-            builder.setMessage(texto);
-            builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage(texto);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                    Intent intent = new Intent(context, clase_destino);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intent = new Intent(context, clase_destino);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    context.startActivity(intent);
-                    activity.finish();
-                    CustomIntent.customType(context,"right-to-left");
+                        context.startActivity(intent);
+                        activity.finish();
+                        CustomIntent.customType(context,"right-to-left");
 
-                }
-            });
-            builder.setNegativeButton("No",null);
-            ad = builder.show();
-            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
-            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
-            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+                    }
+                });
+                builder.setNegativeButton("No",null);
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+                break; // break es opcional
 
+            case 3 :
+
+                builder = new android.app.AlertDialog.Builder(context);
+                builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
+                builder.setTitle("¡Atención!");
+                builder.setMessage(texto);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                       /* Intent intent = new Intent(context, clase_destino);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                        activity.finish();
+                        CustomIntent.customType(context,"right-to-left");*/
+                        variables.userdb=null;
+                        variables.passdb=null;
+                        desconectarBD();
+
+
+                    }
+                });
+                builder.setNegativeButton("No",null);
+                ad = builder.show();
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
+                ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+                break; // break es opcional
+            case 5 :
+                activity.finish();
+                break; // break es opcional
+
+            default :
+                // Declaraciones
+                Intent intent = new Intent(context, clase_destino);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                context.startActivity(intent);
+                CustomIntent.customType(context,"right-to-left");
+
+                activity.finish();
         }
 
-
-        else if(tipo==3){
-
-            builder = new android.app.AlertDialog.Builder(context);
-            builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
-            builder.setTitle("¡Atención!");
-            builder.setMessage(texto);
-            builder.setPositiveButton("Si", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    Intent intent = new Intent(context, clase_destino);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intent);
-                    activity.finish();
-                    CustomIntent.customType(context,"right-to-left");
-
-                }
-            });
-            builder.setNegativeButton("No",null);
-            ad = builder.show();
-            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
-            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
-            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-            ad.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
-
-        }
-        else if(tipo==5){
-            activity.finish();
-        }
-        else {
-            Intent intent = new Intent(context, clase_destino);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            context.startActivity(intent);
-            CustomIntent.customType(context,"right-to-left");
-
-            activity.finish();
-
-        }
     }
 
     public static void listar_sucursales(Activity activity) {
@@ -185,7 +214,7 @@ public class controles {
     public static void listar_depositos(Activity activity, String id_sucursal) {
         try {
 
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUC_DEP   where suc_codigo='"+id_sucursal+"'");
             //arr_id_deposito.clear();
@@ -201,6 +230,7 @@ public class controles {
 
         }
         catch (Exception e){
+
             VerificarRed(context_stkw001);
         }
 
@@ -209,7 +239,7 @@ public class controles {
     public static void listar_areas(Activity activity, Context context,int tipo_toma) {
         try {
 
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_AREA  ");
             arr_id_area.clear();
@@ -234,7 +264,7 @@ public class controles {
     public static void listar_departamentos(Activity activity, String id_area, Context context,int tipo_toma) {
         try {
 
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_DPTO   where dpto_area='"+id_area+"'");
             arr_id_departamento.clear();
@@ -259,7 +289,7 @@ public class controles {
     public static void listar_seccion(Activity activity, String id_departamento, Context context,int tipo_toma) {
         try {
 
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SECC   where secc_dpto='"+id_departamento+"'" +
                     " and secc_area='"+stkw001.txt_id_area.getText().toString().trim()+"'");
@@ -284,8 +314,9 @@ public class controles {
 
     public static void listar_familia(Activity activity, String id_seccion, Context context,int tipo_toma) {
         try {
-
-            connect = conexion.Connections();
+          //  connect.close();
+           // System.exit(0);
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_FLIA   where flia_seccion='"+id_seccion+"'" +
                     " and flia_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
@@ -307,6 +338,8 @@ public class controles {
         }
         catch (Exception e){
             VerificarRed(context_stkw001);
+          //  Toast.makeText(context_stkw001,e.getMessage(),Toast.LENGTH_LONG).show();
+
         }
 
     }
@@ -321,7 +354,7 @@ public class controles {
             else {
                 sqlFamilia= "grup_familia='"+id_familia+"' and  ";
             }
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_GRUPO  " +
                     " where " +
@@ -436,7 +469,7 @@ public class controles {
 
             listArraySubgrupo.clear();
             if(id_grupo.length()>0){
-                connect = conexion.Connections();
+                //connect = conexion.Connections();
 
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("   select * from V_WEB_GRUPO  inner join V_WEB_SUBGRUPO on " +
@@ -827,7 +860,7 @@ public class controles {
         try {
             String html="";
             table="";
-            connect =  conexion.Connections();
+            //connect =  conexion.Connections();
             Statement stmt =  connect.createStatement();
 
 
@@ -933,8 +966,8 @@ public class controles {
     public static void ListarTomasServer(Context context) {
         try {
             int cont=0;
-            controles.connect = controles.conexion.Connections();
-            Statement stmt = controles.connect.createStatement();
+           // controles.connect = controles.conexion.Connections();
+            Statement stmt =  connect.createStatement();
 
             ResultSet rs = stmt.executeQuery("" +
                     "   SELECT    " +
@@ -1030,6 +1063,9 @@ public class controles {
         }
         catch (Exception e){
             lista_stkw001_inv.txtSinresultado.setText(e.getMessage()) ;
+          //  if(e.getMessage().equals("Closed Connection")){
+            controles. connect();
+         //   }
             lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
         }
     }
@@ -1518,7 +1554,7 @@ public class controles {
 
     public static void CancelarToma(int nroToma,Context context){
         try {
-            connect = conexion.Connections();
+            //connect = conexion.Connections();
             connect.setAutoCommit(false);
             String Cancelar="UPDATE WEB_INVENTARIO SET WINVE_ESTADO_WEB='E',WINVE_FEC_CERRADO_WEB=CURRENT_TIMESTAMP,WINVE_LOGIN_CERRADO_WEB=UPPER('"+variables.userdb+"')" +
                     " WHERE WINVE_NUMERO="+nroToma+" ";
@@ -1692,7 +1728,7 @@ public class controles {
                 SQLiteDatabase db_consultaCab= conSqlite.getReadableDatabase();
                 int idGenCabStk=0;
                 //GENERO ID PARA LA CABECERA DEL STK
-                connect = conexion.Connections();
+                //connect = conexion.Connections();
                 connect.setAutoCommit(false);
 
 
@@ -1978,10 +2014,13 @@ public class controles {
     }
 
     public static   void VerificarRed(Context context){
-        if (verificadorRed==0){
+        //if (verificadorRed==0){
+            if(connect==null){
+
+                connect();
 
             builder = new android.app.AlertDialog.Builder(context);
-            builder.setIcon(context_stkw001.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setIcon(context.getResources().getDrawable(R.drawable.ic_danger));
             builder.setTitle("¡Atención!");
             builder.setMessage("Se perdió la comunicación con el servidor, intente de nuevo.");
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
@@ -1994,8 +2033,8 @@ public class controles {
             ad = builder.show();
             ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.azul_claro));
             ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-
-        }
+            }
+      //  }
 
     }
 
@@ -2007,7 +2046,7 @@ public class controles {
             String id_cabecera="";
             if(variables.tipo_stkw001_insert.equals("M"))//SI LA TOMA ES MANUAL
             {
-                    connect = conexion.Connections();
+                    //connect = conexion.Connections();
                     Statement stmt = connect.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
                     while (rs.next()){
@@ -2118,7 +2157,7 @@ public class controles {
 
             else if(variables.tipo_stkw001_insert.equals("C"))//SI LA TOMA ES SELECCION AUTOMATICA
             {
-                connect = conexion.Connections();
+                //connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
                 while (rs.next()){
@@ -2276,7 +2315,7 @@ public class controles {
                 else
                 {
 
-                    connect = conexion.Connections();
+                    //connect = conexion.Connections();
                     Statement stmt = connect.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
                     while (rs.next()){
@@ -2411,7 +2450,7 @@ public class controles {
                 }
 
 
-                connect = conexion.Connections();
+                //connect = conexion.Connections();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT SEQ_NRO_INV.NEXTVAL    FROM   DUAL");
                 while (rs.next()){

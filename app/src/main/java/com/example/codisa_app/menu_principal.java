@@ -78,7 +78,7 @@ public class menu_principal extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
 
 
-        controles.conexion_sqlite(this);
+       // controles.conexion_sqlite(this);
         controles.ConsultarPendientesExportar();
         controles.context_menuPrincipal=this;
         tomasGen=findViewById(R.id.tomasGen);
@@ -189,7 +189,7 @@ public class menu_principal extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
            try {
                error_importador=1;
-               controles.connect = controles.conexion.Connections();
+               //controles.connect = controles.conexion.Connections();
                Statement stmt = controles.connect.createStatement();
                ResultSet rs = stmt.executeQuery(
                        "select count(*) as contador FROM  (" +
@@ -224,7 +224,7 @@ public class menu_principal extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            prodialog.dismiss();
+
             if (error_importador==0){//SI NO HAY ERRORES
 
                 builder = new AlertDialog.Builder(menu_principal.this);
@@ -279,7 +279,8 @@ public class menu_principal extends AppCompatActivity {
             }
 
             else {
-                new androidx.appcompat.app.AlertDialog.Builder(menu_principal.this)
+                controles.VerificarRed(menu_principal.this);
+               /* new androidx.appcompat.app.AlertDialog.Builder(menu_principal.this)
                         .setTitle("ATENCION!!!")
                         .setCancelable(false)
                         .setMessage(mensajeImporError)
@@ -287,11 +288,11 @@ public class menu_principal extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
-                        }).show();
+                        }).show();*/
             }
 
 
-
+            prodialog.dismiss();
         }
     }
 
@@ -300,7 +301,7 @@ public class menu_principal extends AppCompatActivity {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
             db1.execSQL("delete from STKW002INV  WHERE estado IN ('A','C','E')");
             db1.close();
-            controles.connect = controles.conexion.Connections();
+           // controles.connect = controles.conexion.Connections();
             Statement stmt = controles.connect.createStatement();
 
             ResultSet rs = stmt.executeQuery(
@@ -353,7 +354,7 @@ public class menu_principal extends AppCompatActivity {
             // ENTONCES NO HACE INSERT AL SQLITE.
             contadorMensaje++;
             SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
-            Cursor cursor=db_consulta.rawQuery("select * from STKW002INV where  winvd_nro_inv ='"+rs.getInt("winvd_nro_inv")+"' and estado='P'" ,null);
+            Cursor cursor=db_consulta.rawQuery("select * from STKW002INV where  winvd_nro_inv ='"+rs.getInt("winvd_nro_inv")+"' and estado in ('P','F')" ,null);
             if (cursor.moveToNext())
             {
 

@@ -81,7 +81,7 @@ public class lista_stkw001_inv extends AppCompatActivity {
                 task.execute();
             }
         });
-        controles.VerificarRed(this);
+       // controles.VerificarRed(this);
 
     }
 

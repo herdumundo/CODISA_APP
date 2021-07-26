@@ -86,7 +86,7 @@ public class stkw002 extends AppCompatActivity {
 
         controles.listarStkw002();
         listar_recicler();
-        controles.conexion_sqlite(this);
+       // controles.conexion_sqlite(this);
 
 
 

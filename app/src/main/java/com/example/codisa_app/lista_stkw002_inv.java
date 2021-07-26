@@ -63,11 +63,11 @@ public class lista_stkw002_inv extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_stkw002_inv);
-        controles.conexion_sqlite(this);
+      //  controles.conexion_sqlite(this);
         listView =(ListView)findViewById(R.id.listViewInv);
         txtSinresultado=findViewById(R.id.txtSinresultado);
         btn_buscar =(Button)findViewById(R.id.btn_pendientes_exportacion);
-        consultar_tomas_generadas("A");
+        consultar_tomas_generadas(" estado='A' ");
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
         getSupportActionBar().setCustomView(R.layout.customactionbar);
@@ -110,7 +110,7 @@ public class lista_stkw002_inv extends AppCompatActivity
            //< if(estado.equals("A")){
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) , area_desc,dpto_desc,tipo_toma,secc_desc," +
                         "winvd_consolidado,desc_grupo_parcial,desc_familia " +
-                        " from STKW002INV WHERE ESTADO='"+estado+"'  " +
+                        " from STKW002INV WHERE  " +estado+
                         " and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1 desc";
             /*}else {
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc," +
@@ -217,29 +217,27 @@ public class lista_stkw002_inv extends AppCompatActivity
 
 
     public void cambio_consulta(View v ){
+    switch (variables.tipoListaStkw002){
 
-        if(variables.tipoListaStkw002==1){//SI ES IGUAL A 1 ENTONCES ES UN INVENTARIO YA REALIZADO.
-            consultar_tomas_generadas("P");
+        case 1: //SI ES IGUAL A 1 ENTONCES ES UN INVENTARIO YA REALIZADO.
+            consultar_tomas_generadas(" estado in ('P','F') ");
             variables.tipoStkw002=1;
             variables.tipoListaStkw002=2;
             btn_buscar.setText("   IR PENDIENTES A INVENTARIAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pending, 0, 0, 0);
             actionbar.setText("TOMAS INVENTARIADAS");
-
-
-        }
-        else if (variables.tipoListaStkw002==2){
-            consultar_tomas_generadas("A");
+            break;
+        case 2:
+            consultar_tomas_generadas("estado='A' ");
             variables.tipoStkw002=2;
             variables.tipoListaStkw002=1;
             btn_buscar.setText("   IR PENDIENTES A EXPORTAR");
             btn_buscar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_export, 0, 0, 0);
-           // btn_buscar.setBackgroundColor(Color.GREEN);
-         //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
-             actionbar.setText("PENDIENTES A INVENTARIAR");
+            // btn_buscar.setBackgroundColor(Color.GREEN);
+            //   getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+            actionbar.setText("PENDIENTES A INVENTARIAR");
+            break;
 
-
-
-        }
+}
     }
 }
