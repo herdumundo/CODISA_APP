@@ -80,8 +80,12 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             @SuppressLint("ResourceAsColor")
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
-                {
+                {   int cantidad=0;
                     listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
+                    for (int i = 0; i < listaStkw002.size(); i++) {
+                          cantidad =cantidad+Integer.parseInt(listaStkw002.get(i).getCantidad());
+                    }
+                    stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ controles.contador_stkw002+"                                        CANTIDAD TOTAL:"+cantidad+"");
                  }
             }
         });

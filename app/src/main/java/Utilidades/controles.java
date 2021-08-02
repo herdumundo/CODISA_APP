@@ -49,7 +49,7 @@ import maes.tech.intentanim.CustomIntent;
 public class controles {
     public static int resBD;
     public static String mensajeLogin;
-
+    public static int contador_stkw002=0;
     public static   ArrayList<String> arrSucursales       =   new ArrayList<>();
     public static   ArrayList<String> arrIdSucursales     =   new ArrayList<>();
     public static   ArrayList<String> arr_id_deposito     =   new ArrayList<>();
@@ -72,6 +72,9 @@ public class controles {
     static          String  SubgrupoGruposSeleccionados="";
     static          String  SubgrupoSeleccionadosArticulos="";
     static          String  ArticulosSubgruposSeleccionados="";
+    static          String  mensajeRespuestaStkw001;
+    static          String  mensajeRespuestaExportStkw002;
+    static          String  grupoParcial="";
     static          List<ArrayListContenedor>   listArrayGrupo      = new ArrayList<>();
     static          List<ArrayListContenedor>   listArraySubgrupo   = new ArrayList<>();
     static          List<ArrayListContenedor>   listArrayArticulos  = new ArrayList<>();
@@ -79,7 +82,7 @@ public class controles {
     public static   ArrayList<Stkw002List>      listaStkw001;
     static boolean  GruposTodos=false;
     public static   List<Stkw002Item> ListArrayInventarioArticulos;
-    public static   ConexionSQLiteHelper  conSqlite,   conn_gm;
+    public static   ConexionSQLiteHelper  conSqlite;
     public static   Connection        connect  ;
     public static   Context context_stkw001;
     public static   Context contextListaStkw001;
@@ -87,16 +90,10 @@ public class controles {
     public static   Activity activity_stkw001;
     static int      tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
     static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
-    static String   mensajeRespuestaStkw001;
-    static String   mensajeRespuestaExportStkw002;
-    //static String   consolidado="";
-    static String   grupoParcial="";
     static  int     gruposSeleccionados=0;
     static  int     ContExportStkw002;
     public static   AlertDialog.Builder builder;
     public static   AlertDialog ad;
-
-    //public static  connect = conexion.Connections();
 
     public  static  void connect(){
         try {
@@ -107,6 +104,7 @@ public class controles {
             String asd=e.getMessage();
         }
     }
+
     public static void desconectarBD(){
         try {
             connect.close();
@@ -809,7 +807,8 @@ public class controles {
     public static void listarStkw002(){
 
         try {
-            int contador_stkw002=0;
+             contador_stkw002=0;
+            int cantidad=0;
             SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
             Cursor cursor=db_consulta.rawQuery("select " +
                     "winvd_nro_inv," + //0
@@ -843,8 +842,9 @@ public class controles {
                         cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
                         cursor.getString(15),cursor.getString(16)));
                 cont++;
+                cantidad=cantidad+Integer.parseInt(cursor.getString(11));
             }
-            stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002);
+            stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ contador_stkw002+"                                        CANTIDAD TOTAL:"+cantidad+"");
 
 
 
@@ -1721,7 +1721,6 @@ public class controles {
         protected Void doInBackground(Void... params) {
             SQLiteDatabase db_UPDATE= conSqlite.getReadableDatabase();
             SQLiteDatabase dbAnularSqliteCab= conSqlite.getReadableDatabase();
-
             int tipoRegistro=0;
             try {
                 SQLiteDatabase db_consulta= conSqlite.getReadableDatabase();
@@ -1730,12 +1729,6 @@ public class controles {
                 //GENERO ID PARA LA CABECERA DEL STK
                 //connect = conexion.Connections();
                 connect.setAutoCommit(false);
-
-
-
-
-
-
                 Cursor cursorCab=db_consultaCab.rawQuery("select distinct winvd_nro_inv,WINVE_LOGIN_CERRADO_WEB,winve_dep,arde_suc,tipo_toma,toma_registro from stkw002inv " +
                         "where '"+variables.ID_SUCURSAL_LOGIN+"' AND estado IN ('P','F') and UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+"')",null);
 
@@ -1956,7 +1949,6 @@ public class controles {
             }
         }
     }
-
 
     public static   void limpiarListaViewArticulosSTKW001(){
         ArrayAdapter adapter = new ArrayAdapter(context_stkw001, R.layout.fila_columnas, R.id.txt_nro, listInsertArticulos) {
@@ -2624,7 +2616,6 @@ public class controles {
             con++;
         }
      }
-
 
     private static void capturarWinveSubGrupoParcialCriterio()
     {

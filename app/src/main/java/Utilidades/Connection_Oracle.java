@@ -9,8 +9,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Struct;
 
+import javax.sql.ConnectionPoolDataSource;
+
 /**
- * Created by hvelazquez on 04/04/2018.
+ * Created by hvelazquez on 04/07/2021.
  */
 
 public class Connection_Oracle {
@@ -28,7 +30,9 @@ public class Connection_Oracle {
             Class.forName(driver);
             controles.verificadorRed=0;
             DriverManager.setLoginTimeout(5);
+
             connection= DriverManager.getConnection(url, user, passwd);
+
             controles.verificadorRed=1;
             controles.resBD=1;
         }

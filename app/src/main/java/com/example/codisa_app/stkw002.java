@@ -66,10 +66,13 @@ public class stkw002 extends AppCompatActivity {
          recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
          btnEliminar=  findViewById( R.id.btn_eliminar);
          txtTotalArt=  findViewById( R.id.txtTotalArt);
+         controles.listarStkw002();
+         listar_recicler();
+
          getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //bellow setSupportActionBar(toolbar);
          getSupportActionBar().setCustomView(R.layout.customactionbar);
          TextView search = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
-         search.setText("REGISTRO INVENTARIO");
+         search.setText("REGISTRO INVENTARIO NRO."+variables.nro_registro_toma);
          getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
          final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -83,11 +86,6 @@ public class stkw002 extends AppCompatActivity {
              btnEliminar.setVisibility(View.GONE);
 
          }
-
-        controles.listarStkw002();
-        listar_recicler();
-       // controles.conexion_sqlite(this);
-
 
 
         Searchtext = (EditText) findViewById(R.id.search_input);
