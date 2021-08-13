@@ -296,6 +296,8 @@ public class menu_principal extends AppCompatActivity {
         }
     }
 
+
+
     private void InsertarSqliteToma(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();

@@ -1468,6 +1468,13 @@ public class controles {
     public static void ExportarStkw002(){
         try {
 
+            if(connect==null||connect.isClosed()){
+                connect();
+            }
+            //SE AGREGO LA CONSULTA DE LA CONEXION, YA QUE SE NECESITABA REINICIAR LA APP PARA RECONECTAR
+
+
+
             SQLiteDatabase dbConsultaCont= conSqlite.getReadableDatabase();
             Cursor cursorCont=dbConsultaCont.rawQuery("select  count(*) from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+ "')" ,null);
