@@ -39,7 +39,9 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         TextView textCantidad;
          TextView textBarra;
          TextView txtFamilia;
+         TextView textCantidadTotal;
          TextView txtGrupo;
+         TextView txt_ultimoingresado;
          RelativeLayout relative;
      //    TextView textArea;
 
@@ -47,9 +49,11 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             super(itemView);
             this.textProducto = (TextView) itemView.findViewById(R.id.txt_producto);
             this.textCantidad = (TextView) itemView.findViewById(R.id.txt_cantidad);
+            this.textCantidadTotal = (TextView) itemView.findViewById(R.id.txt_cantidadTotal);
             this.textBarra = (TextView) itemView.findViewById(R.id.txt_barra);
             this.txtFamilia = (TextView) itemView.findViewById(R.id.txt_familia);
             this.txtGrupo = (TextView) itemView.findViewById(R.id.txt_grupo);
+            this.txt_ultimoingresado = (TextView) itemView.findViewById(R.id.txt_ultimoingresado);
             this.relative =  itemView.findViewById(R.id.relative);
 
         }
@@ -68,10 +72,13 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         cont=1;
         Stkw002Item currentItem = (Stkw002Item) this.listaStkw002.get(position);
         holder.textProducto.setText(currentItem.getCodArticulo()+" "+ currentItem.getProducto());
-        holder.textCantidad.setText(currentItem.getCantidad());
+        //holder.textCantidad.setText(currentItem.getCantidad());
+        holder.textCantidad.setText("0");
+        holder.textCantidadTotal.setText(currentItem.getCantidadTotal());
         holder.textBarra.setText(currentItem.getCodBarra());
         holder.txtGrupo.setText("Gupo:"+currentItem.getgrupo());
         holder.txtFamilia.setText("Familia:"+currentItem.getfamilia());
+        holder.txt_ultimoingresado.setText(currentItem.getUltimo());
 
 
 
@@ -82,16 +89,25 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                 if(!hasFocus)
                 {   int cantidad=0;
 
-                    if(holder.textCantidad.getText().toString().trim().length()==0){
+                    if(holder.textCantidad.getText().toString().trim().length()==0||holder.textCantidad.getText().toString().trim().equals("-")){
                         holder.textCantidad.setText("0");
+                    }
+                    if(holder.textCantidadTotal.getText().toString().trim().length()==0){
+                        holder.textCantidadTotal.setText("0");
                     }
                     listaStkw002.get(position).setCantidad(holder.textCantidad.getText().toString().trim());
 
+                    listaStkw002.get(position).setCantidadTotal( String.valueOf(Integer.parseInt(holder.textCantidad.getText().toString().trim())+Integer.parseInt(holder.textCantidadTotal.getText().toString().trim())));
+                    listaStkw002.get(position).setUltimo("Ultimo ingresado:"+holder.textCantidad.getText());
+                    holder.textCantidadTotal.setText(String.valueOf(Integer.parseInt(holder.textCantidad.getText().toString().trim())+Integer.parseInt(holder.textCantidadTotal.getText().toString().trim())));
                     for (int i = 0; i < listaStkw002.size(); i++)
                     {
                           cantidad =cantidad+Integer.parseInt(listaStkw002.get(i).getCantidad());
                     }
                     stkw002.txtTotalArt.setText("TOTAL DE ARTICULOS:"+ controles.contador_stkw002+"                                        CANTIDAD TOTAL:"+cantidad+"");
+
+                    holder.txt_ultimoingresado.setText("Ultimo ingresado:"+holder.textCantidad.getText());
+                    holder.textCantidad.setText("0");
                  }
             }
         });
@@ -114,7 +130,7 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
         try {
             SQLiteDatabase db_UPDATE= controles.conSqlite.getReadableDatabase();
             for (int i = 0; i < listaStkw002.size(); i++) {
-                String cantidad =listaStkw002.get(i).getCantidad();
+                String cantidad =listaStkw002.get(i).getCantidadTotal();
                 String secuencia =listaStkw002.get(i).getSecuencia();
                 String codArticulo =listaStkw002.get(i).getCodArticulo();
                 String tomaRegistro =listaStkw002.get(i).getTomaRegistro();

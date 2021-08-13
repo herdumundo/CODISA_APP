@@ -5,6 +5,7 @@ public class Stkw002Item {
   //  private String posicion;
 
     private String cantidad;
+    private String cantidadTotal;
     private String contador;
     private String lote;
      private String cod_articulo;
@@ -16,9 +17,10 @@ public class Stkw002Item {
     private String familia;
     private String tomaRegistro;
     private String codBarra;
+    private String ultimo;
 
     public Stkw002Item(String producto,   String cantidad, String lote,String cod_articulo,String vencimiento
-            ,String secuencia,String area ,String grupo,String familia ,String tomaRegistro,String codBarra) {
+        ,String secuencia,String area ,String grupo,String familia ,String tomaRegistro,String codBarra,String cantidadTotal,String ultimo) {
      //   this.mImageResource = imageResource;
         this.producto = producto;
      //   this.posicion = posicion;
@@ -32,6 +34,8 @@ public class Stkw002Item {
         this.familia = familia;
         this.tomaRegistro = tomaRegistro;
         this.codBarra = codBarra;
+        this.cantidadTotal = cantidadTotal;
+        this.ultimo = ultimo;
 
     }
 
@@ -48,6 +52,22 @@ public class Stkw002Item {
 
     public String getArea() {
         return this.area;
+    }
+
+
+
+    public String getCantidadTotal() {
+        return this.cantidadTotal;
+    }
+    public void setCantidadTotal(String cantidadTotal) {
+        this.cantidadTotal = cantidadTotal;
+    }
+
+    public String getUltimo() {
+        return this.ultimo;
+    }
+    public void setUltimo(String ultimo) {
+        this.ultimo = ultimo;
     }
 
 

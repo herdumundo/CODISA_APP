@@ -53,8 +53,8 @@ public class stkw002 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    EditText Searchtext,txt_cantidad;
-
+    EditText Searchtext;
+    TextView txt_cantidad;
     private  Stkw002Adapter adapter;
     RecyclerView recyclerView ;
 
@@ -89,7 +89,7 @@ public class stkw002 extends AppCompatActivity {
 
 
         Searchtext = (EditText) findViewById(R.id.search_input);
-        txt_cantidad = (EditText) findViewById(R.id.txt_cantidad);
+        txt_cantidad = (TextView) findViewById(R.id.txt_cantidadTotal);
         Searchtext.addTextChangedListener(new TextWatcher()
         {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)

@@ -837,10 +837,10 @@ public class controles {
             {
 
                 contador_stkw002++;
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), cursor.getString(11),
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), "0",
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
                         cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
-                        cursor.getString(15),cursor.getString(16)));
+                        cursor.getString(15),cursor.getString(16), cursor.getString(11),"Ultimo ingresado:0"));
                 cont++;
                 cantidad=cantidad+Integer.parseInt(cursor.getString(11));
             }
