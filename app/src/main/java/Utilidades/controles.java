@@ -827,7 +827,7 @@ public class controles {
                     "grup_desc," +//13
                     "flia_desc," +//14
                     "toma_registro," +//15
-                    "cod_barra" +//16
+                    "cod_barra,caja,GRUESA "+//16
                     " from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+
                     "' and winvd_nro_inv="+variables.nro_registro_toma+" order by CAST(winvd_art as integer)  asc " ,null);
@@ -837,10 +837,11 @@ public class controles {
             {
 
                 contador_stkw002++;
-                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), "0",
+                ListArrayInventarioArticulos.add(new Stkw002Item(  cursor.getString(1), 0,
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
                         cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
-                        cursor.getString(15),cursor.getString(16), cursor.getString(11),"Ultimo ingresado:0"));
+                        cursor.getString(15),cursor.getString(16), cursor.getString(11),
+                        "Ultimo ingresado:0", cursor.getInt(17), cursor.getInt(18),0,0));
                 cont++;
                 cantidad=cantidad+Integer.parseInt(cursor.getString(11));
             }

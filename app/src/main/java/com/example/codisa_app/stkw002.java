@@ -122,10 +122,10 @@ public class stkw002 extends AppCompatActivity {
                 for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
                     if(item.getProducto().toLowerCase().contains(text)
-                            ||item.getCodArticulo().contains(text)
-                            ||item.getgrupo().toLowerCase().contains(text)||
-                            item.getfamilia().toLowerCase().contains(text)|| item.getCodBarra().contains(text.trim())||
-                            item.getCantidad().contains(text.trim()))
+                            ||item.getCod_articulo().contains(text)
+                            ||item.getGrupo().toLowerCase().contains(text)||
+                            item.getFamilia().toLowerCase().contains(text)|| item.getCodBarra().contains(text.trim())||
+                            String.valueOf(item.getCantidadUnitaria()).contains(text.trim()))
                     {
                         filteredList.add(item);
                     }
