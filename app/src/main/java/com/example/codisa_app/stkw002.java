@@ -87,7 +87,6 @@ public class stkw002 extends AppCompatActivity {
 
          }
 
-
         Searchtext = (EditText) findViewById(R.id.search_input);
         txt_cantidad = (TextView) findViewById(R.id.txt_cantidadTotal);
         Searchtext.addTextChangedListener(new TextWatcher()
@@ -103,6 +102,7 @@ public class stkw002 extends AppCompatActivity {
             //    filter(editable.toString());
             }
         } );
+
      }
 
     private void listar_recicler()

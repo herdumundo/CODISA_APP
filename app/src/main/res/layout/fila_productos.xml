@@ -32,7 +32,7 @@
             android:layout_below="@+id/txt_barra"
             android:layout_marginStart="13dp"
             android:layout_marginTop="1dp"
-            android:layout_toEndOf="@+id/lbl_cajetilla"
+            android:layout_toEndOf="@+id/lbl_gruesa"
             android:ems="10"
             android:gravity="bottom|left"
             android:text="Unidades"
@@ -45,7 +45,7 @@
 
         <TextView
             android:id="@+id/txt_ultimo_cajas"
-            android:layout_width="85dp"
+            android:layout_width="82dp"
             android:layout_height="33dp"
             android:layout_below="@+id/txt_cant_unidades"
             android:layout_marginTop="9dp"
@@ -60,7 +60,7 @@
             app:autoSizeTextType="uniform" />
 
         <TextView
-            android:id="@+id/txt_ultimo_cajetillas"
+            android:id="@+id/txt_ultimo_gruesa"
             android:layout_width="85dp"
             android:layout_height="33dp"
             android:layout_below="@+id/txt_cant_unidades"
@@ -84,7 +84,7 @@
             android:layout_below="@+id/txt_cant_unidades"
             android:layout_marginStart="13dp"
             android:layout_marginTop="9dp"
-            android:layout_toEndOf="@+id/txt_ultimo_cajetillas"
+            android:layout_toEndOf="@+id/txt_ultimo_gruesa"
             android:ems="10"
             android:gravity="bottom|left"
             android:text="Ultimo ingresado: 0"
@@ -131,8 +131,8 @@
             android:id="@+id/txt_cant_cajetillas"
             android:layout_width="84dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_cajetilla"
-            android:layout_marginStart="5dp"
+            android:layout_below="@+id/lbl_gruesa"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="1dp"
             android:layout_toEndOf="@+id/txt_cant_cajas"
             android:ems="10"
@@ -162,12 +162,12 @@
 
         <TextView
             android:id="@+id/txt_cantidadTotal"
-            android:layout_width="60dp"
+            android:layout_width="81dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_ultimo_unidades"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="21dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:gravity="bottom|right"
             android:text="0"
@@ -183,8 +183,8 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_ultimo_unidades"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="3dp"
             android:layout_toStartOf="@+id/txt_cantidadTotal"
             android:ems="10"
             android:gravity="bottom|left"
@@ -213,17 +213,16 @@
             app:autoSizeTextType="uniform" />
 
         <TextView
-            android:id="@+id/lbl_cajetilla"
+            android:id="@+id/lbl_gruesa"
             android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_barra"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="1dp"
             android:layout_toEndOf="@+id/txt_cant_cajasTotal3"
             android:ems="10"
             android:gravity="bottom|left"
-            android:text="Cajetillas
-"
+            android:text="Gruesa"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="14sp"

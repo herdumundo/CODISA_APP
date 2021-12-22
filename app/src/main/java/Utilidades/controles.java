@@ -841,7 +841,7 @@ public class controles {
                         cursor.getString(2),cursor.getString(3),cursor.getString(4),
                         cursor.getString(12),cursor.getString(5),cursor.getString(13),cursor.getString(14),
                         cursor.getString(15),cursor.getString(16), cursor.getString(11),
-                        "Ultimo ingresado:0", cursor.getInt(17), cursor.getInt(18),0,0));
+                        "Ultimo ingresado:0", cursor.getInt(17), cursor.getInt(18),0,0,cursor.getInt(8),"Ultimo ingresado:0","Ultimo ingresado:0"));
                 cont++;
                 cantidad=cantidad+Integer.parseInt(cursor.getString(11));
             }
@@ -1473,9 +1473,6 @@ public class controles {
                 connect();
             }
             //SE AGREGO LA CONSULTA DE LA CONEXION, YA QUE SE NECESITABA REINICIAR LA APP PARA RECONECTAR
-
-
-
             SQLiteDatabase dbConsultaCont= conSqlite.getReadableDatabase();
             Cursor cursorCont=dbConsultaCont.rawQuery("select  count(*) from stkw002inv" +
                     " WHERE arde_suc='"+variables.ID_SUCURSAL_LOGIN+"' AND estado='P' AND UPPER(WINVE_LOGIN_CERRADO_WEB)=UPPER('"+variables.userdb+ "')" ,null);

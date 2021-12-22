@@ -38,6 +38,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 " TEXT,SUCURSAL_DESCRIPCION TEXT, ROL_SUCURSAL INTEGER)");
      }
 
+
     /*
     NOTA: INFORMES DE ESTADO EN STAW002INV
     A= PENDIENTE DE REALIZACION DEL INVENTARIO

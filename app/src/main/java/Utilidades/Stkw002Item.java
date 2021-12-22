@@ -15,17 +15,19 @@ public class Stkw002Item {
     private String familia;
     private String tomaRegistro;
     private String codBarra;
-    private String ultimo;
+    private String ultimo_unidades;
     private Integer cantidad_cajas;
-    private Integer cantidad_cajetillas;
+    private Integer cantidad_gruesa;
     private Integer cantidad_cajasBD;
-    private Integer cantidad_cajetillasBD;
-
+    private Integer cantidad_gruesaBD;
+    private Integer id_familia;
+    private String ultimo_cajas;
+    private String ultimo_gruesa;
 
 
     public Stkw002Item(String producto, Integer CantidadUnitaria, String lote, String cod_articulo, String vencimiento
-            , String secuencia, String area , String grupo, String familia , String tomaRegistro, String codBarra, String cantidadTotal, String ultimo,
-                       Integer cantidad_cajasBD, Integer cantidad_cajetillasBD, Integer cantidad_cajas, Integer cantidad_cajetillas) {
+            , String secuencia, String area , String grupo, String familia , String tomaRegistro, String codBarra, String cantidadTotal, String ultimo_unidades,
+                       Integer cantidad_cajasBD, Integer cantidad_gruesaBD, Integer cantidad_cajas, Integer cantidad_gruesa, Integer id_familia, String ultimo_cajas, String ultimo_gruesa) {
         this.producto = producto;
         this.CantidadUnitaria = CantidadUnitaria;
         this.cantidadTotal = cantidadTotal;
@@ -40,13 +42,26 @@ public class Stkw002Item {
         this.familia = familia;
         this.tomaRegistro = tomaRegistro;
         this.codBarra = codBarra;
-        this.ultimo = ultimo;
+        this.ultimo_unidades = ultimo_unidades;
         this.cantidad_cajas = cantidad_cajas;
-        this.cantidad_cajetillas = cantidad_cajetillas;
-        this.cantidad_cajetillasBD = cantidad_cajetillasBD;
+        this.cantidad_gruesa = cantidad_gruesa;
+        this.cantidad_gruesaBD = cantidad_gruesaBD;
         this.cantidad_cajasBD = cantidad_cajasBD;
+        this.id_familia = id_familia;
+        this.ultimo_cajas = ultimo_cajas;
+        this.ultimo_gruesa = ultimo_gruesa;
+
+
     }
 
+
+    public Integer getId_familia() {
+        return id_familia;
+    }
+
+    public void setId_familia(Integer id_familia) {
+        this.id_familia = id_familia;
+    }
 
     public Integer getCantidad_cajas() {
         return cantidad_cajas;
@@ -56,13 +71,6 @@ public class Stkw002Item {
         this.cantidad_cajas = cantidad_cajas;
     }
 
-    public Integer getCantidad_cajetillas() {
-        return cantidad_cajetillas;
-    }
-
-    public void setCantidad_cajetillas(Integer cantidad_cajetillas) {
-        this.cantidad_cajetillas = cantidad_cajetillas;
-    }
 
     public String getProducto() {
         return producto;
@@ -92,13 +100,6 @@ public class Stkw002Item {
         this.cantidad_cajasBD = cantidad_cajasBD;
     }
 
-    public Integer getCantidad_cajetillasBD() {
-        return cantidad_cajetillasBD;
-    }
-
-    public void setCantidad_cajetillasBD(Integer cantidad_cajetillasBD) {
-        this.cantidad_cajetillasBD = cantidad_cajetillasBD;
-    }
 
 
 
@@ -200,84 +201,43 @@ public class Stkw002Item {
         this.codBarra = codBarra;
     }
 
-    public String getUltimo() {
-        return ultimo;
+    public String getUltimo_unidades() {
+        return ultimo_unidades;
     }
 
-    public void setUltimo(String ultimo) {
-        this.ultimo = ultimo;
-    }
-/*
-    public String getProducto() {
-        return this.producto;
+    public void setUltimo_unidades(String ultimo_unidades) {
+        this.ultimo_unidades = ultimo_unidades;
     }
 
-    public String getSecuencia() {
-        return this.secuencia;
-    }
-    public void setSecuencia(String secuencia) {
-        this.secuencia = secuencia;
+    public String getUltimo_cajas() {
+        return ultimo_cajas;
     }
 
-    public String getArea() {
-        return this.area;
+    public void setUltimo_cajas(String ultimo_cajas) {
+        this.ultimo_cajas = ultimo_cajas;
     }
 
-
-
-    public String getCantidadTotal() {
-        return this.cantidadTotal;
-    }
-    public void setCantidadTotal(String cantidadTotal) {
-        this.cantidadTotal = cantidadTotal;
+    public String getUltimo_gruesa() {
+        return ultimo_gruesa;
     }
 
-    public String getUltimo() {
-        return this.ultimo;
-    }
-    public void setUltimo(String ultimo) {
-        this.ultimo = ultimo;
+    public void setUltimo_gruesa(String ultimo_gruesa) {
+        this.ultimo_gruesa = ultimo_gruesa;
     }
 
-
-
-    public String getCantidad() {
-        return this.cantidad;
-    }
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
+    public Integer getCantidad_gruesa() {
+        return cantidad_gruesa;
     }
 
-    public String getgrupo() {
-        return this.grupo;
-    }
-    public void setgrupo(String grupo) {
-        this.grupo = grupo;
+    public void setCantidad_gruesa(Integer cantidad_gruesa) {
+        this.cantidad_gruesa = cantidad_gruesa;
     }
 
-    public String getfamilia() {
-        return this.familia;
-    }
-    public void setfamilia(String familia) {
-        this.familia = familia;
+    public Integer getCantidad_gruesaBD() {
+        return cantidad_gruesaBD;
     }
 
-    public String getTomaRegistro() {
-        return this.tomaRegistro;
+    public void setCantidad_gruesaBD(Integer cantidad_gruesaBD) {
+        this.cantidad_gruesaBD = cantidad_gruesaBD;
     }
-
-    public String getCodBarra() {
-        return this.codBarra;
-    }
-
-    public String getLote() {
-        return this.lote;
-    }
-    public String getVencimiento() {
-        return this.vencimiento;
-    }
-   public String getCodArticulo() {
-        return this.cod_articulo;
-    }*/
-
 }

@@ -191,10 +191,6 @@ public class stkw001 extends AppCompatActivity {
             }
         });
 
-
-
-
-
         radioGrupoExistencia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {

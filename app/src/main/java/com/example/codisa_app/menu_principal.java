@@ -160,17 +160,25 @@ public class menu_principal extends AppCompatActivity {
     }
 
     public void OnclickExportar( View v){
-    try {
+        try {
 
-        controles.ExportarStkw002();
+            controles.ExportarStkw002();
 
+        }
+        catch (Exception e){
+            new androidx.appcompat.app.AlertDialog.Builder( this)
+                    .setTitle("INFORME!!!")
+                    .setMessage(e.toString()).show();
+
+        }
     }
-    catch (Exception e){
-        new androidx.appcompat.app.AlertDialog.Builder( this)
-                .setTitle("INFORME!!!")
-                .setMessage(e.toString()).show();
 
-    }
+    public void OnclickConsultaArticulos( View v){
+        Intent intent = new Intent(this, consulta_articulos.class);
+        finish();
+        startActivity(intent);
+        CustomIntent.customType(menu_principal.this,"left-to-right");
+
     }
 
     public void OnclickSincronizarDatos(View v){
