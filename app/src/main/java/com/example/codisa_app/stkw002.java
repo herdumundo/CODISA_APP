@@ -118,8 +118,7 @@ public class stkw002 extends AppCompatActivity {
         try {
 
             ArrayList<Stkw002Item> filteredList = new ArrayList<>();
-           // if(variables.consolidado.equals("SI")){
-                for (Stkw002Item item : controles.ListArrayInventarioArticulos )
+                 for (Stkw002Item item : controles.ListArrayInventarioArticulos )
                 {
                     if(item.getProducto().toLowerCase().contains(text)
                             ||item.getCod_articulo().contains(text)
@@ -129,25 +128,8 @@ public class stkw002 extends AppCompatActivity {
                     {
                         filteredList.add(item);
                     }
-                    // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
-                }
+                 }
                 adapter.setFilter(filteredList);
-           // }
-        /*    else{
-                for (Stkw002Item item : controles.ListArrayInventarioArticulos )
-                {
-                    if(item.getProducto().toLowerCase().contains(text.toLowerCase())||item.getLote().toLowerCase().contains(text.toLowerCase())
-                            ||item.getCodArticulo().contains(text)||item.getVencimiento().contains(text)
-                            ||item.getgrupo().toLowerCase().contains(text.toLowerCase())||item.getfamilia().toLowerCase().contains(text.toLowerCase())
-                            || item.getCantidad().contains(text.trim()))
-                    {
-                        filteredList.add(item);
-                    }
-                    // Toast.makeText(this,item.getProducto(),Toast.LENGTH_LONG).show();
-                }
-                adapter.setFilter(filteredList);
-            }*/
-
 
 
         }

@@ -209,22 +209,22 @@ public class controles {
 
     }
 
-    public static void listar_depositos(Activity activity, String id_sucursal) {
+    public static void listar_depositos(Activity activity, String id_sucursal,int tipo) { // 1= A LA LLAMADA DESDE EL STKW01 Y 2= A LA LLAMADA DE CONSULTA_ARTICULOS.JAVA
         try {
 
-            //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("select * from V_WEB_SUC_DEP   where suc_codigo='"+id_sucursal+"'");
-            //arr_id_deposito.clear();
-            //arr_deposito.clear();
 
             while ( rs.next())
             {
                 arr_id_deposito.add(rs.getString("dep_codigo"));
                 arr_deposito.add(rs.getString("dep_codigo")+" - "+rs.getString("dep_desc"));
             }
-            stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
-            Stkw001DepositoOnclick();
+            if(tipo==1){
+                stkw001.sp_deposito = new SpinnerDialog(activity,arr_deposito,"Listado de depositos");
+                Stkw001DepositoOnclick();
+            }
+
 
         }
         catch (Exception e){
@@ -1104,7 +1104,7 @@ public class controles {
                 // stkw001.txt_deposito.setText(arr_deposito.get(i));
                 //  stkw001.txt_id_deposito.setText(arr_id_deposito.get(i));
 
-                listar_depositos(activity,arrIdSucursales.get(i));
+                listar_depositos(activity,arrIdSucursales.get(i),1);
             }
         });
     }
