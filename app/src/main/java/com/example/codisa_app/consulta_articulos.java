@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -25,13 +26,17 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import Utilidades.ArrayListContenedor;
@@ -48,13 +53,13 @@ public class consulta_articulos extends AppCompatActivity {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
     }
     public static   SpinnerDialog       sp_sucursal,sp_deposito ;
-    public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito;
+    public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_fecha;
      public static MultiSpinnerSearch spinerArticulos;
     RecyclerView recyclerView;
     private  ConsultaAdapter adapter;
     EditText Searchtext;
     public static ProgressDialog prodialog,ProDialogExport;
-
+    DatePickerDialog picker;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,42 @@ public class consulta_articulos extends AppCompatActivity {
         txt_id_deposito        = findViewById(R.id.txt_id_deposito) ;
         spinerArticulos     = findViewById(R.id.spinerArticulos);
         recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
+        txt_fecha=(TextView)findViewById(R.id.txt_fecha);
+
+        txt_fecha.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                // date picker dialog
+                picker = new DatePickerDialog(consulta_articulos.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                                DecimalFormat df = new DecimalFormat("00");
+                                SimpleDateFormat format = new SimpleDateFormat("dd//mm//yyyy");
+
+                                cldr.set(year, monthOfYear, dayOfMonth);
+                                String strDate = format.format(cldr.getTime());
+                                txt_fecha.setText(df.format((dayOfMonth))+"/"+df.format((monthOfYear + 1))+"/"+ year);
+                           //     txt_fecha.setText(year + "-" + df.format((monthOfYear + 1))  + "-" +df.format((dayOfMonth)));
+
+
+
+                            }
+                        }, year, month, day);
+                picker.show();
+
+
+            }
+        });
+
+
+
         Searchtext.addTextChangedListener(new TextWatcher()
         {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
@@ -152,11 +193,12 @@ public class consulta_articulos extends AppCompatActivity {
                 "   v.art_desc, V.DETA_FEC_VTO_LOTE," +
                 "   SUM(V.DETA_CANT_ENTRADA - V.DETA_CANT_SALIDA) CANTIDAD " +
                 "   FROM STKC005 V  " +
-                "   WHERE   V.DOCU_SUC_ORIG="+txt_id_sucursal.getText()+"    " +
-                "   and  V.DOCU_DEP_ORIG="+txt_id_deposito.getText()+" and V.DOCU_FEC_EMIS <= '30/11/2021' GROUP BY V.DETA_ART," +
+                "   WHERE   V.DOCU_SUC_ORIG="   +txt_id_sucursal.getText()  +"  " +
+                "   and V.DOCU_DEP_ORIG="       +txt_id_deposito.getText()  +"  " +
+                "   and V.DOCU_FEC_EMIS <= '"   +txt_fecha.getText()        +"' GROUP BY V.DETA_ART," +
                 "   V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG, V.DETA_LOTE, V.DETA_FEC_VTO_LOTE,v.art_desc) t where cantidad>0 ");
             controles.ListArrayInventarioArticulos.clear();
-         while ( rs2.next())
+        while ( rs2.next())
         {
 
 

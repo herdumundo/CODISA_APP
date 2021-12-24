@@ -1,7 +1,9 @@
 package com.example.codisa_app;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +40,11 @@ public class ConsultaAdapter extends Adapter<ConsultaAdapter.ExampleViewHolder> 
             this.txtCodLote = (TextView) itemView.findViewById(R.id.txt_columna4);
         }
     }
-
+    /**
+     * Esta clase es utilizada para rellenar los txt del layout con el arrayList
+     */
     ConsultaAdapter(List<Stkw002Item> listaStkw002) {
-        this.listaStkw002 = listaStkw002;
+        ConsultaAdapter.listaStkw002 = listaStkw002;
      }
 
     public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
