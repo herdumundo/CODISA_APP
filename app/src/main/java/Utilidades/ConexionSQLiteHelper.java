@@ -11,7 +11,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
 
     }
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 13;
     public static final String DATABASE_NAME = "CODISA_INV.db";
 
     public ConexionSQLiteHelper(Context context) {
@@ -36,6 +36,8 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE USUARIOS_FORMULARIOS_SUCURSALES (FORMULARIO TEXT,NOMBRE TEXT ,LOGIN_O TEXT,LOGIN_PASS" +
                 " TEXT,SUCURSAL_DESCRIPCION TEXT, ROL_SUCURSAL INTEGER)");
+
+        db.execSQL("CREATE TABLE STKC005 (DETA_ART TEXT,ART_DESC TEXT ,DETA_LOTE TEXT ,cantidad TEXT ) "); // VISTA DE LOS ARTICULOS CON SUS LOTES
      }
 
 
@@ -55,6 +57,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     {
         db.execSQL("DROP TABLE IF EXISTS STKW002INV");
         db.execSQL("DROP TABLE IF EXISTS USUARIOS_FORMULARIOS_SUCURSALES");
+        db.execSQL("DROP TABLE IF EXISTS STKC005");
 
          onCreate(db);
     }

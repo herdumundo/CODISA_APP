@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
@@ -28,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,10 +58,14 @@ public class consulta_articulos extends AppCompatActivity {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
     }
     public static   SpinnerDialog       sp_sucursal,sp_deposito ;
+    static SpinnerDialog        sp_lote ;
     public static   TextView            txt_sucursal,txt_id_sucursal,txt_deposito, txt_id_deposito,txt_fecha;
      public static MultiSpinnerSearch spinerArticulos;
+    public static   ArrayList<String> arr_lote     =   new ArrayList<>();
+    private static String Mensaje_error="";
     RecyclerView recyclerView;
     private  ConsultaAdapter adapter;
+    public static LinearLayout linearItem;
     EditText Searchtext;
     public static ProgressDialog prodialog,ProDialogExport;
     DatePickerDialog picker;
@@ -69,7 +78,7 @@ public class consulta_articulos extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.customactionbar);
         TextView txtActionbar = (TextView) getSupportActionBar().getCustomView().findViewById( R.id.action_bar_title);
         txtActionbar.setText("CONSULTA DE ARTICULOS");
-
+        ConsultaAdapter.activity=this;
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorlogin)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
@@ -83,6 +92,7 @@ public class consulta_articulos extends AppCompatActivity {
         spinerArticulos     = findViewById(R.id.spinerArticulos);
         recyclerView= (RecyclerView) findViewById( R.id.RecyclerView);
         txt_fecha=(TextView)findViewById(R.id.txt_fecha);
+        linearItem=findViewById(R.id.linearItem);
 
         txt_fecha.setOnClickListener(new View.OnClickListener()
         {
@@ -132,14 +142,14 @@ public class consulta_articulos extends AppCompatActivity {
             }
         } );
         sp_sucursal = new SpinnerDialog(this,controles.arrSucursales,"Listado de Sucursales");
-            txt_sucursal.setOnClickListener(new View.OnClickListener() {
+        txt_sucursal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 sp_sucursal.showSpinerDialog();
             } } );
 
-            sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
+        sp_sucursal.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
             public void onClick(String s, int i) {
                  txt_sucursal.setText(controles.arrSucursales.get(i));
@@ -167,6 +177,9 @@ public class consulta_articulos extends AppCompatActivity {
                 });
             }
         });
+        controles.conexion_sqlite(this);
+
+
     }
 
 
@@ -183,38 +196,96 @@ public class consulta_articulos extends AppCompatActivity {
     }
 
     private void consultar_articulos(){
-        try {
-
-
+        try
+        {
         Statement stmt2 = controles.connect.createStatement();
-
         ResultSet rs2 = stmt2.executeQuery(" " +
-                "   select * from ( SELECT V.DETA_ART, V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG, V.DETA_LOTE, " +
-                "   v.art_desc, V.DETA_FEC_VTO_LOTE," +
+                "   select * from ( SELECT V.DETA_ART, V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG,  " +
+                "   v.art_desc, " +
                 "   SUM(V.DETA_CANT_ENTRADA - V.DETA_CANT_SALIDA) CANTIDAD " +
                 "   FROM STKC005 V  " +
                 "   WHERE   V.DOCU_SUC_ORIG="   +txt_id_sucursal.getText()  +"  " +
                 "   and V.DOCU_DEP_ORIG="       +txt_id_deposito.getText()  +"  " +
-                "   and V.DOCU_FEC_EMIS <= '"   +txt_fecha.getText()        +"' GROUP BY V.DETA_ART," +
-                "   V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG, V.DETA_LOTE, V.DETA_FEC_VTO_LOTE,v.art_desc) t where cantidad>0 ");
+                "   and V.DOCU_FEC_EMIS <= '"   +txt_fecha.getText()        +"'" +
+                "   GROUP BY V.DETA_ART," +
+                "   V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG,  v.art_desc) t where cantidad>0 ");
             controles.ListArrayInventarioArticulos.clear();
         while ( rs2.next())
         {
-
-
             controles.ListArrayInventarioArticulos.add(new Stkw002Item( rs2.getString("art_desc"), rs2.getInt("CANTIDAD"),
-                    rs2.getString("DETA_LOTE"),rs2.getString("DETA_ART"), rs2.getString("DETA_FEC_VTO_LOTE"),"secue",
+                    "0",rs2.getString("DETA_ART"), "0","secue",
                     "AREA","grupse",
                     "flia","tomanro","codBarra",
                     rs2.getString("CANTIDAD"), "0", 0,0,0,0,0,"0","0")) ;
         }
+        rs2.close();
+        stmt2.close();
 
 
+            SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
+            db1.execSQL("delete from STKC005 ");
+            db1.close();
 
-        } catch (Exception E){
-        String a=E.getMessage();
+            Mensaje_error="";
+
+            Statement stmt3 = controles.connect.createStatement();
+            ResultSet rs3 = stmt3.executeQuery(" "                                                          +
+                    "   select * from ( SELECT V.DETA_ART, V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG, V.DETA_LOTE, "     +
+                    "   v.art_desc, V.DETA_FEC_VTO_LOTE,"                                                       +
+                    "   SUM(V.DETA_CANT_ENTRADA - V.DETA_CANT_SALIDA) CANTIDAD "                                +
+                    "   FROM STKC005 V  "                                                                       +
+                    "   WHERE   V.DOCU_SUC_ORIG="   +txt_id_sucursal.getText()  +"  "                           +
+                    "   and V.DOCU_DEP_ORIG="       +txt_id_deposito.getText()  +"  "                           +
+                    "   and V.DOCU_FEC_EMIS <= '"   +txt_fecha.getText()        +"' "                           +
+                    "    GROUP BY " +
+                    "   V.DETA_ART, V.DOCU_SUC_ORIG, V.DOCU_DEP_ORIG, V.DETA_LOTE, V.DETA_FEC_VTO_LOTE,v.art_desc) t where cantidad>0 ");
+             while ( rs3.next())
+            {
+                SQLiteDatabase db=controles.conSqlite.getReadableDatabase();
+                db.execSQL(" INSERT INTO  STKC005 ( DETA_ART  ,art_desc,DETA_LOTE  ,cantidad ) " +
+                        "VALUES ('"+rs3.getString("DETA_ART")+"','"+rs3.getString("art_desc").replaceAll("'"," ")+"','"+rs3.getString("DETA_LOTE").replaceAll("'"," ")+"','"+rs3.getString("CANTIDAD")+"' )") ;
+                db.close();
+            }
+            rs3.close();
+            stmt3.close();
+
+
+    } catch (Exception E){
+            Mensaje_error =E.getMessage();
         }
     }
+
+
+    public static void  consultar_articulos_lotes( Activity activity, String cod_articulo){
+        try
+        {
+
+
+            SQLiteDatabase db_consulta= controles.conSqlite.getReadableDatabase();
+            Cursor cursor =db_consulta.rawQuery(" SELECT art_desc,DETA_LOTE,CANTIDAD from STKC005 where DETA_ART="+cod_articulo+" ",null);
+             arr_lote.clear();
+             String articulo="";
+             int cantidad=0;
+            while ( cursor.moveToNext())
+            {
+                arr_lote.add( "Lote:"+cursor.getString(1) +"  Cant:"+  cursor.getString(2) );
+                articulo= cursor.getString(0);
+                cantidad=cantidad+cursor.getInt(2);
+            }
+            db_consulta.close();
+            sp_lote = new SpinnerDialog( activity, arr_lote,articulo+": Total "+cantidad);
+            sp_lote.showSpinerDialog();
+            sp_lote.bindOnSpinerListener(new OnSpinerItemClick() {
+                @Override
+                public void onClick(String s, int i) {
+
+                }
+            });
+        } catch (Exception E){
+            Toast.makeText(activity, "Error: "+E.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
     private void listar_recicler()
@@ -275,7 +346,13 @@ public class consulta_articulos extends AppCompatActivity {
 
 
             prodialog.dismiss();
-            listar_recicler();
+            if (Mensaje_error==""){
+                listar_recicler();
+
+            }
+            else {
+                Toast.makeText(consulta_articulos.this, "Error: "+Mensaje_error, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -9,7 +9,8 @@
      android:layout_marginTop="@dimen/main_card_margin_vertical2"
      android:layout_marginBottom="@dimen/main_card_margin_vertical2"
      android:foreground="?selectableItemBackground"
-     app:cardElevation="@dimen/card_recycler_elevation">
+     app:cardElevation="@dimen/card_recycler_elevation"
+    >
 
 
 
@@ -22,7 +23,8 @@
             android:orientation="horizontal"
             android:showDividers="middle"
             tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="0dp">
+            tools:layout_editor_absoluteX="0dp"
+            android:id="@+id/linearItem">
 
             <TextView
                 android:id="@+id/txt_columna1"
@@ -65,19 +67,6 @@
                 app:autoSizeMaxTextSize="15sp"
                 app:autoSizeMinTextSize="9sp"
                 app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:id="@+id/txt_columna4"
-                android:layout_width="135dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorlogin"
-                android:text="Lote"
-                android:textColor="@color/white"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="7sp"
-                app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>

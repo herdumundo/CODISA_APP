@@ -15,7 +15,7 @@
 
         android:layout_alignParentEnd="true"
         android:layout_marginStart="57dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="66dp"
         android:background="@drawable/bordercolor"
         android:drawableLeft="@drawable/ic_registrar"
@@ -24,22 +24,24 @@
         android:text="  Consultar"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_desc_deposito"
+        app:layout_constraintTop_toBottomOf="@+id/txt_fecha"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@color/colorlogin"
         android:orientation="vertical"
         android:padding="8.0dip"
         android:textColor="@color/colorPrimary"
         android:weightSum="1.0"
         app:layout_constraintTop_toBottomOf="@+id/button2"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -109,86 +111,74 @@
         app:layout_constraintTop_toBottomOf="@+id/search_layout"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp">
+
         <LinearLayout
             android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorDarkGray"
             android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/azul3"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_columna1"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/azul3"
+                android:orientation="horizontal">
 
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorlogin"
-                android:text="Cod"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="7sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
+                <TextView
+                    android:id="@+id/txt_columna1"
 
-            <TextView
-                android:id="@+id/txt_columna2"
-                android:layout_width="135dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorlogin"
-                android:text="Cantidad"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="7sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorlogin"
+                    android:text="Cod"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
 
-            <TextView
-                android:id="@+id/txt_columna3"
+                <TextView
+                    android:id="@+id/txt_columna2"
+                    android:layout_width="135dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorlogin"
+                    android:text="Cantidad"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
 
-                android:layout_width="295dp"
-                android:layout_height="29dp"
-                android:layout_alignParentLeft="true"
-                android:layout_weight="1"
-                android:background="@color/colorlogin"
-                android:text="Articulo"
+                <TextView
+                    android:id="@+id/txt_columna3"
 
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="9sp"
-                app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
+                    android:layout_width="295dp"
+                    android:layout_height="29dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:background="@color/colorlogin"
+                    android:text="Articulo"
 
-            <TextView
-                android:id="@+id/txt_columna4"
-                android:layout_width="135dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorlogin"
-                android:text="Lote"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="15sp"
-                app:autoSizeMinTextSize="7sp"
-                app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:autoSizeMinTextSize="9sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
 
-        </LinearLayout>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/azul_claro2"
-                android:scrollbars="horizontal|vertical"/>
+                android:scrollbars="horizontal|vertical" />
 
         </LinearLayout>
 
@@ -214,12 +204,12 @@
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="24dp"
         android:text="Desposito:"
         android:textColor="#030561"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_sucursal"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -227,7 +217,7 @@
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="Fecha hasta:"
         android:textColor="#030561"
         android:textStyle="bold"
@@ -243,6 +233,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/txt_desc_sucursal"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -252,12 +243,12 @@
         android:id="@+id/txt_desc_sucursal"
         android:layout_width="171dp"
         android:layout_height="19dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="120dp"
         android:drawableEnd="@drawable/ic_spinner"
         android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/lbl_sucursal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -269,6 +260,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/txt_desc_deposito"
         app:layout_constraintTop_toBottomOf="@+id/txt_id_sucursal"
         tools:ignore="MissingConstraints" />
@@ -278,12 +270,12 @@
         android:id="@+id/txt_desc_deposito"
         android:layout_width="171dp"
         android:layout_height="19dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="120dp"
         android:drawableEnd="@drawable/ic_spinner"
         android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/lbl_deposito"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
         tools:ignore="MissingConstraints" />
 
@@ -292,11 +284,11 @@
         android:id="@+id/txt_fecha"
         android:layout_width="171dp"
         android:layout_height="19dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-         android:hint="Seleccione"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="120dp"
+        android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/lbl_deposito3"
-        app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_desc_deposito"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,8 @@
         android:theme="@style/Theme.AppCompat.Light">
         <activity
             android:name=".consulta_articulos"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Scroll"
             android:screenOrientation="portrait" />
