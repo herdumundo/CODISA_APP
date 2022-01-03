@@ -243,12 +243,12 @@
         android:id="@+id/txt_desc_sucursal"
         android:layout_width="171dp"
         android:layout_height="19dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="120dp"
         android:drawableEnd="@drawable/ic_spinner"
         android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lbl_sucursal"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -270,12 +270,12 @@
         android:id="@+id/txt_desc_deposito"
         android:layout_width="171dp"
         android:layout_height="19dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="120dp"
         android:drawableEnd="@drawable/ic_spinner"
         android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lbl_deposito"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc_sucursal"
         tools:ignore="MissingConstraints" />
 
@@ -284,11 +284,11 @@
         android:id="@+id/txt_fecha"
         android:layout_width="171dp"
         android:layout_height="19dp"
+        android:layout_marginStart="23dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="120dp"
         android:hint="Seleccione"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lbl_deposito3"
         app:layout_constraintTop_toBottomOf="@+id/txt_desc_deposito"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
