@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
+            android:name=".listado_consolidado"
+            android:exported="false" />
+        <activity
             android:name=".consulta_articulos"
             android:exported="true"
             android:screenOrientation="portrait" />

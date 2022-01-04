@@ -173,6 +173,13 @@ public class menu_principal extends AppCompatActivity {
         }
     }
 
+    public void OnclickListadoConssolidado( View v){
+        Intent intent = new Intent(this, listado_consolidado.class);
+        finish();
+        startActivity(intent);
+        CustomIntent.customType(menu_principal.this,"left-to-right");
+
+    }
     public void OnclickConsultaArticulos( View v){
         Intent intent = new Intent(this, consulta_articulos.class);
         finish();
@@ -180,7 +187,6 @@ public class menu_principal extends AppCompatActivity {
         CustomIntent.customType(menu_principal.this,"left-to-right");
 
     }
-
     public void OnclickSincronizarDatos(View v){
         final HiloSincronizar task = new HiloSincronizar();
         task.execute();

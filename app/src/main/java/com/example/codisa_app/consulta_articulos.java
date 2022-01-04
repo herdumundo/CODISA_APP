@@ -114,7 +114,6 @@ public class consulta_articulos extends AppCompatActivity {
                                 cldr.set(year, monthOfYear, dayOfMonth);
                                 String strDate = format.format(cldr.getTime());
                                 txt_fecha.setText(df.format((dayOfMonth))+"/"+df.format((monthOfYear + 1))+"/"+ year);
-                           //     txt_fecha.setText(year + "-" + df.format((monthOfYear + 1))  + "-" +df.format((dayOfMonth)));
 
 
 
