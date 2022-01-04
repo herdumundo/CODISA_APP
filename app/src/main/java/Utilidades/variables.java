@@ -14,6 +14,10 @@ public class variables {
     public static String consolidado;
     public static      int tipoListaStkw002=1;
     public static      int tipoStkw002;
+    public static      int tipo_lista=0; // 0=CONSULTA ARTICULOS, 1=LISTADO_CONSOLIDADO
+
+
+
 
     // public static String pendientes_export;
 }

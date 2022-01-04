@@ -28,6 +28,7 @@ import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.lista_stkw001_inv;
 import com.example.codisa_app.lista_stkw002_inv;
+import com.example.codisa_app.listado_consolidado;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
 import com.example.codisa_app.stkw002;
@@ -65,6 +66,7 @@ public class controles {
     public static   int verificadorRed;//SI ES 0 NO HAY RED, O SI ES 1 HAY RED.
     public static   String table;
     public static   int     nroTomaCancelacion;
+    public static   int     nroTomaConsolidado;
     public static   String  consolidadoCancelacion="";
     static          String  winveSubGrupoParcial=""; // DATO NECESARIO PARA INSERTAR EL ANIDADO DE GRUPO Y SUBGRUPO A LA BD.
     public static   String  ids_subgrupos="",ids_grupos="",INVE_ART_EST="N",INVE_ART_EXIST="N",INVE_CANT_TOMA="1",INVE_IND_LOTE="S";
@@ -87,6 +89,7 @@ public class controles {
     public static   Context context_stkw001;
     public static   Context contextListaStkw001;
     public static   Context context_menuPrincipal;
+    public static   Context contextListadoConsolidado;
     public static   Activity activity_stkw001;
     static int      tipoRespuestaStkw001; // 1=CORRECTO, 0=ERROR
     static int      tipoRespuestaExportStkw002; // 1=CORRECTO, 0=ERROR
@@ -958,10 +961,61 @@ public class controles {
         }
         catch (Exception e){
             String mens=e.toString();
+    }
+    }
 
+    public static void listarWebViewConsolidados(int nroToma) {
+        try {
+            String html="";
+            table="";
+            Statement stmt =  connect.createStatement();
+            String sql="SELECT               ART_DESC,  winve_fec,dpto_desc AS DEPOSITO,secc_desc,flia_desc,grup_desc,              " +
+                    "   a.flia_desc   as desc_familiA ,winvd_art,WINVD_LOTE,dif.vto,              " +
+                    "   dif.cant_sist_cons as cargado , dif.cant_fisi_cons as stock_sys,dif.cant_cons as diferencia                            " +
+                    "    FROM                                 V_WEB_ARTICULOS_CLASIFICACION  a                         " +
+                    "   inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art and a.SECC_CODIGO=b.winvd_secc                              " +
+                    "   inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP   and c.winve_area=a.AREA_CODIGO                             " +
+                    "   and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO INNER JOIN V_WEB_ART_CONS_DIF dif on b.WINVD_NRO_INV=dif.nro_toma and b.winvd_art=dif.articulo " +
+                    "   and b.WINVD_LOTE=dif.lote          where    c.winve_empr=1                                  and a.ARDE_SUC=1  AND              " +
+                    "   WINVD_NRO_INV="+nroToma+"                        GROUP BY                                 " +
+                    "   ARDE_SUC,winvd_nro_inv,winvd_art, winvd_area,winvd_dpto,winvd_secc,winve_suc,winvd_flia,                              " +
+                    "   winvd_grupo,winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,winve_grupo ," +
+                    "   winve_tipo_toma,winve_login,winve_grupo_parcial,winve_flia,winve_dep ,ART_DESC,  WINVD_LOTE,                               " +
+                    "   dif.cant_sist_cons  , dif.cant_fisi_cons ,dif.cant_cons ,dif.vto  ";
+
+            ResultSet rs = stmt.executeQuery(sql);
+                int cont=0;
+                while (rs.next()){
+                    cont++;
+                    html=html+  "<tr>" +
+                            "<td>"+rs.getString("ART_DESC")+"</td>" +
+                            "<td>"+rs.getString("winve_fec")+"</td>" +
+                            "<td>"+rs.getString("DEPOSITO")+"</td>" +
+                            "<td>"+rs.getString("flia_desc")+"</td>" +
+                            "<td>"+rs.getString("WINVD_LOTE")+"</td>" +
+                            "<td>"+rs.getString("stock_sys")+"</td>" +
+                            "<td>"+rs.getString("cargado")+"</td>" +
+                            "<td>"+rs.getString("diferencia")+"</td>" +
+                            "</tr>";
+                }
+                rs.close();
+
+                table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                        "<thead> " +
+                        "<tr>" +
+                        "<td>ARTICULO</td>" +
+                        "<td>FECHA REGISTRO</td>" +
+                        "<td>DEPOSITO</td>" +
+                        "<td>FAMILIA</td>" +
+                        "<td>LOTE</td>" +
+                        "<td>STOCK</td>" +
+                        "<td>CARGADO</td>" +
+                        "<td>DIFERENCIA</td>" +
+                        "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
         }
-
-
+        catch (Exception e){
+            table=e.toString();
+        }
     }
 
     public static void ListarTomasServer(Context context) {
@@ -1070,7 +1124,6 @@ public class controles {
             lista_stkw001_inv.txtSinresultado.setVisibility(View.VISIBLE);
         }
     }
-
 
     public static void stkw001_txt_sucursalOnclick( Activity activity){
 
@@ -1646,7 +1699,44 @@ public class controles {
 
         }
     }
-
+    public static class AsyncListarConsolidados extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            listado_consolidado.pgDialog = ProgressDialog.show(contextListadoConsolidado, "CONSULTANDO", "ESPERE...", true);
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            listarWebViewConsolidados(nroTomaConsolidado);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            listado_consolidado.pgDialog.dismiss();
+            AlertDialog.Builder alert = new AlertDialog.Builder(contextListadoConsolidado);
+            alert.setTitle("DETALLE");
+            WebView wv = new WebView(contextListadoConsolidado);
+            WebSettings settings = wv.getSettings();
+            settings.setMinimumFontSize(20);
+            settings.setLoadWithOverviewMode(true);
+            settings.setUseWideViewPort(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setSupportZoom(true);
+            wv.loadData(table, "text/html", "utf-8");
+            alert.setView(wv);
+            alert.setNegativeButton("CERRAR", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    dialog.dismiss();
+                }
+            });
+             alert.show();
+        }
+    }
     public static class AsyncListarCancelaciones extends AsyncTask<Void, Void, Void>
     {
         @Override

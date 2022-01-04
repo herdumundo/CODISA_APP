@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ import java.util.Calendar;
 import Utilidades.OnSpinerItemClick;
 import Utilidades.Stkw002Item;
 import Utilidades.controles;
+import Utilidades.variables;
 
 public class listado_consolidado extends AppCompatActivity {
     public static TextView txt_sucursal,txt_id_sucursal ,txt_fecha_desde,txt_fecha_hasta;
@@ -35,6 +37,8 @@ public class listado_consolidado extends AppCompatActivity {
     String Mensaje_error="";
     DatePickerDialog picker;
     RecyclerView recyclerView;
+    public static ProgressDialog pgDialog;
+
     private  ConsultaAdapter adapter;
     public void onBackPressed()
     {
@@ -55,13 +59,13 @@ public class listado_consolidado extends AppCompatActivity {
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
         this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
+        variables.tipo_lista=1;
+        controles.contextListadoConsolidado=this;
         txt_sucursal     = findViewById(R.id.txt_desc_sucursal);
         txt_id_sucursal     = findViewById(R.id.txt_id_sucursal);
         txt_fecha_desde     = findViewById(R.id.txt_fecha_desde);
         txt_fecha_hasta     = findViewById(R.id.txt_fecha_hasta);
         recyclerView=   findViewById( R.id.RecyclerView);
-        String query_det="SELECT               ART_DESC,  winve_fec,dpto_desc AS DEPOSITO,secc_desc,flia_desc,grup_desc,               a.flia_desc   as desc_familiA ,winvd_art,WINVD_LOTE,dif.vto,              dif.cant_sist_cons as cargado , dif.cant_fisi_cons as stock_sys,dif.cant_cons as diferencia                             FROM                                 V_WEB_ARTICULOS_CLASIFICACION  a                         inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art and a.SECC_CODIGO=b.winvd_secc                              inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP   and c.winve_area=a.AREA_CODIGO                              and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO INNER JOIN V_WEB_ART_CONS_DIF dif on b.WINVD_NRO_INV=dif.nro_toma and b.winvd_art=dif.articulo and b.WINVD_LOTE=dif.lote          where    c.winve_empr=1                                  and a.ARDE_SUC=1  AND              WINVD_NRO_INV=1288                        GROUP BY                                 ARDE_SUC,winvd_nro_inv,winvd_art, winvd_area,winvd_dpto,winvd_secc,winve_suc,winvd_flia,                               winvd_grupo,winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,winve_grupo                        ,winve_tipo_toma,winve_login,winve_grupo_parcial,winve_flia,winve_dep ,ART_DESC,  WINVD_LOTE,                               dif.cant_sist_cons  , dif.cant_fisi_cons ,dif.cant_cons ,dif.vto  ";
         String query_cab="                             ";
 
 

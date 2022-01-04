@@ -84,6 +84,7 @@ public class consulta_articulos extends AppCompatActivity {
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
         this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        variables.tipo_lista=0;
         Searchtext = (EditText) findViewById(R.id.search_input);
         txt_sucursal        = findViewById(R.id.txt_desc_sucursal) ;
         txt_id_sucursal        = findViewById(R.id.txt_id_sucursal) ;

@@ -294,15 +294,7 @@ public class menu_principal extends AppCompatActivity {
 
             else {
                 controles.VerificarRed(menu_principal.this);
-               /* new androidx.appcompat.app.AlertDialog.Builder(menu_principal.this)
-                        .setTitle("ATENCION!!!")
-                        .setCancelable(false)
-                        .setMessage(mensajeImporError)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener()  {
-                            public void onClick(DialogInterface dialog, int id) {
 
-                            }
-                        }).show();*/
             }
 
 
