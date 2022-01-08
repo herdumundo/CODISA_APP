@@ -1000,17 +1000,17 @@ public class controles {
                 }
                 rs.close();
 
-                table = "<div>TOTAL DE ARTICULOS "+cont+"<table border=1> " +
+                table = "<div><b>TOTAL DE ARTICULOS "+cont+"</b> <table border=1> " +
                         "<thead> " +
                         "<tr>" +
-                        "<td>ARTICULO</td>" +
-                        "<td>FECHA REGISTRO</td>" +
-                        "<td>DEPOSITO</td>" +
-                        "<td>FAMILIA</td>" +
-                        "<td>LOTE</td>" +
-                        "<td>STOCK</td>" +
-                        "<td>CARGADO</td>" +
-                        "<td>DIFERENCIA</td>" +
+                        "<td><b> ARTICULO </b></td>" +
+                        "<td><b> FECHA REGISTRO </b></td>" +
+                        "<td><b> DEPOSITO </b></td>" +
+                        "<td><b> FAMILIA </b></td>" +
+                        "<td><b> LOTE </b></td>" +
+                        "<td><b> STOCK </b></td>" +
+                        "<td><b> CARGADO </b></td>" +
+                        "<td><b> DIFERENCIA </b></td>" +
                         "</tr> </thead><tbody>"+html+" </tbody></table></div>" ;
         }
         catch (Exception e){

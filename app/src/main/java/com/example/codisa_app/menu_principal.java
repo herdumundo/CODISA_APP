@@ -334,7 +334,30 @@ public class menu_principal extends AppCompatActivity {
                             "   ,winve_tipo_toma,winve_login,winve_grupo_parcial,winve_flia,winve_dep ,ART_DESC, a.coba_codigo_barra," +
                             "  a.caja,a.GRUESA  ,a.UNID_IND " +
                 "       union all" +
-                "       select " +
+                    "   select "+
+                    "      'R' as toma,0 AS invd_cant_inv,ART_DESC,  ARDE_SUC,a.inve_numero as winvd_nro_inv,b.ARTICULO as winvd_art,'' AS winvd_lote,'' AS winvd_fec_vto," +
+                    "       c.AREA_CODIGO as winvd_area,d.winve_dpto as winvd_dpto,d.winve_secc as winvd_secc,c.FLIA_CODIGO as winvd_flia,0 AS winvd_grupo," +
+                    "       0 as winvd_cant_act,a.inve_fec as winve_fec, c.DPTO_DESC,c.SECC_DESC,c.FLIA_DESC," +
+                    "       c.GRUP_DESC, c.AREA_DESC,c.SUGR_CODIGO as sugr_codigo,'' as winvd_secu," +
+                    "       case d.winve_tipo_toma when 'C' then 'CRITERIO' ELSE 'MANUAL' END AS tipo_toma,a.inve_login as winve_login,''  AS winvd_consolidado ," +
+                    "       case when d.winve_grupo IS NULL and  d.winve_grupo_parcial IS NULL then 'TODOS'" +
+                    "       WHEN d.winve_grupo_parcial IS NOT NULL THEN 'PARCIALES' ELSE grup_desc END AS desc_grupo_parcial," +
+                    "       case when d.winve_flia is null then 'TODAS' else c.flia_desc end as desc_familia,winve_dep,winve_suc, c.coba_codigo_barra," +
+                    "       c.caja,c.GRUESA  ,c.UNID_IND" +
+                    "   from" +
+                    "       web_stk_carga_inv a" +
+                    "       inner join V_WEB_ART_CONS_DIF b on a.inve_numero=b.NRO_CARGA" +
+                    "       inner join V_WEB_ARTICULOS_CLASIFICACION c on b.ARTICULO=c.ART_CODIGO" +
+                    "       INNER JOIN WEB_INVENTARIO d on a.inve_ref=d.winve_numero and d.winve_suc=c.ARDE_SUC" +
+                    "   where" +
+                    "       a.invew_est='R' and d.winve_suc="+variables.ID_SUCURSAL_LOGIN+" and  UPPER('"+variables.userdb+"')=UPPER('USUWEB')  " +
+                    "   group by ARDE_SUC,a.inve_numero ,b.ARTICULO  ," +
+                    "       c.AREA_CODIGO  ,d.winve_dpto  ,d.winve_secc  ,c.FLIA_CODIGO ," +
+                    "       a.inve_fec , c.DPTO_DESC,c.SECC_DESC,c.FLIA_DESC,c.GRUP_DESC,d.winve_tipo_toma," +
+                    "       c.AREA_DESC,a.inve_login,d.winve_grupo_parcial,d.winve_grupo,d.winve_flia,c.flia_desc,winve_dep," +
+                    "       winve_suc,c.SUGR_CODIGO,ART_DESC, c.coba_codigo_barra,c.caja,c.GRUESA  ,c.UNID_IND ");
+
+            /* "       select " +
                             "   'R' as toma,b.invd_cant_inv,ART_DESC,  ARDE_SUC,a.inve_numero as winvd_nro_inv,b.invd_art as winvd_art,'' AS winvd_lote,'' AS winvd_fec_vto," +
                             "   c.AREA_CODIGO as winvd_area,d.winve_dpto as winvd_dpto,d.winve_secc as winvd_secc,c.FLIA_CODIGO as winvd_flia,0 AS winvd_grupo," +
                             "   b.invd_cant_inv as winvd_cant_act,a.inve_fec as winve_fec, c.DPTO_DESC,c.SECC_DESC,c.FLIA_DESC," +
@@ -355,7 +378,7 @@ public class menu_principal extends AppCompatActivity {
                             "   c.AREA_CODIGO  ,d.winve_dpto  ,d.winve_secc  ,c.FLIA_CODIGO ," +
                             "   b.invd_cant_inv  ,a.inve_fec , c.DPTO_DESC,c.SECC_DESC,c.FLIA_DESC,c.GRUP_DESC,d.winve_tipo_toma," +
                             "   c.AREA_DESC,a.inve_login,d.winve_grupo_parcial,d.winve_grupo,d.winve_flia,c.flia_desc,winve_dep," +
-                            "   winve_suc,c.SUGR_CODIGO,ART_DESC, c.coba_codigo_barra,c.caja,c.GRUESA  ,c.UNID_IND");
+                            "   winve_suc,c.SUGR_CODIGO,ART_DESC, c.coba_codigo_barra,c.caja,c.GRUESA  ,c.UNID_IND");*/
 
 
             int i=1;

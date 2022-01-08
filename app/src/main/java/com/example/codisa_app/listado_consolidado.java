@@ -171,7 +171,7 @@ public class listado_consolidado extends AppCompatActivity {
             Statement stmt2 = controles.connect.createStatement();
             ResultSet rs2 = stmt2.executeQuery("   select b.winve_numero,b.winve_fec, b.winve_login    " +
                     " from V_WEB_ART_CONS_DIF A  inner join web_inventario b on a.nro_toma=b.winve_numero    " +
-                    " where winve_suc=1  group by   b.winve_numero,b.winve_fec,b.winve_login ");
+                    " where winve_suc=1  group by   b.winve_numero,b.winve_fec,b.winve_login ORDER BY 1 ASC ");
             controles.ListArrayInventarioArticulos.clear();
             while ( rs2.next())
             {
