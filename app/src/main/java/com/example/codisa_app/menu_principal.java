@@ -4,46 +4,32 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.media.session.PlaybackState;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.security.spec.ECField;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-import Utilidades.Stkw002List;
 import Utilidades.controles;
 import Utilidades.variables;
 import maes.tech.intentanim.CustomIntent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 public class menu_principal extends AppCompatActivity {
     public static ProgressDialog prodialog,ProDialogExport;
@@ -174,14 +160,14 @@ public class menu_principal extends AppCompatActivity {
     }
 
     public void OnclickListadoConssolidado( View v){
-        Intent intent = new Intent(this, listado_consolidado.class);
+        Intent intent = new Intent(this, stkw003.class);
         finish();
         startActivity(intent);
         CustomIntent.customType(menu_principal.this,"left-to-right");
 
     }
     public void OnclickConsultaArticulos( View v){
-        Intent intent = new Intent(this, consulta_articulos.class);
+        Intent intent = new Intent(this, stkw004.class);
         finish();
         startActivity(intent);
         CustomIntent.customType(menu_principal.this,"left-to-right");

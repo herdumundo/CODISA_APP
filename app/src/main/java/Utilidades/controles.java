@@ -27,23 +27,18 @@ import android.widget.Toast;
 import com.example.codisa_app.R;
 import com.example.codisa_app.SpinnerDialog;
 import com.example.codisa_app.lista_stkw001_inv;
-import com.example.codisa_app.lista_stkw002_inv;
-import com.example.codisa_app.listado_consolidado;
+import com.example.codisa_app.stkw003;
 import com.example.codisa_app.menu_principal;
 import com.example.codisa_app.stkw001;
 import com.example.codisa_app.stkw002;
-import com.tapadoo.alerter.Alerter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.Result;
 
 import maes.tech.intentanim.CustomIntent;
 
@@ -1704,7 +1699,7 @@ public class controles {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            listado_consolidado.pgDialog = ProgressDialog.show(contextListadoConsolidado, "CONSULTANDO", "ESPERE...", true);
+            stkw003.pgDialog = ProgressDialog.show(contextListadoConsolidado, "CONSULTANDO", "ESPERE...", true);
         }
         @Override
         protected Void doInBackground(Void... params) {
@@ -1714,7 +1709,7 @@ public class controles {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            listado_consolidado.pgDialog.dismiss();
+            stkw003.pgDialog.dismiss();
             AlertDialog.Builder alert = new AlertDialog.Builder(contextListadoConsolidado);
             alert.setTitle("DETALLE");
             WebView wv = new WebView(contextListadoConsolidado);

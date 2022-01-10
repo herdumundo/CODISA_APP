@@ -2,9 +2,6 @@ package com.example.codisa_app;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +64,7 @@ public class ConsultaAdapter extends Adapter<ConsultaAdapter.ExampleViewHolder> 
             @Override
             public void onClick(View v) {
 //                Toast.makeText(v.getContext(), "Datos: "+currentItem.getProducto().toString(), Toast.LENGTH_SHORT).show();
-                consulta_articulos.consultar_articulos_lotes(activity,currentItem.getCod_articulo());
+                stkw004.consultar_articulos_lotes(activity,currentItem.getCod_articulo());
             }
         });
         }

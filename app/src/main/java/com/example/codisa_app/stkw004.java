@@ -9,25 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -42,17 +34,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import Utilidades.ArrayListContenedor;
-import Utilidades.MultiSpinnerListener;
 import Utilidades.MultiSpinnerSearch;
 import Utilidades.OnSpinerItemClick;
 import Utilidades.Stkw002Item;
 import Utilidades.controles;
 import Utilidades.variables;
 
-public class consulta_articulos extends AppCompatActivity {
+public class stkw004 extends AppCompatActivity {
     public void onBackPressed()
     {
         Utilidades.controles.volver_atras(this,this, menu_principal.class,"",4);
@@ -104,7 +93,7 @@ public class consulta_articulos extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(consulta_articulos.this,
+                picker = new DatePickerDialog(stkw004.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -155,8 +144,8 @@ public class consulta_articulos extends AppCompatActivity {
                  txt_sucursal.setText(controles.arrSucursales.get(i));
                  txt_id_sucursal.setText(controles.arrIdSucursales.get(i));
 
-                controles.listar_depositos(consulta_articulos.this,controles.arrIdSucursales.get(i),2);
-                sp_deposito = new SpinnerDialog(consulta_articulos.this,controles.arr_deposito,"Listado de depositos");
+                controles.listar_depositos(stkw004.this,controles.arrIdSucursales.get(i),2);
+                sp_deposito = new SpinnerDialog(stkw004.this,controles.arr_deposito,"Listado de depositos");
 
                 sp_deposito.showSpinerDialog();
                 txt_deposito.setOnClickListener(new View.OnClickListener() {  @Override
@@ -332,7 +321,7 @@ public class consulta_articulos extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            prodialog = ProgressDialog.show(consulta_articulos.this, "CONSULTANDO", "ESPERE...", true);
+            prodialog = ProgressDialog.show(stkw004.this, "CONSULTANDO", "ESPERE...", true);
         }
         @Override
         protected Void doInBackground(Void... params) {
@@ -351,7 +340,7 @@ public class consulta_articulos extends AppCompatActivity {
 
             }
             else {
-                Toast.makeText(consulta_articulos.this, "Error: "+Mensaje_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(stkw004.this, "Error: "+Mensaje_error, Toast.LENGTH_LONG).show();
             }
         }
     }

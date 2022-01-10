@@ -284,12 +284,13 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/STKW0014"
+                android:id="@+id/STKW004"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:onClick="OnclickConsultaArticulos" >
+                android:onClick="OnclickConsultaArticulos"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -339,12 +340,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/OPC_CONSOLIDAR"
+            android:id="@+id/STKW003"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:onClick="OnclickListadoConssolidado">
+            android:onClick="OnclickListadoConssolidado"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"

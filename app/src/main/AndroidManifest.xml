@@ -23,11 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".listado_consolidado"
+            android:name=".stkw003"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".consulta_articulos"
+            android:name=".stkw004"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -109,7 +109,7 @@ public class login extends AppCompatActivity
                             //  controles.connect();
                             Statement stmt = controles.connect.createStatement();
                             ResultSet rs = stmt.executeQuery("select distinct formulario,nombre from v_web_operador_rol_prog where login_o='"+user.trim().toUpperCase()+"' " +
-                                    "and formulario in ('STKW001','STKW002')");
+                                    "and formulario in ('STKW001','STKW002','STKW003','STKW004')");
                             while ( rs.next())
                             {
                                 if(i==0){
@@ -134,7 +134,7 @@ public class login extends AppCompatActivity
                                 db1.close();
                                 Statement stmt2= controles.connect.createStatement();
                                 ResultSet rs2 = stmt2.executeQuery("select distinct formulario,nombre,LOGIN_O,SUCURSAL_DESCRIPCION ,ROL_SUCURSAL   " +
-                                        "from v_web_operador_rol_prog where  formulario in ('STKW001','STKW002') and login_o='"+user.toUpperCase()+"'");
+                                        "from v_web_operador_rol_prog where  formulario in ('STKW001','STKW002','STKW003','STKW004') and login_o='"+user.toUpperCase()+"'");
                                 while ( rs2.next())
                                 {
                                     SQLiteDatabase dblogin=controles.conSqlite.getReadableDatabase();

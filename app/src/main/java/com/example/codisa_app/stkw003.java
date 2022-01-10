@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,7 +30,7 @@ import Utilidades.Stkw002Item;
 import Utilidades.controles;
 import Utilidades.variables;
 
-public class listado_consolidado extends AppCompatActivity {
+public class stkw003 extends AppCompatActivity {
     public static TextView txt_sucursal,txt_id_sucursal ,txt_fecha_desde,txt_fecha_hasta;
     public static   SpinnerDialog       sp_sucursal ;
     String Mensaje_error="";
@@ -95,7 +94,7 @@ public class listado_consolidado extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(listado_consolidado.this,
+                picker = new DatePickerDialog(stkw003.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -126,7 +125,7 @@ public class listado_consolidado extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(listado_consolidado.this,
+                picker = new DatePickerDialog(stkw003.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
