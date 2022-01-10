@@ -166,6 +166,7 @@ public class menu_principal extends AppCompatActivity {
         CustomIntent.customType(menu_principal.this,"left-to-right");
 
     }
+
     public void OnclickConsultaArticulos( View v){
         Intent intent = new Intent(this, stkw004.class);
         finish();
@@ -173,6 +174,7 @@ public class menu_principal extends AppCompatActivity {
         CustomIntent.customType(menu_principal.this,"left-to-right");
 
     }
+
     public void OnclickSincronizarDatos(View v){
         final HiloSincronizar task = new HiloSincronizar();
         task.execute();
@@ -288,8 +290,6 @@ public class menu_principal extends AppCompatActivity {
         }
     }
 
-
-
     private void InsertarSqliteToma(){
         try {
             SQLiteDatabase db1= controles.conSqlite.getReadableDatabase();
@@ -336,7 +336,7 @@ public class menu_principal extends AppCompatActivity {
                     "       inner join V_WEB_ARTICULOS_CLASIFICACION c on b.ARTICULO=c.ART_CODIGO" +
                     "       INNER JOIN WEB_INVENTARIO d on a.inve_ref=d.winve_numero and d.winve_suc=c.ARDE_SUC" +
                     "   where" +
-                    "       a.invew_est='R' and d.winve_suc="+variables.ID_SUCURSAL_LOGIN+" and  UPPER('"+variables.userdb+"')=UPPER('USUWEB')  " +
+                    "       a.invew_est='R' and d.winve_suc="+variables.ID_SUCURSAL_LOGIN+" and  UPPER(inve_login)=UPPER('"+variables.userdb+"') " +
                     "   group by ARDE_SUC,a.inve_numero ,b.ARTICULO  ," +
                     "       c.AREA_CODIGO  ,d.winve_dpto  ,d.winve_secc  ,c.FLIA_CODIGO ," +
                     "       a.inve_fec , c.DPTO_DESC,c.SECC_DESC,c.FLIA_DESC,c.GRUP_DESC,d.winve_tipo_toma," +

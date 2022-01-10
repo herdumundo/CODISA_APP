@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -37,7 +39,8 @@ public class stkw003 extends AppCompatActivity {
     DatePickerDialog picker;
     RecyclerView recyclerView;
     public static ProgressDialog pgDialog;
-
+    public static   AlertDialog.Builder builder;
+    public static   AlertDialog ad;
     private  ConsultaAdapter adapter;
     public void onBackPressed()
     {
@@ -161,7 +164,27 @@ public class stkw003 extends AppCompatActivity {
     }
 
     public void consultar(View v){
-        consultar_articulos();
+        if(txt_fecha_desde.getText().toString().equals("") ||txt_fecha_hasta.getText().toString().equals("") || txt_id_sucursal.getText().toString().equals("")  ){
+
+            builder = new android.app.AlertDialog.Builder(this);
+            builder.setIcon(this.getResources().getDrawable(R.drawable.ic_danger));
+            builder.setTitle("¡Atención!");
+            builder.setMessage("Complete los datos requeridos.");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            ad = builder.show();
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(this.getResources().getColor(R.color.azul_claro));
+            ad.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+        }
+        else{
+            consultar_articulos();
+
+        }
     }
 
     private void consultar_articulos(){
@@ -170,7 +193,8 @@ public class stkw003 extends AppCompatActivity {
             Statement stmt2 = controles.connect.createStatement();
             ResultSet rs2 = stmt2.executeQuery("   select b.winve_numero,b.winve_fec, b.winve_login    " +
                     " from V_WEB_ART_CONS_DIF A  inner join web_inventario b on a.nro_toma=b.winve_numero    " +
-                    " where winve_suc=1  group by   b.winve_numero,b.winve_fec,b.winve_login ORDER BY 1 ASC ");
+                    " where winve_suc="+txt_id_sucursal.getText().toString()+"  and TO_DATE(b.winve_fec, 'dd/mm/yyyy')  between '"+txt_fecha_desde.getText().toString()+"' and '"+txt_fecha_hasta.getText().toString()+"' " +
+                    "group by   b.winve_numero,b.winve_fec,b.winve_login ORDER BY 1 ASC ");
             controles.ListArrayInventarioArticulos.clear();
             while ( rs2.next())
             {
