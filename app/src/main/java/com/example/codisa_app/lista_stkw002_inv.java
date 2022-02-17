@@ -109,15 +109,10 @@ public class lista_stkw002_inv extends AppCompatActivity
             String sql="";
            //< if(estado.equals("A")){
                 sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec) , area_desc,dpto_desc,tipo_toma,secc_desc," +
-                        "winvd_consolidado,desc_grupo_parcial,desc_familia " +
+                        "winvd_consolidado,desc_grupo_parcial,desc_familia,sucursal,deposito " +
                         " from STKW002INV WHERE  " +estado+
                         " and arde_suc="+variables.ID_SUCURSAL_LOGIN+" order by 1 desc";
-            /*}else {
-                sql="select  distinct winvd_nro_inv,strftime('%d/%m/%Y %H:%M',winve_fec),flia_desc,grup_desc,area_desc,dpto_desc," +
-                        "tipo_toma,secc_desc,winvd_consolidado,desc_grupo_parcial,desc_familia " +
-                        "from STKW002INV WHERE ESTADO='"+estado+"'  " +
-                        "and arde_suc="+variables.ID_SUCURSAL_LOGIN+" and upper(WINVE_LOGIN_CERRADO_WEB)=upper('"+variables.userdb+"') order by 1 desc";
-           // }*/
+
             Cursor cursor=db_consulta.rawQuery(sql ,null);
             int cont=0;
             Stkw002List Stkw002List=null;
@@ -134,6 +129,8 @@ public class lista_stkw002_inv extends AppCompatActivity
                 Stkw002List.setconsolidado(cursor.getString(6));
                 Stkw002List.setGrupo(cursor.getString(7));
                 Stkw002List.setFamilia(cursor.getString(8));
+                Stkw002List.setSucursal(cursor.getString(9));
+                Stkw002List.setDeposito(cursor.getString(10));
 
 
                 listaStkw002.add(Stkw002List);
@@ -152,6 +149,7 @@ public class lista_stkw002_inv extends AppCompatActivity
                     TextView text7 = (TextView) view.findViewById(R.id.text7);
                     TextView text8 = (TextView) view.findViewById(R.id.text8);
                     TextView text9 = (TextView) view.findViewById(R.id.text9);
+                    TextView text10 = (TextView) view.findViewById(R.id.text10);
                     TextView text_1 = (TextView) view.findViewById(R.id.text_1);
                     TextView text_2 = (TextView) view.findViewById(R.id.text_2);
                     TextView text_3 = (TextView) view.findViewById(R.id.text_3);
@@ -161,27 +159,30 @@ public class lista_stkw002_inv extends AppCompatActivity
                     TextView text_7 = (TextView) view.findViewById(R.id.text_7);
                     TextView text_8 = (TextView) view.findViewById(R.id.text_8);
                     TextView text_9 = (TextView) view.findViewById(R.id.text_9);
+                    TextView text_10 = (TextView) view.findViewById(R.id.text_10);
                     ImageView  txtimagen =   view.findViewById(R.id.txtimagen);
 
                     text1.setText(listaStkw002.get(position).getNroToma());
-                    text2.setText(listaStkw002.get(position).getFechaToma());
-                    text3.setText(listaStkw002.get(position).getArea());
-                    text4.setText(listaStkw002.get(position).getDpto());
-                    text5.setText(listaStkw002.get(position).getSeccion());
-                    text6.setText(listaStkw002.get(position).getFamilia());
-                    text7.setText(listaStkw002.get(position).getGrupo());
-                    text8.setText(listaStkw002.get(position).getconsolidado());
-                    text9.setText(listaStkw002.get(position).getTipoToma());
+                    text2.setText(listaStkw002.get(position).getSucursal());
+                    text3.setText(listaStkw002.get(position).getDeposito());
+                    text4.setText(listaStkw002.get(position).getFechaToma());
+                    text5.setText(listaStkw002.get(position).getArea());
+                    text6.setText(listaStkw002.get(position).getDpto());
+                    text7.setText(listaStkw002.get(position).getSeccion());
+                    text8.setText(listaStkw002.get(position).getFamilia());
+                    text9.setText(listaStkw002.get(position).getGrupo());
+                    text10.setText(listaStkw002.get(position).getTipoToma());
 
                     text_1.setText("NRO. DE TOMA:");
-                    text_2.setText("FECHA TOMA:");
-                    text_3.setText("AREA:");
-                    text_4.setText("DEPARTAMENTO:");
-                    text_5.setText("SECCION:");
-                    text_6.setText("FAMILIA:");
-                    text_7.setText("GRUPO:");
-                    text_8.setText("CONSOLIDADO:");
-                    text_9.setText("TOMA:");
+                    text_2.setText("SUCURSAL:");
+                    text_3.setText("DEPOSITO:");
+                    text_4.setText("FECHA TOMA:");
+                    text_5.setText("AREA:");
+                    text_6.setText("DEPARTAMENTO:");
+                    text_7.setText("SECCION:");
+                    text_8.setText("FAMILIA:");
+                    text_9.setText("GRUPO:");
+                    text_10.setText("TOMA:");
 
 
                   //  text4.setText();
