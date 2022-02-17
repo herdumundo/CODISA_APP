@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -9,7 +8,9 @@
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/consulta_articulos.xml" value="0.22" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/fila_columnas_consulta.xml" value="0.5273058252427184" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/lista_stkw001_inv.xml" value="0.266304347826087" />
+        <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/lista_stkw002_inv.xml" value="0.151953125" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/listado_consolidado.xml" value="0.25" />
+        <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/listitem_card.xml" value="0.25" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/menu_principal.xml" value="0.22" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/scrollstkw0012.xml" value="0.3567961165048544" />
         <entry key="..\:/Documentos/Android/CODISA_APP/app/src/main/res/layout/stkw00s1.xml" value="0.3109375" />
@@ -28,7 +29,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="ibm-11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

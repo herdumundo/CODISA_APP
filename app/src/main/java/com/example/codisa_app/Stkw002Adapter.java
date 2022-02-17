@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -117,9 +118,10 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {   int cantidad=0;
-                    if(holder.textCantidadUnidades.getText().toString().equals("") ||holder.textCantidadUnidades.getText().toString().equals("-")){
+                if(holder.textCantidadUnidades.getText().toString().equals("") ||holder.textCantidadUnidades.getText().toString().equals("-"))
+                {
                         holder.textCantidadUnidades.setText("0");
-                    }
+                }
                 if (Integer.parseInt(holder.textCantidadUnidades.getText().toString())!=0)
                     { // SI ES DISTINTO A CERO, ENTONCES INGRESARA EN ULTIMO INGRESADO LA CANTIDAD. ESTA VALIDACION ES REALIZADA
                         // PORQUE AL HACER EL FOCO EN EL TEXTO CON CANTIDAD CERO, INGRESA ESA CANTIDAD COMO LA ULTIMA
@@ -154,14 +156,20 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
             @SuppressLint("ResourceAsColor")
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
-                {   int cantidad=0;
+                {
+                    try {
+
+
+                    int cantidad=0;
+                    if(holder.textCantidadCajas.getText().toString().equals("")||holder.textCantidadCajas.getText().toString().trim().equals("-"))
+                    {
+                        holder.textCantidadCajas.setText("0");
+                    }
                     if (Integer.parseInt(holder.textCantidadCajas.getText().toString())!=0)
                     { // SI ES DISTINTO A CERO, ENTONCES INGRESARA EN ULTIMO INGRESADO LA CANTIDAD. ESTA VALIDACION ES REALIZADA
                         // PORQUE AL HACER EL FOCO EN EL TEXTO CON CANTIDAD CERO, INGRESA ESA CANTIDAD COMO LA ULTIMA
 
-                        if(holder.textCantidadCajas.getText().toString().trim().length()==0||holder.textCantidadCajas.getText().toString().trim().equals("-")){
-                        holder.textCantidadCajas.setText("0");
-                    }
+
                     if(holder.textCantidadTotal.getText().toString().trim().length()==0){
                         holder.textCantidadTotal.setText("0");
                     }
@@ -180,7 +188,13 @@ public class Stkw002Adapter extends Adapter<Stkw002Adapter.ExampleViewHolder> {
                     holder.txt_ultimo_cajas.setText(listaStkw002.get(position).getUltimo_cajas());
                     holder.textCantidadCajas.setText("0");
                     }
+
+                    }catch (Exception e){
+                        MensajeRegistro=e.getMessage();
+                    }
                 }
+
+
             }
         });
 

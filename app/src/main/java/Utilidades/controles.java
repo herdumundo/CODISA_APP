@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -376,6 +377,9 @@ public class controles {
                 @Override
                 public void onItemsSelected(List<ArrayListContenedor> items)
                 {
+                    try {
+
+
                     //FORMULA PARA RECUPERAR SOLO LOS ITEMS SELECCIONADOS, SE PUEDE CREAR UNA ARRAYLIST PARA SOLO LOS SELECCIONADOS.
                     ids_grupos="";
                     grupoSeleccionados="";
@@ -431,7 +435,10 @@ public class controles {
                         stkw001.spinerSubGrupo.setVisibility(View.VISIBLE);
                         listar_SubGrupo(activity,ids_grupos,context,tipo_toma);
                     }
-
+                    }
+                    catch (Exception e){
+                        Log.i("ErrorGrupo",e.getMessage());
+                    }
                 }
             });
             VerificarRed(context_stkw001);
@@ -964,19 +971,20 @@ public class controles {
             String html="";
             table="";
             Statement stmt =  connect.createStatement();
-            String sql="SELECT               ART_DESC,  winve_fec,dpto_desc AS DEPOSITO,secc_desc,flia_desc,grup_desc,              " +
-                    "   a.flia_desc   as desc_familiA ,winvd_art,WINVD_LOTE,dif.vto,              " +
-                    "   dif.cant_sist_cons as cargado , dif.cant_fisi_cons as stock_sys,dif.cant_cons as diferencia                            " +
-                    "    FROM                                 V_WEB_ARTICULOS_CLASIFICACION  a                         " +
-                    "   inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art and a.SECC_CODIGO=b.winvd_secc                              " +
-                    "   inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP   and c.winve_area=a.AREA_CODIGO                             " +
-                    "   and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO INNER JOIN V_WEB_ART_CONS_DIF dif on b.WINVD_NRO_INV=dif.nro_toma and b.winvd_art=dif.articulo " +
-                    "   and b.WINVD_LOTE=dif.lote          where    c.winve_empr=1                                  and a.ARDE_SUC=1  AND              " +
-                    "   WINVD_NRO_INV="+nroToma+"                        GROUP BY                                 " +
-                    "   ARDE_SUC,winvd_nro_inv,winvd_art, winvd_area,winvd_dpto,winvd_secc,winve_suc,winvd_flia,                              " +
-                    "   winvd_grupo,winve_fec,dpto_desc,secc_desc,flia_desc,grup_desc,area_desc,sugr_codigo,winve_grupo ," +
-                    "   winve_tipo_toma,winve_login,winve_grupo_parcial,winve_flia,winve_dep ,ART_DESC,  WINVD_LOTE,                               " +
-                    "   dif.cant_sist_cons  , dif.cant_fisi_cons ,dif.cant_cons ,dif.vto  ";
+            String sql=" SELECT                  ART_DESC,   dpto_desc AS DEPOSITO,  secc_desc,flia_desc,grup_desc,              " +
+                    "                       a.flia_desc   as desc_familiA ,winvd_art        " +
+                    "                    , SUM(dif.cant_sist_cons) as stock_sys , SUM(dif.cant_fisi_cons) as cargado,SUM(dif.cant_cons) as diferencia                            " +
+                    "                        FROM                                 V_WEB_ARTICULOS_CLASIFICACION  a                         " +
+                    "                       inner join WEB_INVENTARIO_det b on   a.ART_CODIGO=b.winvd_art and a.SECC_CODIGO=b.winvd_secc                              " +
+                    "                       inner join  WEB_INVENTARIO c on b.winvd_nro_inv=c.winve_numero  And c.winve_dep=a.ARDE_DEP   and c.winve_area=a.AREA_CODIGO                             " +
+                    "                       and c.winve_suc=a.ARDE_SUC   and c.winve_secc=a.SECC_CODIGO INNER JOIN V_WEB_ART_CONS_DIF dif on b.WINVD_NRO_INV=dif.nro_toma and b.winvd_art=dif.articulo " +
+                    "                       and b.WINVD_LOTE=dif.lote          where    c.winve_empr=1                                  and a.ARDE_SUC=1  AND              " +
+                    "                       WINVD_NRO_INV="+nroToma+"                      " +
+                    "                       GROUP BY                                 " +
+                    "                        ART_DESC,   dpto_desc  ,  secc_desc,flia_desc,grup_desc,              " +
+                    "                       a.flia_desc    ,winvd_art         " +
+                    "                        " +
+                    "                       ORDER BY WINVD_ART";
 
             ResultSet rs = stmt.executeQuery(sql);
                 int cont=0;
@@ -984,10 +992,8 @@ public class controles {
                     cont++;
                     html=html+  "<tr>" +
                             "<td>"+rs.getString("ART_DESC")+"</td>" +
-                            "<td>"+rs.getString("winve_fec")+"</td>" +
                             "<td>"+rs.getString("DEPOSITO")+"</td>" +
                             "<td>"+rs.getString("flia_desc")+"</td>" +
-                            "<td>"+rs.getString("WINVD_LOTE")+"</td>" +
                             "<td>"+rs.getString("stock_sys")+"</td>" +
                             "<td>"+rs.getString("cargado")+"</td>" +
                             "<td>"+rs.getString("diferencia")+"</td>" +
@@ -999,10 +1005,8 @@ public class controles {
                         "<thead> " +
                         "<tr>" +
                         "<td><b> ARTICULO </b></td>" +
-                        "<td><b> FECHA REGISTRO </b></td>" +
                         "<td><b> DEPOSITO </b></td>" +
                         "<td><b> FAMILIA </b></td>" +
-                        "<td><b> LOTE </b></td>" +
                         "<td><b> STOCK </b></td>" +
                         "<td><b> CARGADO </b></td>" +
                         "<td><b> DIFERENCIA </b></td>" +
