@@ -1,9 +1,11 @@
 package com.example.codisa_app;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -30,6 +32,8 @@ import Utilidades.OnSpinerItemClick;
 import Utilidades.controles;
 import Utilidades.variables;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class login extends AppCompatActivity
     {
@@ -40,6 +44,8 @@ public class login extends AppCompatActivity
         TextView txt_usuario,txt_pass;
         String  passwd,user="";
         ProgressDialog pdLoading;
+        private static final int READ_PHONE_STATE_PERMISSION_REQUEST_CODE = 101;
+
         @Override
         protected void onCreate(Bundle savedInstanceState)
         {
@@ -51,6 +57,13 @@ public class login extends AppCompatActivity
             txt_usuario.requestFocus();
            controles.conexion_sqlite(this);
 
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Si no se ha concedido, solicitar el permiso
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        READ_PHONE_STATE_PERMISSION_REQUEST_CODE);
+            }
         }
         public void login (View v)
         {

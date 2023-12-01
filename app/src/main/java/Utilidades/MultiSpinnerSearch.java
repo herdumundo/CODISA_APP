@@ -136,8 +136,8 @@ public class MultiSpinnerSearch extends AppCompatSpinner implements OnCancelList
 
 		listener.onItemsSelected(selectedData);
 
-/*
-		new Thread(() -> {
+
+	/*	new Thread(() -> {
 			Instrumentation inst = new Instrumentation();
 			inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
 		}).start(); */
