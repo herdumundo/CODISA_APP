@@ -18,6 +18,14 @@ public class variables {
 
 
 
+    public static  String registradoOk="Registrado con éxito.";
+    public static  String atencion="¡Atención!";
+    public static  String confirmacionSalidaRegistroInventario="¿Desea salir del registro de inventario?";
+    public static  String procesando="Procesando";
+    public static  String CONSULTANDO="Consultando";
+
+
+    // public static String pendientes_export;
 
     // public static String pendientes_export;
 }

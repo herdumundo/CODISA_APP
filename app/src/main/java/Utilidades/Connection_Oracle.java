@@ -30,7 +30,7 @@ public class Connection_Oracle {
         try {
             Class.forName(driver);
             controles.verificadorRed=0;
-            DriverManager.setLoginTimeout(5);
+            DriverManager.setLoginTimeout(30);
 
             connection= DriverManager.getConnection(url, user, passwd);
 

@@ -353,12 +353,13 @@ public class controles {
             }
             //connect = conexion.Connections();
             Statement stmt = connect.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from V_WEB_GRUPO  " +
+            String query="select * from V_WEB_GRUPO  " +
                     " where " +
-                        sqlFamilia +
+                    sqlFamilia +
                     " grup_area='"+stkw001.txt_id_area.getText().toString().trim()+"'  " +
                     " and   grup_seccion='"+stkw001.txt_id_seccion.getText().toString().trim()+"'  " +
-                    " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'");
+                    " and   grup_dpto='"+stkw001.txt_id_departamento.getText().toString().trim()+"'";
+            ResultSet rs = stmt.executeQuery(query);
 
             listArrayGrupo.clear();
             while ( rs.next())
@@ -663,19 +664,20 @@ public class controles {
 
             if(ids_subgrupos.length()>0)
            {
-                ResultSet rs2 = stmt2.executeQuery("" +
-                "select " +
-                "  CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) as concatID,TO_NUMBER (arde_cant_act) as cantidad," +
-                "   TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento," +
-                "   v_web_articulos_clasificacion.* " +
-                "from " +
-                "   v_web_articulos_clasificacion " +
-                "where " +
-                "   arde_suc="+id_sucursal+"      and " +
-                "   arde_dep="+id_deposito+"      and " +
-                "   area_codigo="+id_area+"   and " +
-                "   dpto_codigo="+id_dpto+"   and " +
-            "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" order by flia_desc,GRUP_desc,sugr_desc,art_desc  asc");
+               String query="" +
+                       "select " +
+                       "  CONCAT(CONCAT(grup_codigo, '#'),SUGR_CODIGO) as concatID,TO_NUMBER (arde_cant_act) as cantidad," +
+                       "   TO_CHAR(arde_fec_vto_lote,'DD-MM-YYYY') as vencimiento," +
+                       "   v_web_articulos_clasificacion.* " +
+                       "from " +
+                       "   v_web_articulos_clasificacion " +
+                       "where " +
+                       "   arde_suc="+id_sucursal+"      and " +
+                       "   arde_dep="+id_deposito+"      and " +
+                       "   area_codigo="+id_area+"   and " +
+                       "   dpto_codigo="+id_dpto+"   and " +
+                       "   secc_codigo="+id_seccion+ SqlGrupo + SqlFamilia+SqlSubGrupo+ TotalJoin+" order by flia_desc,GRUP_desc,sugr_desc,art_desc  asc";
+                ResultSet rs2 = stmt2.executeQuery(query);
                 listArrayArticulos.clear();
                 listInsertArticulos.clear();
                 while ( rs2.next())
@@ -2501,7 +2503,7 @@ public class controles {
                             secuencia++;
                             con++;
                         }
-                        connect.commit();
+                        connect.rollback();
                         tipoRespuestaStkw001=1;
                         mensajeRespuestaStkw001="REGISTRADO CON EXITO.";
 
